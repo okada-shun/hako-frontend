@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Join Hako History</title>
+  <link rel="stylesheet" href="../stylesheet.css">
+  <link rel="icon" href="../hako_icon.png">
+  <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
+  <script src="../Hako_abi.js"></script>
+  <script src="../hakoAddress.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <a href="../index.html">Hako Finance</a>
+    </div>
+    <p class="introduction">
+      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
+      Welcome to next-generation DeFi!
+    </p>
+  </header>
+  <div class="container">
+    <div class="transactions">
+      <div class="transaction" id="joinHakoLog">
+        <h2>join hako history</h2>
+        <div class="history">
+          <p>You can watch the record when you joined Hako.</p>
+          <button class="button" @click="watchLog">watch</button><br>
+          <p v-show="loading">Now searching history...</p>
+          <div v-show="!loading">
+            <div v-show="event.length > 0">
+              <div class="log" v-for="log in logs" :key="log.id" v-show="active">
+                <ul>
+                  <li>You joined Hako with depositing {{log.value}} token to Hako.</li>
+                  <li>Transaction Hash: {{log.txHash}}</li>
+                  <li>Block: {{log.blockN.blockNumber}}</li>
+                  <li>Timestamp: {{log.time}}</li>
+                </ul>
+              </div>
+            </div>
+            <div v-show="event.length === 0">
+              <p class="noHistory" v-show="active">No History</p>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <footer>
+  </footer>  
+  <script>
+    var hako;
+    var userAccount;
+    async function startApp() {
+      hako = new web3.eth.Contract(hakoABI, hakoAddress);
+      userAccount = await web3.eth.getCoinbase();
+    }
+
+    window.addEventListener('load', function () {
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+        console.log('web3 created!');
+      } else {
+        alert('install wallet!');
+        console.log('install wallet!');
+      }
+      startApp();
+    });
+
+    var joinHakoLogVM = new Vue({
+      el: '#joinHakoLog',
+      data: {
+        event: '',
+        loading: false,
+        active: false,
+        logs: {
+          0: {
+            value: '',
+            txHash: '',
+            blockN: '',
+            blockData: '',
+            time: ''
+          }
+        }
+      },
+      methods: {
+        watchLog: async function() {
+          if (this.active === true) {
+            this.active = false;
+            return;
+          }
+          if (this.event) {
+            this.active = true;
+            return;
+          }
+          this.loading = true;
+          this.event = await hako.getPastEvents("JoinHako", {filter: {newMember: userAccount}, fromBlock: 0, toBlock: "latest"});
+          if (this.event.length === 0) {
+            this.active = true;
+            this.loading = false;
+            return;
+          }
+          for (let i = 0; i < this.event.length; i++) {
+            this.logs[i].value = this.event[i].returnValues[1];
+            this.logs[i].txHash = this.event[i].transactionHash;
+            this.logs[i].blockN = await web3.eth.getTransaction(this.logs[i].txHash);
+            this.logs[i].blockData = await web3.eth.getBlock(this.logs[i].blockN.blockNumber);
+            this.logs[i].time = String(new Date(this.logs[i].blockData.timestamp * 1000));
+            if (i + 1 != this.event.length) {
+              this.logs[i + 1] = {
+                value: '',
+                txHash: '',
+                blockN: '',
+                blockData: '',
+                time: ''
+              }
+            }
+          }
+          this.active = true;
+          this.loading = false;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

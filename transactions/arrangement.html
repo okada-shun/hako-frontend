@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Arrangement Debt</title>
+  <link rel="stylesheet" href="../stylesheet.css">
+  <link rel="icon" href="../hako_icon.png">
+  <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
+  <script src="../Hako_abi.js"></script>
+  <script src="../hakoAddress.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <a href="../index.html">Hako Finance</a>
+    </div>
+    <p class="introduction">
+      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
+      Welcome to next-generation DeFi!
+    </p>
+  </header>
+  <div class="container">
+    <div class="transactions">
+      <div class="transaction" id="arrangement">
+        <h2>arrangement debt</h2>
+        <p>Reduce your debt by reducing your credit</p>
+        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        <button class="button" @click="arrangementCheck">check</button>
+        <div v-show="isFill">
+          <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
+          <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
+          <button class="button" @click="arrangement" v-show="ok && active">arrangement</button>
+        </div>
+        <p v-cloak>{{txStatus}}</p>
+      </div>
+    </div> 
+  </div>
+  <footer>
+  </footer>
+  <script>
+    var hako;
+    var userAccount;
+    async function startApp() {
+      hako = new web3.eth.Contract(hakoABI, hakoAddress);
+      userAccount = await web3.eth.getCoinbase();
+    }
+
+    window.addEventListener('load', function () {
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+        console.log('web3 created!');
+      } else {
+        alert('install wallet!');
+        console.log('install wallet!');
+      }
+      startApp();
+    });
+
+    var arrangementVM = new Vue({
+      el: '#arrangement',
+      data: {
+        value: '',
+        memberOrNotOfUser: '',
+        creditToHakoOfUser: '',
+        debtToHakoOfUser: '',
+        noCheckSentence: '',
+        okCheckSentence: '',
+        ok: false,
+        active: false,
+        txData: {
+          value: 'initial',
+        },
+        txStatus: ''
+      },
+      methods: {
+        arrangementCheck: async function() {
+          if (this.active === true) {
+            this.active = false;
+            return;
+          }
+          this.ok = false;
+          if (!this.value) {
+            this.noCheckSentence = "Please input a value!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (isNaN(this.value)) {
+            this.noCheckSentence = "Please input a value as number!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (Number(this.value) <= 0) {
+            this.noCheckSentence = "Please input a value as positive number!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (!Number.isInteger(Number(this.value))) {
+            this.noCheckSentence = "Please input a value as integer!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
+          this.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+          this.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+          if (this.memberOrNotOfUser === '0') {
+            this.noCheckSentence = 
+            "NO! You are not a member! Non-member account can't reduce credit!";
+          } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
+            this.noCheckSentence = 
+            "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
+          } else if (Number(this.value) > Number(this.debtToHakoOfUser)) {
+            this.noCheckSentence = 
+            "NO! You have only " + this.debtToHakoOfUser + " debt! " + this.value + " is over!";
+          } else {
+            this.okCheckSentence = "OK! You reduce " + this.value + " debt by reducing " + this.value + " credit!";
+            this.ok = true;
+          }
+          this.txData.value = this.value;
+          this.active = true;
+        },
+        arrangement: function() {
+          this.txStatus = "Arranging debt on the blockchain. This may take a while...";
+          return hako.methods.arrangement(Number(this.value))
+          .send({from: userAccount})
+          .on("receipt", function(receipt) {
+            arrangementVM.txStatus = "";
+            alert('Transaction successed!');
+          })
+          .on("error", function(error) {
+            arrangementVM.txStatus = "";
+            alert('Transaction errored!');
+          });
+        }
+      },
+      computed: {
+        isFill() {
+          if (this.value === this.txData.value) {
+            return true;
+          } else {
+            this.active = false;
+            return true;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

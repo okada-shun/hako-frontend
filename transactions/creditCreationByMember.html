@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Credit Creation</title>
+  <link rel="stylesheet" href="../stylesheet.css">
+  <link rel="icon" href="../hako_icon.png">
+  <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
+  <script src="../Hako_abi.js"></script>
+  <script src="../hakoAddress.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <a href="../index.html">Hako Finance</a>
+    </div>
+    <p class="introduction">
+      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
+      Welcome to next-generation DeFi!
+    </p>
+  </header>
+  <div class="container">
+    <div class="transactions">
+      <div class="transaction" id="creditCreationByMember">
+        <h2>credit creation</h2>
+        <p>Create your credit by owing debt to Hako<br>
+          (The upper limit value you can create is {{upperLimit}}.)<br>
+          (You can't create more credit than {{netAssetsOfUser}}, your net assets.)</p>
+        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        <button class="button" @click="creditCreationByMemberCheck">check</button>
+        <div v-show="isFill">
+          <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
+          <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
+          <button class="button" @click="creditCreationByMember" v-show="ok && active">credit creation</button>
+        </div>
+        <p v-cloak>{{txStatus}}</p>
+      </div>
+    </div> 
+  </div>
+  <footer>
+  </footer>  
+  <script>
+    var hako;
+    var userAccount;
+    async function startApp() {
+      hako = new web3.eth.Contract(hakoABI, hakoAddress);
+      userAccount = await web3.eth.getCoinbase();
+      creditCreationByMemberVM.upperLimit = await hako.methods.upperLimit().call();
+      creditCreationByMemberVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+      creditCreationByMemberVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+      creditCreationByMemberVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+      creditCreationByMemberVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
+      creditCreationByMemberVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
+      creditCreationByMemberVM.netAssetsOfUser = 
+      Number(creditCreationByMemberVM.balanceOfUser) + 
+      Number(creditCreationByMemberVM.creditToHakoOfUser) - 
+      Number(creditCreationByMemberVM.debtToHakoOfUser) + 
+      Number(creditCreationByMemberVM.creditToMemberOfUser) - 
+      Number(creditCreationByMemberVM.debtToMemberOfUser);
+    }
+
+    window.addEventListener('load', function () {
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+        console.log('web3 created!');
+      } else {
+        alert('install wallet!');
+        console.log('install wallet!');
+      }
+      startApp();
+    });
+
+    var creditCreationByMemberVM = new Vue({
+      el: '#creditCreationByMember',
+      data: {
+        value: '',
+        memberOrNotOfUser: '',
+        balanceOfUser: '',
+        creditToHakoOfUser: '',
+        debtToHakoOfUser: '',
+        creditToMemberOfUser: '',
+        debtToMemberOfUser: '',
+        netAssetsOfUser: '-',
+        upperLimit: '-',
+        noCheckSentence: '',
+        okCheckSentence: '',
+        ok: false,
+        active: false,
+        txData: {
+          value: 'initial',
+        },
+        txStatus: ''
+      },
+      methods: {
+        creditCreationByMemberCheck: async function() {
+          if (this.active === true) {
+            this.active = false;
+            return;
+          }
+          this.ok = false;
+          if (!this.value) {
+            this.noCheckSentence = "Please input a value!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (isNaN(this.value)) {
+            this.noCheckSentence = "Please input a value as number!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (Number(this.value) <= 0) {
+            this.noCheckSentence = "Please input a value as positive number!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          if (!Number.isInteger(Number(this.value))) {
+            this.noCheckSentence = "Please input a value as integer!";
+            this.txData.value = this.value;
+            this.active = true;
+            return;
+          }
+          this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
+          if (this.memberOrNotOfUser === '0') {
+            this.noCheckSentence = 
+            "NO! You are not a member! Non-member account can't create credit!";
+          } else if (this.debtToHakoOfUser !== '0') {
+            this.noCheckSentence = 
+            "NO! You have debt to Hako! You can't create credit unless you return all of your debt to Hako!";
+          } else if (this.netAssetsOfUser <= 0) {
+            this.noCheckSentence = 
+            "NO! Your net assets is 0 or minus! You can't create any credit!";
+          } else if (Number(this.value) > Number(this.upperLimit)) {
+            this.noCheckSentence = 
+            "NO! The upper limit is " + this.upperLimit + "! You can't create more than "
+              + this.upperLimit + " credit!";
+          } else if (Number(this.value) > Number(this.netAssetsOfUser)) {
+            this.noCheckSentence = 
+            "NO! Your net assets is only " + this.netAssetsOfUser + "! You can't create more than " + this.netAssetsOfUser + " credit!";
+          } else {
+            this.okCheckSentence = 
+            "OK! You create " + this.value + " credit! At the same time, you have " + this.value + " debt to Hako!";
+            this.ok = true;
+          }
+          this.txData.value = this.value;
+          this.active = true;
+        },
+        creditCreationByMember: function() {
+          this.txStatus = "Creating credit on the blockchain. This may take a while...";
+          return hako.methods.creditCreationByMember(Number(this.value))
+          .send({from: userAccount})
+          .on("receipt", function(receipt) {
+            creditCreationByMemberVM.txStatus = "";
+            alert('Transaction successed!');
+          })
+          .on("error", function(error) {
+            creditCreationByMemberVM.txStatus = "";
+            alert('Transaction errored!');
+          });
+        }
+      },
+      computed: {
+        isFill() {
+          if (this.value === this.txData.value) {
+            return true;
+          } else {
+            this.active = false;
+            return true;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

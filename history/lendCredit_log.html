@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lend Credit History</title>
+  <link rel="stylesheet" href="../stylesheet.css">
+  <link rel="icon" href="../hako_icon.png">
+  <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
+  <script src="../Hako_abi.js"></script>
+  <script src="../hakoAddress.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <a href="../index.html">Hako Finance</a>
+    </div>
+    <p class="introduction">
+      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
+      Welcome to next-generation DeFi!
+    </p>
+  </header>
+  <div class="container">
+    <div class="transactions">
+      <div class="transaction" id="lendCreditLog">
+        <h2>lend credit history</h2>
+        <div class="history">
+          <p>You can watch the record of credit you lent.</p>
+          <button class="button" @click="watchFromLog">watch</button><br>
+          <p v-show="txDataA.loading">Now searching history...</p>
+          <div v-show="!txDataA.loading">
+            <div v-show="txDataA.event.length > 0">
+              <div class="log" v-for="log in txDataA.logs" :key="log.id" v-show="txDataA.active">
+                <ul>
+                  <li>You lent {{log.value}} credit to {{log.debtor}}
+                    for {{log.durationData.days}} days {{log.durationData.hours}} hours 
+                    {{log.durationData.minutes}} minutes {{log.durationData.seconds}} seconds
+                    ( = {{log.duration}} seconds).</li>
+                  <li>Transaction Hash: {{log.txHash}}</li>
+                  <li>Block: {{log.blockN.blockNumber}}</li>
+                  <li>Timestamp: {{log.time}}</li>
+                </ul>
+              </div>
+            </div>
+            <div v-show="txDataA.event.length === 0">
+              <p class="noHistory" v-show="txDataA.active">No History</p>
+            </div>
+          </div>
+        </div>
+        <div class="history">
+          <p>You can watch the record of credit you borrowed.</p>
+          <button class="button" @click="watchToLog">watch</button><br>
+          <p v-show="txDataB.loading">Now searching history...</p>
+          <div v-show="!txDataB.loading">
+            <div v-show="txDataB.event.length > 0">
+              <div class="log" v-for="log in txDataB.logs" :key="log.id" v-show="txDataB.active">
+                <ul>
+                  <li>{{log.creditor}} lent {{log.value}} credit to you 
+                    for {{log.durationData.days}} days {{log.durationData.hours}} hours 
+                    {{log.durationData.minutes}} minutes {{log.durationData.seconds}} seconds
+                    ( = {{log.duration}} seconds).</li>
+                  <li>Transaction Hash: {{log.txHash}}</li>
+                  <li>Block: {{log.blockN.blockNumber}}</li>
+                  <li>Timestamp: {{log.time}}</li>
+                </ul>
+              </div>
+            </div>
+            <div v-show="txDataB.event.length === 0">
+              <p class="noHistory" v-show="txDataB.active">No History</p>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <footer>
+  </footer>  
+  <script>
+    var hako;
+    var userAccount;
+    async function startApp() {
+      hako = new web3.eth.Contract(hakoABI, hakoAddress);
+      userAccount = await web3.eth.getCoinbase();
+    }
+
+    window.addEventListener('load', function () {
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+        console.log('web3 created!');
+      } else {
+        alert('install wallet!');
+        console.log('install wallet!');
+      }
+      startApp();
+    });
+
+    var lendCreditLogVM = new Vue({
+      el: '#lendCreditLog',
+      data: {
+        txDataA: {
+          event: '',
+          loading: false,
+          active: false,
+          logs: {
+            0: {
+              debtor: '',
+              value: '',
+              duration: '',
+              durationData: {
+                days: '',
+                hours: '',
+                minutes: '',
+                seconds: ''
+              },
+              txHash: '',
+              blockN: '',
+              blockData: '',
+              time: ''
+            }
+          }
+        },
+        txDataB: {
+          event: '',
+          loading: false,
+          active: false,
+          logs: {
+            0: {
+              creditor: '',
+              value: '',
+              duration: '',
+              durationData: {
+                days: '',
+                hours: '',
+                minutes: '',
+                seconds: ''
+              },
+              txHash: '',
+              blockN: '',
+              blockData: '',
+              time: ''
+            }
+          }
+        }
+      },
+      methods: {
+        watchFromLog: async function() {
+          if (this.txDataA.active === true) {
+            this.txDataA.active = false;
+            return;
+          }
+          if (this.txDataA.event) {
+            this.txDataA.active = true;
+            return;
+          }
+          this.txDataA.loading = true;
+          this.txDataA.event = await hako.getPastEvents("LendCredit", {filter: {from: userAccount}, fromBlock: 0, toBlock: "latest"});
+          if (this.txDataA.event.length === 0) {
+            this.txDataA.active = true;
+            this.txDataA.loading = false;
+            return;
+          }
+          for (let i = 0; i < this.txDataA.event.length; i++) {
+            this.txDataA.logs[i].debtor = "<" + this.txDataA.event[i].returnValues[1] + ">";
+            this.txDataA.logs[i].value = this.txDataA.event[i].returnValues[2];
+            this.txDataA.logs[i].duration = this.txDataA.event[i].returnValues[3];
+            this.arrangeDurationA(Number(this.txDataA.logs[i].duration), i);
+            this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
+            this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
+            this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
+            this.txDataA.logs[i].time = String(new Date(this.txDataA.logs[i].blockData.timestamp * 1000));
+            if (i + 1 != this.txDataA.event.length) {
+              this.txDataA.logs[i + 1] = {
+                debtor: '',
+                value: '',
+                duration: '',
+                durationData: {
+                  days: '',
+                  hours: '',
+                  minutes: '',
+                  seconds: ''
+                },
+                txHash: '',
+                blockN: '',
+                blockData: '',
+                time: ''
+              }
+            }
+          }
+          this.txDataA.active = true;
+          this.txDataA.loading = false;
+        },
+        arrangeDurationA: function(duration, i) {
+          let remainderA = duration % 86400;
+          let quotientA = duration - remainderA;
+          this.txDataA.logs[i].durationData.days = quotientA / 86400;
+          let remainderB = remainderA % 3600;
+          let quotientB = remainderA - remainderB;
+          this.txDataA.logs[i].durationData.hours = quotientB / 3600;
+          let remainderC = remainderB % 60;
+          let quotientC = remainderB - remainderC;
+          this.txDataA.logs[i].durationData.minutes = quotientC / 60;
+          this.txDataA.logs[i].durationData.seconds = remainderC;
+        },
+        watchToLog: async function() {
+          if (this.txDataB.active === true) {
+            this.txDataB.active = false;
+            return;
+          }
+          if (this.txDataB.event) {
+            this.txDataB.active = true;
+            return;
+          }
+          this.txDataB.loading = true;
+          this.txDataB.event = await hako.getPastEvents("LendCredit", {filter: {to: userAccount}, fromBlock: 0, toBlock: "latest"});
+          if (this.txDataB.event.length === 0) {
+            this.txDataB.active = true;
+            this.txDataB.loading = false;
+            return;
+          }
+          for (let i = 0; i < this.txDataB.event.length; i++) {
+            this.txDataB.logs[i].creditor = "<" + this.txDataB.event[i].returnValues[0] + ">";
+            this.txDataB.logs[i].value = this.txDataB.event[i].returnValues[2];
+            this.txDataB.logs[i].duration = this.txDataB.event[i].returnValues[3];
+            this.arrangeDurationB(Number(this.txDataB.logs[i].duration), i);
+            this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
+            this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
+            this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);
+            this.txDataB.logs[i].time = String(new Date(this.txDataB.logs[i].blockData.timestamp * 1000));
+            if (i + 1 != this.txDataB.event.length) {
+              this.txDataB.logs[i + 1] = {
+                creditor: '',
+                value: '',
+                duration: '',
+                durationData: {
+                  days: '',
+                  hours: '',
+                  minutes: '',
+                  seconds: ''
+                },
+                txHash: '',
+                blockN: '',
+                blockData: '',
+                time: ''
+              }
+            }
+          }
+          this.txDataB.active = true;
+          this.txDataB.loading = false;
+        },
+        arrangeDurationB: function(duration, i) {
+          let remainderA = duration % 86400;
+          let quotientA = duration - remainderA;
+          this.txDataB.logs[i].durationData.days = quotientA / 86400;
+          let remainderB = remainderA % 3600;
+          let quotientB = remainderA - remainderB;
+          this.txDataB.logs[i].durationData.hours = quotientB / 3600;
+          let remainderC = remainderB % 60;
+          let quotientC = remainderB - remainderC;
+          this.txDataB.logs[i].durationData.minutes = quotientC / 60;
+          this.txDataB.logs[i].durationData.seconds = remainderC;
+        },
+      }
+    });
+  </script>
+</body>
+</html>
