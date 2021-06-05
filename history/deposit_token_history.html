@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Withdraw Token History</title>
+  <title>Deposit Token History</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,17 +23,17 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="withdrawTokenLog">
-        <h2>withdraw token history</h2>
+      <div class="transaction" id="depositTokenLog">
+        <h2>deposit token history</h2>
         <div class="history">
-          <p>You can watch the record of token you withdrew from Hako.</p>
+          <p>You can watch the record of token you deposited to Hako.</p>
           <button class="button" @click="watchLog">watch</button><br>
           <p v-show="loading">Now searching history...</p>
           <div v-show="!loading">
             <div v-show="event.length > 0">
               <div class="log" v-for="log in logs" :key="log.id" v-show="active">
                 <ul>
-                  <li>You withdrew {{log.value}} token from Hako.</li>
+                  <li>You deposited {{log.value}} token to Hako.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -69,8 +69,8 @@
       startApp();
     });
 
-    var withdrawTokenLogVM = new Vue({
-      el: '#withdrawTokenLog',
+    var depositTokenLogVM = new Vue({
+      el: '#depositTokenLog',
       data: {
         event: '',
         loading: false,
@@ -96,7 +96,7 @@
             return;
           }
           this.loading = true;
-          this.event = await hako.getPastEvents("WithdrawToken", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.event = await hako.getPastEvents("DepositToken", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.event.length === 0) {
             this.active = true;
             this.loading = false;

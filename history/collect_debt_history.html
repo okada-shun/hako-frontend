@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Lend Credit History</title>
+  <title>Collect Debt History</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,20 +23,19 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="lendCreditLog">
-        <h2>lend credit history</h2>
+      <div class="transaction" id="collectDebtFromLog">
+        <h2>collect debt history</h2>
         <div class="history">
-          <p>You can watch the record of credit you lent.</p>
-          <button class="button" @click="watchFromLog">watch</button><br>
+          <p>You can watch the record of debt that creditor collected from you.<br>
+            (You are a debtor.)</p>
+          <button class="button" @click="watchDebtorLog">watch</button><br>
           <p v-show="txDataA.loading">Now searching history...</p>
           <div v-show="!txDataA.loading">
             <div v-show="txDataA.event.length > 0">
               <div class="log" v-for="log in txDataA.logs" :key="log.id" v-show="txDataA.active">
                 <ul>
-                  <li>You lent {{log.value}} credit to {{log.debtor}}
-                    for {{log.durationData.days}} days {{log.durationData.hours}} hours 
-                    {{log.durationData.minutes}} minutes {{log.durationData.seconds}} seconds
-                    ( = {{log.duration}} seconds).</li>
+                  <li>{{log.id}}<br>
+                    {{log.creditor}} collected {{log.value}} credit from you.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -49,17 +48,16 @@
           </div>
         </div>
         <div class="history">
-          <p>You can watch the record of credit you borrowed.</p>
-          <button class="button" @click="watchToLog">watch</button><br>
+          <p>You can watch the record of debt that you collected from debtor.<br>
+            (You are a creditor.)</p>
+          <button class="button" @click="watchCreditorLog">watch</button><br>
           <p v-show="txDataB.loading">Now searching history...</p>
           <div v-show="!txDataB.loading">
             <div v-show="txDataB.event.length > 0">
               <div class="log" v-for="log in txDataB.logs" :key="log.id" v-show="txDataB.active">
                 <ul>
-                  <li>{{log.creditor}} lent {{log.value}} credit to you 
-                    for {{log.durationData.days}} days {{log.durationData.hours}} hours 
-                    {{log.durationData.minutes}} minutes {{log.durationData.seconds}} seconds
-                    ( = {{log.duration}} seconds).</li>
+                  <li>{{log.id}}<br>
+                    You collected {{log.value}} credit from {{log.debtor}}.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -71,8 +69,8 @@
             </div>
           </div>
         </div>
-      </div> 
-    </div>
+      </div>
+    </div> 
   </div>
   <footer>
   </footer>  
@@ -95,8 +93,8 @@
       startApp();
     });
 
-    var lendCreditLogVM = new Vue({
-      el: '#lendCreditLog',
+    var collectDebtFromLogVM = new Vue({
+      el: '#collectDebtFromLog',
       data: {
         txDataA: {
           event: '',
@@ -104,15 +102,9 @@
           active: false,
           logs: {
             0: {
-              debtor: '',
+              creditor: '',
+              id: '',
               value: '',
-              duration: '',
-              durationData: {
-                days: '',
-                hours: '',
-                minutes: '',
-                seconds: ''
-              },
               txHash: '',
               blockN: '',
               blockData: '',
@@ -126,15 +118,9 @@
           active: false,
           logs: {
             0: {
-              creditor: '',
+              debtor: '',
+              id: '',
               value: '',
-              duration: '',
-              durationData: {
-                days: '',
-                hours: '',
-                minutes: '',
-                seconds: ''
-              },
               txHash: '',
               blockN: '',
               blockData: '',
@@ -144,7 +130,7 @@
         }
       },
       methods: {
-        watchFromLog: async function() {
+        watchDebtorLog: async function() {
           if (this.txDataA.active === true) {
             this.txDataA.active = false;
             return;
@@ -154,32 +140,27 @@
             return;
           }
           this.txDataA.loading = true;
-          this.txDataA.event = await hako.getPastEvents("LendCredit", {filter: {from: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.txDataA.event = await hako.getPastEvents("CollectDebtFrom", {filter: {debtor: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.txDataA.event.length === 0) {
             this.txDataA.active = true;
             this.txDataA.loading = false;
             return;
           }
           for (let i = 0; i < this.txDataA.event.length; i++) {
-            this.txDataA.logs[i].debtor = "<" + this.txDataA.event[i].returnValues[1] + ">";
-            this.txDataA.logs[i].value = this.txDataA.event[i].returnValues[2];
-            this.txDataA.logs[i].duration = this.txDataA.event[i].returnValues[3];
-            this.arrangeDurationA(Number(this.txDataA.logs[i].duration), i);
+            let id = this.txDataA.event[i].returnValues[2];
+            let lendRecord = await hako.methods.getLendRecords(id).call();
+            this.txDataA.logs[i].creditor = "<" + this.txDataA.event[i].returnValues[0] + ">";
+            this.txDataA.logs[i].id = "ID: " + id;
+            this.txDataA.logs[i].value = lendRecord[3];
             this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
             this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
             this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
             this.txDataA.logs[i].time = String(new Date(this.txDataA.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataA.event.length) {
               this.txDataA.logs[i + 1] = {
-                debtor: '',
+                creditor: '',
+                id: '',
                 value: '',
-                duration: '',
-                durationData: {
-                  days: '',
-                  hours: '',
-                  minutes: '',
-                  seconds: ''
-                },
                 txHash: '',
                 blockN: '',
                 blockData: '',
@@ -190,19 +171,7 @@
           this.txDataA.active = true;
           this.txDataA.loading = false;
         },
-        arrangeDurationA: function(duration, i) {
-          let remainderA = duration % 86400;
-          let quotientA = duration - remainderA;
-          this.txDataA.logs[i].durationData.days = quotientA / 86400;
-          let remainderB = remainderA % 3600;
-          let quotientB = remainderA - remainderB;
-          this.txDataA.logs[i].durationData.hours = quotientB / 3600;
-          let remainderC = remainderB % 60;
-          let quotientC = remainderB - remainderC;
-          this.txDataA.logs[i].durationData.minutes = quotientC / 60;
-          this.txDataA.logs[i].durationData.seconds = remainderC;
-        },
-        watchToLog: async function() {
+        watchCreditorLog: async function() {
           if (this.txDataB.active === true) {
             this.txDataB.active = false;
             return;
@@ -212,32 +181,27 @@
             return;
           }
           this.txDataB.loading = true;
-          this.txDataB.event = await hako.getPastEvents("LendCredit", {filter: {to: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.txDataB.event = await hako.getPastEvents("CollectDebtFrom", {filter: {creditor: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.txDataB.event.length === 0) {
             this.txDataB.active = true;
             this.txDataB.loading = false;
             return;
           }
           for (let i = 0; i < this.txDataB.event.length; i++) {
-            this.txDataB.logs[i].creditor = "<" + this.txDataB.event[i].returnValues[0] + ">";
-            this.txDataB.logs[i].value = this.txDataB.event[i].returnValues[2];
-            this.txDataB.logs[i].duration = this.txDataB.event[i].returnValues[3];
-            this.arrangeDurationB(Number(this.txDataB.logs[i].duration), i);
+            let id = this.txDataB.event[i].returnValues[2];
+            let lendRecord = await hako.methods.getLendRecords(id).call();
+            this.txDataB.logs[i].debtor = "<" + this.txDataB.event[i].returnValues[1] + ">";
+            this.txDataB.logs[i].id = "ID: " + id;
+            this.txDataB.logs[i].value = lendRecord[3];
             this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
             this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
             this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);
             this.txDataB.logs[i].time = String(new Date(this.txDataB.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataB.event.length) {
               this.txDataB.logs[i + 1] = {
-                creditor: '',
+                debtor: '',
+                id: '',
                 value: '',
-                duration: '',
-                durationData: {
-                  days: '',
-                  hours: '',
-                  minutes: '',
-                  seconds: ''
-                },
                 txHash: '',
                 blockN: '',
                 blockData: '',
@@ -247,19 +211,7 @@
           }
           this.txDataB.active = true;
           this.txDataB.loading = false;
-        },
-        arrangeDurationB: function(duration, i) {
-          let remainderA = duration % 86400;
-          let quotientA = duration - remainderA;
-          this.txDataB.logs[i].durationData.days = quotientA / 86400;
-          let remainderB = remainderA % 3600;
-          let quotientB = remainderA - remainderB;
-          this.txDataB.logs[i].durationData.hours = quotientB / 3600;
-          let remainderC = remainderB % 60;
-          let quotientC = remainderB - remainderC;
-          this.txDataB.logs[i].durationData.minutes = quotientC / 60;
-          this.txDataB.logs[i].durationData.seconds = remainderC;
-        },
+        }
       }
     });
   </script>

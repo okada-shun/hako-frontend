@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Withdraw Token</title>
+  <title>Arrangement Debt</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,23 +23,22 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" ID="withdrawToken">
-        <h2>withdraw token</h2>
-        <p>Withdraw your token from Hako<br>
-          (Translate your credit into token.)</p>
+      <div class="transaction" id="arrangement">
+        <h2>arrangement debt</h2>
+        <p>Reduce your debt by reducing your credit</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
-        <button class="button" @click="withdrawTokenCheck">check</button>
+        <button class="button" @click="arrangementCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
           <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
-          <button class="button" @click="withdrawToken" v-show="ok && active">withdraw</button>
+          <button class="button" @click="arrangement" v-show="ok && active">arrangement</button>
         </div>
         <p v-cloak>{{txStatus}}</p>
       </div>
     </div> 
   </div>
   <footer>
-  </footer>  
+  </footer>
   <script>
     var hako;
     var userAccount;
@@ -59,25 +58,24 @@
       startApp();
     });
 
-    var withdrawTokenVM = new Vue({
-      el: '#withdrawToken',
+    var arrangementVM = new Vue({
+      el: '#arrangement',
       data: {
         value: '',
         memberOrNotOfUser: '',
         creditToHakoOfUser: '',
         debtToHakoOfUser: '',
-        debtToMemberOfUser: '',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,
         active: false,
         txData: {
-          value: 'initial'
+          value: 'initial',
         },
         txStatus: ''
       },
       methods: {
-        withdrawTokenCheck: async function() {
+        arrangementCheck: async function() {
           if (this.active === true) {
             this.active = false;
             return;
@@ -110,38 +108,34 @@
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
           this.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
           this.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
-          this.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
-            "NO! You are not a member! Non-member account can't withdraw token!";
-          } else if (this.debtToHakoOfUser !== '0') {
-            this.noCheckSentence = 
-            "NO! You have debt to Hako! You can't withdraw token unless you return all of your debt to Hako!";
-          } else if (this.debtToMemberOfUser !== '0') {
-            this.noCheckSentence = 
-            "NO! You are borrowing credit! You can't withdraw token unless you return all of your debt to creditor!";
+            "NO! You are not a member! Non-member account can't reduce credit!";
           } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
+          } else if (Number(this.value) > Number(this.debtToHakoOfUser)) {
+            this.noCheckSentence = 
+            "NO! You have only " + this.debtToHakoOfUser + " debt! " + this.value + " is over!";
           } else {
-            this.okCheckSentence = "OK! You withdraw " + this.value + " credit!";
+            this.okCheckSentence = "OK! You reduce " + this.value + " debt by reducing " + this.value + " credit!";
             this.ok = true;
           }
           this.txData.value = this.value;
           this.active = true;
         },
-        withdrawToken: function() {
-          this.txStatus = "Withdrawing token on the blockchain. This may take a while...";
-          return hako.methods.withdrawToken(Number(this.value))
-            .send({ from: userAccount })
-            .on("receipt", function (receipt) {
-              withdrawTokenVM.txStatus = "";
-              alert('Transaction successed!');
-            })
-            .on("error", function (error) {
-              withdrawTokenVM.txStatus = "";
-              alert('Transaction errored!');
-            });
+        arrangement: function() {
+          this.txStatus = "Arranging debt on the blockchain. This may take a while...";
+          return hako.methods.arrangement(Number(this.value))
+          .send({from: userAccount})
+          .on("receipt", function(receipt) {
+            arrangementVM.txStatus = "";
+            alert('Transaction successed!');
+          })
+          .on("error", function(error) {
+            arrangementVM.txStatus = "";
+            alert('Transaction errored!');
+          });
         }
       },
       computed: {

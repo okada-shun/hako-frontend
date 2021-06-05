@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Return Debt History</title>
+  <title>Transfer Credit History</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,19 +23,17 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="returnDebtToLog">
-        <h2>return debt history</h2>
+      <div class="transaction" id="transferCreditLog">
+        <h2>transfer credit history</h2>
         <div class="history">
-          <p>You can watch the record of debt that you returned to creditor.<br>
-            (You are a debtor.)</p>
-          <button class="button" @click="watchDebtorLog">watch</button><br>
+          <p>You can watch the record of credit you transferred.</p>
+          <button class="button" @click="watchFromLog">watch</button><br>
           <p v-show="txDataA.loading">Now searching history...</p>
           <div v-show="!txDataA.loading">
             <div v-show="txDataA.event.length > 0">
               <div class="log" v-for="log in txDataA.logs" :key="log.id" v-show="txDataA.active">
                 <ul>
-                  <li>{{log.id}}<br>
-                    You returned {{log.value}} debt to {{log.creditor}}.</li>
+                  <li>You transferred {{log.value}} credit to {{log.to}}.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -48,16 +46,14 @@
           </div>
         </div>
         <div class="history">
-          <p>You can watch the record of debt that debtor returned to you.<br>
-            (You are a creditor.)</p>
-          <button class="button" @click="watchCreditorLog">watch</button><br>
+          <p>You can watch the record of credit you got transferred.</p>
+          <button class="button" @click="watchToLog">watch</button><br>
           <p v-show="txDataB.loading">Now searching history...</p>
           <div v-show="!txDataB.loading">
             <div v-show="txDataB.event.length > 0">
               <div class="log" v-for="log in txDataB.logs" :key="log.id" v-show="txDataB.active">
                 <ul>
-                  <li>{{log.id}}<br>
-                    {{log.debtor}} returned {{log.value}} debt to you.</li>
+                  <li>{{log.from}} transferred {{log.value}} credit to you.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -93,8 +89,8 @@
       startApp();
     });
 
-    var returnDebtToLogVM = new Vue({
-      el: '#returnDebtToLog',
+    var transferCreditLogVM = new Vue({
+      el: '#transferCreditLog',
       data: {
         txDataA: {
           event: '',
@@ -102,8 +98,7 @@
           active: false,
           logs: {
             0: {
-              creditor: '',
-              id: '',
+              to: '',
               value: '',
               txHash: '',
               blockN: '',
@@ -118,8 +113,7 @@
           active: false,
           logs: {
             0: {
-              debtor: '',
-              id: '',
+              from: '',
               value: '',
               txHash: '',
               blockN: '',
@@ -130,7 +124,7 @@
         }
       },
       methods: {
-        watchDebtorLog: async function() {
+        watchFromLog: async function() {
           if (this.txDataA.active === true) {
             this.txDataA.active = false;
             return;
@@ -140,26 +134,22 @@
             return;
           }
           this.txDataA.loading = true;
-          this.txDataA.event = await hako.getPastEvents("ReturnDebtTo", {filter: {debtor: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.txDataA.event = await hako.getPastEvents("TransferCredit", {filter: {from: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.txDataA.event.length === 0) {
             this.txDataA.active = true;
             this.txDataA.loading = false;
             return;
           }
           for (let i = 0; i < this.txDataA.event.length; i++) {
-            let id = this.txDataA.event[i].returnValues[2];
-            let lendRecord = await hako.methods.getLendRecords(id).call();
-            this.txDataA.logs[i].creditor = "<" + this.txDataA.event[i].returnValues[1] + ">";
-            this.txDataA.logs[i].id = "ID: " + id;
-            this.txDataA.logs[i].value = lendRecord[3];
+            this.txDataA.logs[i].to = "<" + this.txDataA.event[i].returnValues[1] + ">";
+            this.txDataA.logs[i].value = this.txDataA.event[i].returnValues[2];
             this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
             this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
             this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
             this.txDataA.logs[i].time = String(new Date(this.txDataA.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataA.event.length) {
               this.txDataA.logs[i + 1] = {
-                creditor: '',
-                id: '',
+                to: '',
                 value: '',
                 txHash: '',
                 blockN: '',
@@ -171,7 +161,7 @@
           this.txDataA.active = true;
           this.txDataA.loading = false;
         },
-        watchCreditorLog: async function() {
+        watchToLog: async function() {
           if (this.txDataB.active === true) {
             this.txDataB.active = false;
             return;
@@ -181,26 +171,22 @@
             return;
           }
           this.txDataB.loading = true;
-          this.txDataB.event = await hako.getPastEvents("ReturnDebtTo", {filter: {creditor: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.txDataB.event = await hako.getPastEvents("TransferCredit", {filter: {to: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.txDataB.event.length === 0) {
             this.txDataB.active = true;
             this.txDataB.loading = false;
             return;
           }
           for (let i = 0; i < this.txDataB.event.length; i++) {
-            let id = this.txDataB.event[i].returnValues[2];
-            let lendRecord = await hako.methods.getLendRecords(id).call();
-            this.txDataB.logs[i].debtor = "<" + this.txDataB.event[i].returnValues[0] + ">";
-            this.txDataB.logs[i].id = "ID: " + id;
-            this.txDataB.logs[i].value = lendRecord[3];
+            this.txDataB.logs[i].from = "<" + this.txDataB.event[i].returnValues[0] + ">";
+            this.txDataB.logs[i].value = this.txDataB.event[i].returnValues[2];
             this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
             this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
             this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);
             this.txDataB.logs[i].time = String(new Date(this.txDataB.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataB.event.length) {
               this.txDataB.logs[i + 1] = {
-                debtor: '',
-                id: '',
+                from: '',
                 value: '',
                 txHash: '',
                 blockN: '',

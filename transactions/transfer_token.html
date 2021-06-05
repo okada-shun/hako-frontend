@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Transfer Credit</title>
+  <title>Transfer Token</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,21 +23,19 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="transferCredit">
-        <h2>transfer credit</h2>
-        <p>Transfer your credit to another member account<br>
-          (You can't transfer your credit to the account that is non-member
-           and can't transfer your credit to the account that has debt to Hako.)</p>
+      <div class="transaction" id="transfer">
+        <h2>transfer token</h2>
+        <p>Transfer your token to another account</p>
         to who? <input class="question" type="text" name="to" v-model="to"><br>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
-        <button class="button" @click="transferCreditCheck">check</button>
+        <button class="button" @click="transferCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
           <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
-          <button class="button" @click="transferCredit" v-show="ok && active">transfer credit</button>
+          <button class="button" @click="transfer" v-show="ok && active">transfer token</button>
         </div>
         <p v-cloak>{{txStatus}}</p>
-      </div>
+      </div> 
     </div> 
   </div>
   <footer>
@@ -61,15 +59,12 @@
       startApp();
     });
 
-    var transferCreditVM = new Vue({
-      el: '#transferCredit',
+    var transferVM = new Vue({
+      el: '#transfer',
       data: {
+        balanceOfUser: '',
         value: '',
         to: '',
-        memberOrNotOfTo: '',
-        memberOrNotOfUser: '',
-        creditToHakoOfUser: '',
-        debtToHakoOfTo: '',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,
@@ -81,7 +76,7 @@
         txStatus: ''
       },
       methods: {
-        transferCreditCheck: async function() {
+        transferCheck: async function() {
           if (this.active === true) {
             this.active = false;
             return;
@@ -116,7 +111,7 @@
             return;
           }
           try {
-            this.memberOrNotOfTo = await hako.methods.memberCheckOf(this.to).call();
+            await hako.methods.balanceOf(this.to).call();
           } catch (error) {
             this.noCheckSentence = "Please input an address exactly!";
             this.txData.to = this.to;
@@ -124,39 +119,29 @@
             this.active = true;
             return;
           }
-          this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
-          this.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
-          this.debtToHakoOfTo = await hako.methods.debtToHakoOf(this.to).call();
-          if (this.memberOrNotOfUser === '0') {
+          this.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+          if (Number(this.value) > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
-            "NO! You are not a member! Non-member account can't transfer credit!";
-          } else if (this.memberOrNotOfTo === '0') {
-            this.noCheckSentence = 
-            "NO! <" + this.to + "> is not a member account! You can't transfer your credit to non-member account!";
-          } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
-            this.noCheckSentence = 
-            "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
-          } else if (this.debtToHakoOfTo !== '0') {
-            this.noCheckSentence = 
-            "NO! <" + this.to + "> has debt to Hako! You can't tansfer your credit to the account that has debt to Hako!";
+            "NO! You have only " + this.balanceOfUser + " token! " + this.value + " is over!";
           } else {
-            this.okCheckSentence = "OK! You transfer " + this.value + " credit to <" + this.to + ">!";
+            this.okCheckSentence = "OK! You transfer " + this.value
+              + " token to <" + this.to + ">!";
             this.ok = true;
           }
           this.txData.to = this.to;
           this.txData.value = this.value;
           this.active = true;
         },
-        transferCredit: function() {
-          this.txStatus = "Transfering credit on the blockchain. This may take a while...";
-          return hako.methods.transferCredit(this.to, Number(this.value))
+        transfer: function() {
+          this.txStatus = "Transfering token on the blockchain. This may take a while...";
+          return hako.methods.transfer(this.to, Number(this.value))
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
-              transferCreditVM.txStatus = "";
+              transferVM.txStatus = "";
               alert('Transaction successed!');
             })
             .on("error", function (error) {
-              transferCreditVM.txStatus = "";
+              transferVM.txStatus = "";
               alert('Transaction errored!');
             });
         }

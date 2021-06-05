@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register Borrowing History</title>
+  <title>Withdraw Token History</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
-  <script src="../Hako_abi.js"></script>
-  <script src="../hakoAddress.js"></script>
+  <script src="../hako-address/Hako_abi.js"></script>
+  <script src="../hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -23,20 +23,17 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="regiterBorrowValueDurationLog">
-        <h2>register borrowing history</h2>
+      <div class="transaction" id="withdrawTokenLog">
+        <h2>withdraw token history</h2>
         <div class="history">
-          <p>You can watch the record when you registered borrow value and duration.</p>
+          <p>You can watch the record of token you withdrew from Hako.</p>
           <button class="button" @click="watchLog">watch</button><br>
           <p v-show="loading">Now searching history...</p>
           <div v-show="!loading">
             <div v-show="event.length > 0">
               <div class="log" v-for="log in logs" :key="log.id" v-show="active">
                 <ul>
-                  <li>You registered borrow value as {{log.value}} credit
-                    and borrow duration as {{log.durationData.days}} days {{log.durationData.hours}} hours 
-                    {{log.durationData.minutes}} minutes {{log.durationData.seconds}} seconds
-                    ( = {{log.duration}} seconds).</li>
+                  <li>You withdrew {{log.value}} token from Hako.</li>
                   <li>Transaction Hash: {{log.txHash}}</li>
                   <li>Block: {{log.blockN.blockNumber}}</li>
                   <li>Timestamp: {{log.time}}</li>
@@ -72,8 +69,8 @@
       startApp();
     });
 
-    var regiterBorrowValueDurationLogVM = new Vue({
-      el: '#regiterBorrowValueDurationLog',
+    var withdrawTokenLogVM = new Vue({
+      el: '#withdrawTokenLog',
       data: {
         event: '',
         loading: false,
@@ -81,19 +78,12 @@
         logs: {
           0: {
             value: '',
-            duration: '',
-            durationData: {
-              days: '',
-              hours: '',
-              minutes: '',
-              seconds: ''
-            },
             txHash: '',
             blockN: '',
             blockData: '',
             time: ''
           }
-        }  
+        }
       },
       methods: {
         watchLog: async function() {
@@ -106,7 +96,7 @@
             return;
           }
           this.loading = true;
-          this.event = await hako.getPastEvents("RegisterBorrowValueDuration", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.event = await hako.getPastEvents("WithdrawToken", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.event.length === 0) {
             this.active = true;
             this.loading = false;
@@ -114,8 +104,6 @@
           }
           for (let i = 0; i < this.event.length; i++) {
             this.logs[i].value = this.event[i].returnValues[1];
-            this.logs[i].duration = this.event[i].returnValues[2];
-            this.arrangeDuration(Number(this.logs[i].duration), i);
             this.logs[i].txHash = this.event[i].transactionHash;
             this.logs[i].blockN = await web3.eth.getTransaction(this.logs[i].txHash);
             this.logs[i].blockData = await web3.eth.getBlock(this.logs[i].blockN.blockNumber);
@@ -123,13 +111,6 @@
             if (i + 1 != this.event.length) {
               this.logs[i + 1] = {
                 value: '',
-                duration: '',
-                durationData: {
-                  days: '',
-                  hours: '',
-                  minutes: '',
-                  seconds: ''
-                },
                 txHash: '',
                 blockN: '',
                 blockData: '',
@@ -139,19 +120,7 @@
           }
           this.active = true;
           this.loading = false;
-        },
-        arrangeDuration: function(duration, i) {
-          let remainderA = duration % 86400;
-          let quotientA = duration - remainderA;
-          this.logs[i].durationData.days = quotientA / 86400;
-          let remainderB = remainderA % 3600;
-          let quotientB = remainderA - remainderB;
-          this.logs[i].durationData.hours = quotientB / 3600;
-          let remainderC = remainderB % 60;
-          let quotientC = remainderB - remainderC;
-          this.logs[i].durationData.minutes = quotientC / 60;
-          this.logs[i].durationData.seconds = remainderC;
-        },
+        }
       }
     });
   </script>
