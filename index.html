@@ -8,8 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
-  <script src="Hako_abi.js"></script>
-  <script src="hakoAddress.js"></script>
+  <script src="hako-address/Hako_abi.js"></script>
+  <script src="hako-address/Hako_address.js"></script>
 </head>
 <body>
   <header>
@@ -107,10 +107,10 @@
             <div class="transactionLink transfer">
               <div v-if="haveToken">
                 <li class="linkToTransaction">
-                  <a href="transactions/transfer.html">transfer token</a>
+                  <a href="transactions/transfer_token.html">transfer token</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/transfer.html">enter</a>
+                  <a href="transactions/transfer_token.html">enter</a>
                 </div>
               </div>
               <div v-else>
@@ -125,10 +125,10 @@
             <div class="transactionLink transferCredit">
               <div v-if="isMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/transferCredit.html">transfer credit</a>
+                  <a href="transactions/transfer_credit.html">transfer credit</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/transferCredit.html">enter</a>
+                  <a href="transactions/transfer_credit.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -151,10 +151,10 @@
             <div class="transactionLink joinHako">
               <div v-if="!isMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/joinHako.html">join Hako</a>
+                  <a href="transactions/join_hako.html">join Hako</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/joinHako.html">enter</a>
+                  <a href="transactions/join_hako.html">enter</a>
                 </div>
               </div>
               <div v-else>
@@ -169,10 +169,10 @@
             <div class="transactionLink leaveHako">
               <div v-if="isMember && haveNotDebtToHako && haveNotDebtToMember && haveNotCreditToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/leaveHako.html">leave Hako</a>
+                  <a href="transactions/leave_hako.html">leave Hako</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/leaveHako.html">enter</a>
+                  <a href="transactions/leave_hako.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -211,10 +211,10 @@
             <div class="transactionLink depositToken">
               <div v-if="isMember && haveToken">
                 <li class="linkToTransaction">
-                  <a href="transactions/depositToken.html">deposit token</a>
+                  <a href="transactions/deposit_token.html">deposit token</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/depositToken.html">enter</a>
+                  <a href="transactions/deposit_token.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -237,10 +237,10 @@
             <div class="transactionLink withdrawToken">
               <div v-if="isMember && haveCredit && haveNotDebtToHako && haveNotDebtToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/withdrawToken.html">withdraw token</a>
+                  <a href="transactions/withdraw_token.html">withdraw token</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/withdrawToken.html">enter</a>
+                  <a href="transactions/withdraw_token.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -279,10 +279,10 @@
             <div class="transactionLink registerBorrowValueDuration">
               <div v-if="isMember && haveNotDebtToMember && havePlusNetAssets">
                 <li class="linkToTransaction">
-                  <a href="transactions/registerBorrowValueDuration.html">register borrowing</a>
+                  <a href="transactions/register_borrowing.html">register borrowing</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/registerBorrowValueDuration.html">enter</a>
+                  <a href="transactions/register_borrowing.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -313,10 +313,10 @@
             <div class="transactionLink lendCredit">
               <div v-if="isMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/lendCredit.html">lend credit</a>
+                  <a href="transactions/lend_credit.html">lend credit</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/lendCredit.html">enter</a>
+                  <a href="transactions/lend_credit.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -339,10 +339,10 @@
             <div class="transactionLink collectDebtFrom">
               <div v-if="isMember && !haveNotCreditToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/collectDebtFrom.html">collect debt</a>
+                  <a href="transactions/collect_debt.html">collect debt</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/collectDebtFrom.html">enter</a>
+                  <a href="transactions/collect_debt.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -365,10 +365,10 @@
             <div class="transactionLink returnDebtTo">
               <div v-if="isMember && !haveNotDebtToMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/returnDebtTo.html">return debt</a>
+                  <a href="transactions/return_debt.html">return debt</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/returnDebtTo.html">enter</a>
+                  <a href="transactions/return_debt.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -399,10 +399,10 @@
             <div class="transactionLink creditCreationByMember">
               <div v-if="isMember && haveNotDebtToHako && havePlusNetAssets">
                 <li class="linkToTransaction">
-                  <a href="transactions/creditCreationByMember.html">credit creation</a>
+                  <a href="transactions/credit_creation.html">credit creation</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/creditCreationByMember.html">enter</a>
+                  <a href="transactions/credit_creation.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -433,10 +433,10 @@
             <div class="transactionLink arrangement">
               <div v-if="isMember && !haveNotDebtToHako && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/arrangement.html">arrangement debt</a>
+                  <a href="transactions/arrangement_debt.html">arrangement debt</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/arrangement.html">enter</a>
+                  <a href="transactions/arrangement_debt.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
@@ -473,98 +473,98 @@
           <ul>
             <div class="transactionLink transfer">
               <li class="linkToTransaction">
-                <a href="history/transfer_log.html">transfer token</a>
+                <a href="history/transfer_token_history.html">transfer token</a>
               </li><br>
               <div class="enter">
-                <a href="history/transfer_log.html">watch the history</a>
+                <a href="history/transfer_token_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink transferCredit">
               <li class="linkToTransaction">
-                <a href="history/transferCredit_log.html">transfer credit</a>
+                <a href="history/transfer_credit_history.html">transfer credit</a>
               </li><br>
               <div class="enter">
-                <a href="history/transferCredit_log.html">watch the history</a>
+                <a href="history/transfer_credit_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink joinHako">
               <li class="linkToTransaction">
-                <a href="history/joinHako_log.html">join Hako</a>
+                <a href="history/join_hako_history.html">join Hako</a>
               </li><br>
               <div class="enter">
-                <a href="history/joinHako_log.html">watch the history</a>
+                <a href="history/join_hako_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink leaveHako">
               <li class="linkToTransaction">
-                <a href="history/leaveHako_log.html">leave Hako</a>
+                <a href="history/leave_hako_history.html">leave Hako</a>
               </li><br>
               <div class="enter">
-                <a href="history/leaveHako_log.html">watch the history</a>
+                <a href="history/leave_hako_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink depositToken">
               <li class="linkToTransaction">
-                <a href="history/depositToken_log.html">deposit token</a>
+                <a href="history/deposit_token_history.html">deposit token</a>
               </li><br>
               <div class="enter">
-                <a href="history/depositToken_log.html">watch the history</a>
+                <a href="history/deposit_token_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink withdrawToken">
               <li class="linkToTransaction">
-                <a href="history/withdrawToken_log.html">withdraw token</a>
+                <a href="history/withdraw_token_history.html">withdraw token</a>
               </li><br>
               <div class="enter">
-                <a href="history/withdrawToken_log.html">watch the history</a>
+                <a href="history/withdraw_token_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink registerBorrowValueDuration">
               <li class="linkToTransaction">
-                <a href="history/registerBorrowValueDuration_log.html">register borrowing</a>
+                <a href="history/register_borrowing_history.html">register borrowing</a>
               </li><br>
               <div class="enter">
-                <a href="history/registerBorrowValueDuration_log.html">watch the history</a>
+                <a href="history/register_borrowing_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink lendCredit">
               <li class="linkToTransaction">
-                <a href="history/lendCredit_log.html">lend credit</a>
+                <a href="history/lend_credit_history.html">lend credit</a>
               </li><br>
               <div class="enter">
-                <a href="history/lendCredit_log.html">watch the history</a>
+                <a href="history/lend_credit_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink collectDebtFrom">
               <li class="linkToTransaction">
-                <a href="history/collectDebtFrom_log.html">collect debt</a>
+                <a href="history/collect_debt_history.html">collect debt</a>
               </li><br>
               <div class="enter">
-                <a href="history/collectDebtFrom_log.html">watch the history</a>
+                <a href="history/collect_debt_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink returnDebtTo">
               <li class="linkToTransaction">
-                <a href="history/returnDebtTo_log.html">return debt</a>
+                <a href="history/return_debt_history.html">return debt</a>
               </li><br>
               <div class="enter">
-                <a href="history/returnDebtTo_log.html">watch the history</a>
+                <a href="history/return_debt_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink creditCreationByMember">
               <li class="linkToTransaction">
-                <a href="history/creditCreationByMember_log.html">credit creation</a>
+                <a href="history/credit_creation_history.html">credit creation</a>
               </li><br>
               <div class="enter">
-                <a href="history/creditCreationByMember_log.html">watch the history</a>
+                <a href="history/credit_creation_history.html">watch the history</a>
               </div>
             </div>
             <div class="transactionLink arrangement">
               <li class="linkToTransaction">
-                <a href="history/arrangement_log.html">arrangement debt</a>
+                <a href="history/arrangement_debt_history.html">arrangement debt</a>
               </li><br>
               <div class="enter">
-                <a href="history/arrangement_log.html">watch the history</a>
+                <a href="history/arrangement_debt_history.html">watch the history</a>
               </div>
             </div>
           </ul>
@@ -574,6 +574,6 @@
   </div>
   <footer>
   </footer>
-  <script src="scripts/info_script.js"></script>
+  <script src="info_script.js"></script>
 </body>
 </html>
