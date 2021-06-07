@@ -657,7 +657,7 @@ var hakoABI = [
         "type": "uint256"
       },
       {
-        "name": "hakoName",
+        "name": "tokenName",
         "type": "string"
       },
       {
