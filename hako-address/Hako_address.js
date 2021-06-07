@@ -1,1 +1,2 @@
-var hakoAddress = "0x052931118E3C5956c36eAf419cF3647842147787";
+/* ropsten */
+var hakoAddress = "0x9308A6EfC2b88b18999366cF2E82C9bb42AF577A";
