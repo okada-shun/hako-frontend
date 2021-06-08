@@ -1,19 +1,22 @@
 body {
   margin: 0;
   background-image:
-	 linear-gradient(-90deg, chocolate 50%, blanchedalmond 50%);
-	background-size: 40px 40px;
+   linear-gradient(-90deg, chocolate 50%, blanchedalmond 50%);
+  background-size: 40px 40px;
 }
-
 header {
+  height: 206px;
+  margin: 30px auto;
+  width: 1050px;
+}
+.header-item {
   height: 200px;
   background-color: blanchedalmond;
-  margin: 30px auto;
+  margin: 0 auto;
   width: 1000px;
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
-
 .header-logo {
   font-family: 'Londrina Shadow', cursive;
   font-size: 80px;
@@ -21,23 +24,19 @@ header {
   padding-top: 20px;
   padding-bottom: 20px;
 }
-
 a {
   text-decoration: none;
   color: black;
 }
-
 a:hover {
   color: chocolate;
 }
-
 .introduction {
   text-align: center;
   display: block;
   margin: 0 auto;
   padding: 0 20px;
 }
-
 .container {
   margin-top: 20px;
   margin-left: auto;
@@ -45,18 +44,15 @@ a:hover {
   margin-bottom: 250px;
   width: 1050px;
 }
-
 .tab-pane ul {
   padding-bottom: 20px;
 }
-
 .tab {
   list-style: none;
   margin: 0 auto;
   display: inline-block;
   width: 1050px;
 }
-
 .tab-item {
   font-size: 20px;
   display: inline-block;
@@ -67,25 +63,20 @@ a:hover {
   border: solid 1px saddlebrown;
   border-radius: 10px;
 }
-
 .tab-item:hover {
   border: dashed 3px saddlebrown;
 }
-
 .tab-item.active {
   border: solid 3px saddlebrown;
 }
-
 li {
   list-style: none;
   font-size: 20px;
 }
-
 h1 {
   font-size: 40px;
   padding: 20px 40px;
 }
-
 .hakoInfo {
   background-color: blanchedalmond;
   margin-left: auto;
@@ -95,17 +86,14 @@ h1 {
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
-
 .info-content {
   margin-left: auto;
   margin-right: auto;
   width: 775px;
 }
-
 .hakoInfo li {
   margin: 10px auto;
 }
-
 .userInfo {
   background-color: blanchedalmond;
   margin-left: auto;
@@ -115,7 +103,6 @@ h1 {
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
-
 .infoData {
   text-align: center;
   padding: 10px;
@@ -126,7 +113,6 @@ h1 {
   border-radius: 10px;
   margin: 10px auto;
 }
-
 .infoAddress {
   text-align: center;
   padding: 10px;
@@ -137,25 +123,21 @@ h1 {
   border-radius: 10px;
   margin: 10px auto;
 }
-
 span {
   color: red;
 }
-
 .memberCheck {
+  width: 695px;
   text-align: center;
 }
-
 .supplement {
-  font-size: 18px;
   text-align: center;
   padding: 10px;
   height: 57px;
-  width: 300px;
+  width: 320px;
   display: inline-block;
   margin: 10px auto;
 }
-
 .transactions {
   background-color: blanchedalmond;
   margin-left: auto;
@@ -164,25 +146,21 @@ span {
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
-
 .enter {
   margin: 15px auto;
   display: inline-block;
   font-size: 18px;
 }
-
 .noDisplay {
   margin: 15px auto;
   display: inline-block;
   color: red;
   font-size: 18px;
 }
-
 .linkToTransaction {
   margin: 16px auto;
   display: inline-block;
 }
-
 .transactionLink {
   text-align: center;
   padding: 20px 10px;
@@ -193,11 +171,9 @@ span {
   border-radius: 10px;
   margin: 10px auto;
 }
-
 [v-cloak] {
   display: none;
 }
-
 button {
   background-color: chocolate;
   margin-right: 20px;
@@ -207,28 +183,22 @@ button {
   height:40px;
   border-radius: 5px;
 }
-
 button:hover {
   background-color: saddlebrown;
   color: white;
 }
-
 .transaction {
   padding: 30px 50px;
 }
-
 .transaction h2 {
   padding-bottom: 20px;
 }
-
 .transaction p {
   font-size: 18px;
 }
-
 .noCheckSentence {
   color: red;
 }
-
 .creditDebtInfo {
   width: 600px;
   border: solid 1px chocolate;
@@ -236,22 +206,18 @@ button:hover {
   background-color:navajowhite;
   margin: 20px auto;
 }
-
 .creditDebtInfo li {
   font-size: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
   margin: 10px;
 }
-
 .question {
   margin: 10px;
 }
-
 .duration {
   width: 55px;
 }
-
 .log {
   width: 850px;
   border: solid 1px chocolate;
@@ -259,19 +225,16 @@ button:hover {
   background-color:navajowhite;
   margin: 20px auto;
 }
-
 .log li {
   font-size: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
   margin: 5px 35px 5px 10px;
 }
-
 .history {
   padding-bottom: 30px;
   margin: 0 auto;
 }
-
 .noHistory {
   font-size: 18px;
   padding: 10px;
