@@ -1,4 +1,5 @@
 body {
+  list-style: none;
   margin: 0;
   background-image:
    linear-gradient(-90deg, chocolate 50%, blanchedalmond 50%);
@@ -6,14 +7,14 @@ body {
 }
 header {
   height: 206px;
-  margin: 30px auto;
   width: 1050px;
+  margin: 30px auto;
 }
 .header-item {
   height: 200px;
-  background-color: blanchedalmond;
-  margin: 0 auto;
   width: 1000px;
+  margin: 0 auto;
+  background-color: blanchedalmond;
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
@@ -21,8 +22,7 @@ header {
   font-family: 'Londrina Shadow', cursive;
   font-size: 80px;
   text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px 0;
 }
 a {
   text-decoration: none;
@@ -34,32 +34,28 @@ a:hover {
 .introduction {
   text-align: center;
   display: block;
-  margin: 0 auto;
   padding: 0 20px;
+  margin: 0 auto;
 }
 .container {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 250px;
   width: 1050px;
-}
-.tab-pane ul {
-  padding-bottom: 20px;
+  margin: 20px auto 250px auto;
 }
 .tab {
-  list-style: none;
-  margin: 0 auto;
   display: inline-block;
   width: 1050px;
+  margin: 0 auto;
+}
+.tab ul {
+  padding: 0 auto;
 }
 .tab-item {
   font-size: 20px;
   display: inline-block;
-  background-color:blanchedalmond;
-  padding: 10px;
-  width: 219px;
   text-align: center;
+  width: 219px;
+  padding: 10px;
+  background-color:blanchedalmond;
   border: solid 1px saddlebrown;
   border-radius: 10px;
 }
@@ -77,115 +73,112 @@ h1 {
   font-size: 40px;
   padding: 20px 40px;
 }
+.tab-pane ul {
+  padding-bottom: 20px;
+}
 .hakoInfo {
-  background-color: blanchedalmond;
-  margin-left: auto;
-  margin-right: auto;
   height: 600px;
   width: 1000px;
+  margin: 0 auto;
+  background-color: blanchedalmond;
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
 .info-content {
-  margin-left: auto;
-  margin-right: auto;
   width: 775px;
+  margin: 0 auto;
 }
 .hakoInfo li {
   margin: 10px auto;
 }
 .userInfo {
-  background-color: blanchedalmond;
-  margin-left: auto;
-  margin-right: auto;
   height: 1040px;
   width: 1000px;
+  margin: 0 auto;
+  background-color: blanchedalmond;
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
 .infoData {
   text-align: center;
-  padding: 10px;
+  display: inline-block;
   height: 57px;
   width: 320px;
-  display: inline-block;
+  padding: 10px;
+  margin: 10px auto;
   border: solid 2px chocolate;
   border-radius: 10px;
-  margin: 10px auto;
 }
 .infoAddress {
   text-align: center;
-  padding: 10px;
+  display: inline-block;
   height: 57px;
   width: 670px;
-  display: inline-block;
+  padding: 10px;
+  margin: 10px auto;
   border: solid 2px chocolate;
   border-radius: 10px;
-  margin: 10px auto;
 }
 span {
   color: red;
 }
 .memberCheck {
-  width: 695px;
   text-align: center;
+  width: 695px;
 }
 .supplement {
+  display: inline-block;
   text-align: center;
-  padding: 10px;
   height: 57px;
   width: 320px;
-  display: inline-block;
+  padding: 10px;
   margin: 10px auto;
 }
 .transactions {
-  background-color: blanchedalmond;
-  margin-left: auto;
-  margin-right: auto;
   width: 1000px;
+  margin: 0 auto;
+  background-color: blanchedalmond;
   border: solid 3px saddlebrown;
   border-radius: 20px;
 }
 .enter {
-  margin: 15px auto;
-  display: inline-block;
   font-size: 18px;
+  display: inline-block;
+  margin: 15px auto;
 }
 .noDisplay {
-  margin: 15px auto;
-  display: inline-block;
-  color: red;
   font-size: 18px;
+  color: red;
+  display: inline-block;
+  margin: 15px auto;
 }
 .linkToTransaction {
-  margin: 16px auto;
   display: inline-block;
+  margin: 16px auto;
 }
 .transactionLink {
+  display: inline-block;
   text-align: center;
-  padding: 20px 10px;
   height: 120px;
   width: 320px;
-  display: inline-block;
+  padding: 20px 10px;
+  margin: 10px auto;
   border: solid 2px chocolate;
   border-radius: 10px;
-  margin: 10px auto;
 }
 [v-cloak] {
   display: none;
 }
 button {
-  background-color: chocolate;
-  margin-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100px;
   height:40px;
+  width: 100px;
+  margin: 20px 20px 20px 0;
+  background-color: chocolate;
   border-radius: 5px;
 }
 button:hover {
-  background-color: saddlebrown;
   color: white;
+  background-color: saddlebrown;
 }
 .transaction {
   padding: 30px 50px;
@@ -201,34 +194,32 @@ button:hover {
 }
 .creditDebtInfo {
   width: 600px;
+  margin: 20px auto;
+  background-color:navajowhite;
   border: solid 1px chocolate;
   border-radius: 10px;
-  background-color:navajowhite;
-  margin: 20px auto;
 }
 .creditDebtInfo li {
   font-size: 15px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0;
   margin: 10px;
 }
 .question {
   margin: 10px;
 }
 .duration {
-  width: 55px;
+  width: 75px;
 }
 .log {
   width: 850px;
+  margin: 20px auto;
+  background-color:navajowhite;
   border: solid 1px chocolate;
   border-radius: 10px;
-  background-color:navajowhite;
-  margin: 20px auto;
 }
 .log li {
   font-size: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px 0;
   margin: 5px 35px 5px 10px;
 }
 .history {
