@@ -1,17 +1,16 @@
 body {
   list-style: none;
+  font-size: 18px;
   margin: 0;
   background-image:
    linear-gradient(-90deg, chocolate 50%, blanchedalmond 50%);
   background-size: 40px 40px;
 }
 header {
-  height: 206px;
   width: 1050px;
   margin: 30px auto;
 }
 .header-item {
-  height: 200px;
   width: 1000px;
   margin: 0 auto;
   background-color: blanchedalmond;
@@ -34,7 +33,7 @@ a:hover {
 .introduction {
   text-align: center;
   display: block;
-  padding: 0 20px;
+  padding: 0 20px 20px 20px;
   margin: 0 auto;
 }
 .container {
@@ -137,12 +136,10 @@ span {
   border-radius: 20px;
 }
 .enter {
-  font-size: 18px;
   display: inline-block;
   margin: 15px auto;
 }
 .noDisplay {
-  font-size: 18px;
   color: red;
   display: inline-block;
   margin: 15px auto;
@@ -179,9 +176,6 @@ button:hover {
 }
 .transaction h2 {
   padding-bottom: 20px;
-}
-.transaction p {
-  font-size: 18px;
 }
 .noCheckSentence {
   color: red;
@@ -226,6 +220,5 @@ button:hover {
   margin: 0 auto;
 }
 .noHistory {
-  font-size: 18px;
   padding: 10px;
 }
