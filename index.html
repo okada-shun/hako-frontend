@@ -10,24 +10,29 @@
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
   <script src="hako-address/Hako_abi.js"></script>
   <script src="hako-address/Hako_address.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
   <header>
-    <div class="header-logo">
-      <a href="index.html">Hako Finance</a>
+    <div class="header-item">
+      <div class="header-logo">
+        <a href="index.html">Hako Finance</a>
+      </div>
+      <p class="introduction">
+        Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
+        Welcome to next-generation DeFi!
+      </p>
     </div>
-    <p class="introduction">
-      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
-      Welcome to next-generation DeFi!
-    </p>
   </header>
   <div class="container" id="app">
     <div class="tab">
-      <ul>
-        <li class="tab-item" v-for="(item, index) in items" :key="index" :class="{active: active === index}" @click="activate(index)" v-cloak>
-          {{ item }}
-        </li>
-      </ul>
+      <div class="tab-four">
+        <ul>
+          <li class="tab-item" v-for="(item, index) in items" :key="index" :class="{active: active === index}" @click="activate(index)" v-cloak>
+            {{ item }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="tab-content">
       <div class="tab-pane hakoInfo" v-show="active === 0">
@@ -92,6 +97,7 @@
             <li class="infoData" v-cloak>lending<br><span>{{userData.creditToMemberOfUser}}</span></li>
             <li class="infoData" v-cloak>borrowing<br><span>{{userData.debtToMemberOfUser}}</span></li>
             <li class="infoData" v-cloak>net assets<br><span>{{userData.netAssetsOfUser}}</span></li>
+            <li class="supplement">* net assets = balance + credit<br> - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>

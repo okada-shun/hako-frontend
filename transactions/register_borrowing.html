@@ -10,16 +10,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
   <script src="../hako-address/Hako_abi.js"></script>
   <script src="../hako-address/Hako_address.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
   <header>
-    <div class="header-logo">
-      <a href="../index.html">Hako Finance</a>
+    <div class="header-item">
+      <div class="header-logo">
+        <a href="../index.html">Hako Finance</a>
+      </div>
+      <p class="introduction">
+        Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
+        Welcome to next-generation DeFi!
+      </p>
     </div>
-    <p class="introduction">
-      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
-      Welcome to next-generation DeFi!
-    </p>
   </header>
   <div class="container">
     <div class="transactions">
@@ -30,7 +33,7 @@
         (The upper limit value you can register is {{upperLimit}}.)<br>
         (You can't register more value than {{netAssetsOfUser}}, your net assets.)</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
-        how long? 
+        how long? <br>
         <input class="question duration" type="text" name="duration" v-model="days">days
         <input class="question duration" type="text" name="duration" v-model="hours">hours
         <input class="question duration" type="text" name="duration" v-model="minutes">minutes
