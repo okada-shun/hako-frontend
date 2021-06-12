@@ -10,59 +10,101 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
   <script src="hako-address/Hako_abi.js"></script>
   <script src="hako-address/Hako_address.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    .ownerOnly {
+    .tab ul {
+      padding: 0 50px;
+    }
+    .tab-item-owner {
+      font-size: 30px;
+      display: inline-block;
+      text-align: center;
+      width: 898px;
+      padding: 10px;
+      margin: 0 auto;
+      background-color:blanchedalmond;
+      border: solid 3px saddlebrown;
+      border-radius: 10px;
+    }
+    @media(max-width: 1023px) {
+      .tab-item-owner {
+        width: 474px;
+      }
+    }
+    @media(max-width: 640px) {
+      .tab ul {
+        padding: 0 21px;
+      }
+      .tab-item-owner {
+        font-size: 16px;
+        width: 302px;
+      }
+    }
+    .hakoInfo {
+      margin-bottom: 30px;
+    }
+    .transactions {
+      margin-bottom: 30px;
+    }
+    .transactions h1 {
+      margin-bottom: 0;
+    }
+    @media(max-width: 640px) {
+      .transactions h2 {
+        font-size: 20px;
+      }
+    }
+    .ownerOnlyInfo {
+      width: 1000px;
+      margin: 0 auto;
+      background-color: blanchedalmond;
+      border: solid 3px saddlebrown;
+      border-radius: 20px;
+    }
+    @media(max-width: 1023px) {
+      .ownerOnlyInfo {
+        width: 80%;
+      }
+    }
+    @media(max-width: 640px) {
+      .ownerOnlyInfo {
+        width: 370px;
+      }
+    }
+    .ownerOnlyInfo p {
       font-size: 20px;
       color: red;
       text-align: center;
       margin-bottom: 50px;
     }
-    .tab-owner {
-      font-size: 30px;
-      display: inline-block;
-      background-color:blanchedalmond;
-      padding: 10px;
-      width: 950px;
-      text-align: center;
-      border: solid 3px saddlebrown;
-      border-radius: 10px;
-      margin: 0 auto;
-    }
-    .hakoInfo {
-      margin-bottom: 30px;
-      height: 800px;
-    }
-    .transactions {
-      margin-bottom: 30px;
-    }
-    .ownerOnlyInfo {
-      background-color: blanchedalmond;
-      margin-left: auto;
-      margin-right: auto;
-      width: 1000px;
-      border: solid 3px saddlebrown;
-      border-radius: 20px;
+    @media(max-width: 640px) {
+      .ownerOnlyInfo p {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="header-logo">
-      <a href="index.html">Hako Finance</a>
+    <div class="header-item">
+      <div class="header-logo">
+        <a href="index.html">Hako Finance</a>
+      </div>
+      <p class="introduction">
+        Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
+        Welcome to next-generation DeFi!
+      </p>
     </div>
-    <p class="introduction">
-      Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br> 
-      Welcome to next-generation DeFi!
-    </p>
   </header>
-
   <div class="container" id="owner">
     <div class="tab">
-      <ul>
-        <li class="tab-owner">
-          Owner Only
-        </li>
-      </ul>
+      <div class="tab-four">
+        <ul>
+          <li class="tab-item-owner">
+            Owner Only
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="tab-content">
       <div class="tab-pane hakoInfo" v-show="isHakoOwner">       
@@ -151,7 +193,7 @@
       </div>
       <div class="tab-pane ownerOnlyInfo" v-show="!isHakoOwner">       
         <h1>Owner Only</h1>
-        <p class="ownerOnly">This page is hako owner only!</p>
+        <p>This page is hako owner only!</p>
       </div>
     </div>
   </div>
