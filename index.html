@@ -74,7 +74,7 @@
             <li class="infoData" v-cloak>lending<br>{{userData.creditToMemberOfUser}}</li>
             <li class="infoData" v-cloak>borrowing<br>{{userData.debtToMemberOfUser}}</li>
             <li class="infoData" v-cloak>net assets<br>{{userData.netAssetsOfUser}}</li>
-            <li class="supplement">* net assets = balance + credit<br> - debt + lending - borrowing</li>
+            <li class="supplement">* net assets = balance + credit - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>
@@ -97,7 +97,7 @@
             <li class="infoData" v-cloak>lending<br><span>{{userData.creditToMemberOfUser}}</span></li>
             <li class="infoData" v-cloak>borrowing<br><span>{{userData.debtToMemberOfUser}}</span></li>
             <li class="infoData" v-cloak>net assets<br><span>{{userData.netAssetsOfUser}}</span></li>
-            <li class="supplement">* net assets = balance + credit<br> - debt + lending - borrowing</li>
+            <li class="supplement">* net assets = balance + credit - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>

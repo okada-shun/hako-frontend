@@ -5,16 +5,11 @@ body {
   background-image:
    linear-gradient(-90deg, chocolate 50%, blanchedalmond 50%);
   background-size: 40px 40px;
-}
-@media(max-width: 1023px) {
-  body {
-    overflow-wrap: break-word;
-  }
+  overflow-wrap: break-word;
 }
 @media(max-width: 640px) {
   body {
     font-size: 16px;
-    overflow-wrap: break-word;
   }
 }
 header {
@@ -33,16 +28,20 @@ header {
     width: 100%;
   }
   .header-item {
-    width: 80%;
+    width: 90%;
   }
 }
 @media(max-width: 640px) {
   header {
-    width: 100%;
     margin: 30px auto 20px auto;
   }
+}
+@media(max-width: 480px) {
+  header {
+    margin: 0 auto 20px auto;
+  }
   .header-item {
-    width: 370px;
+    width: 98%;
   }
 }
 .header-logo {
@@ -54,6 +53,11 @@ header {
 @media(max-width: 640px) {
   .header-logo {
     font-size: 68px;
+  }
+}
+@media(max-width: 320px) {
+  .header-logo {
+    font-size: 58px;
   }
 }
 a {
@@ -79,15 +83,13 @@ a:hover {
     margin: 0 auto 250px auto;
   }
 }
-@media(max-width: 640px) {
-  .container {
-    width: 100%;
-    margin: 0 auto 250px auto;
-  }
-}
 .tab {
   display: inline-block;
   width: 1024px;
+  margin: 0 auto;
+}
+.tab-four {
+  width: 972px;
   margin: 0 auto;
 }
 @media(max-width: 1023px) {
@@ -95,21 +97,21 @@ a:hover {
     width: 100%;
   }
   .tab-four {
-    width: 600px;
-    margin: 0 auto;
+    width: 510px;
   }
 }
 @media(max-width: 640px) {
-  .tab {
-    width: 100%;
-  }
   .tab-four {
-    width: 370px;
-    margin: 0 auto;
+    width: 320px;
+  }
+}
+@media(max-width: 320px) {
+  .tab-four {
+    width: 200px;
   }
 }
 .tab ul {
-  padding: 0 26px;
+  padding: 0;
 }
 .tab-item {
   font-size: 20px;
@@ -122,22 +124,21 @@ a:hover {
   border-radius: 10px;
 }
 @media(max-width: 1023px) {
-  .tab ul {
-    padding: 0 45px;
-  }
   .tab-item {
     margin: 5px;
   }
 }
 @media(max-width: 640px) {
-  .tab ul {
-    padding: 0 21px;
-  }
   .tab-item {
     font-size: 16px;
     width: 140px;
-    padding: 7px;
+    padding: 5px;
     margin: 3px;
+  }
+}
+@media(max-width: 320px) {
+  .tab-item {
+    width: 178px;
   }
 }
 .tab-item:hover {
@@ -179,12 +180,12 @@ h1 {
 }
 @media(max-width: 1023px) {
   .hakoInfo {
-    width: 80%;
+    width: 90%;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .hakoInfo {
-    width: 370px;
+    width: 98%;
   }
 }
 .info-content {
@@ -197,7 +198,7 @@ h1 {
 }
 @media(max-width: 1023px) {
   .info-content {
-    width: 80%;
+    width: 90%;
   }
   .info-content ul {
     text-align: center;
@@ -205,13 +206,9 @@ h1 {
     margin-bottom: 40px;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .info-content {
-    width: 370px;
-  }
-  .info-content ul {
-    padding: 0px 20px;
-    margin-bottom: 40px;
+    width: 98%;
   }
 }
 .userInfo {
@@ -223,12 +220,12 @@ h1 {
 }
 @media(max-width: 1023px) {
   .userInfo {
-    width: 80%;
+    width: 90%;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .userInfo {
-    width: 370px;
+    width: 98%;
   }
 }
 .infoData {
@@ -243,13 +240,12 @@ h1 {
 }
 @media(max-width: 1023px) {
   .infoData {
-    width: 93%;
+    width: 90%;
   }
 }
 @media(max-width: 640px) {
   .infoData {
     font-size: 16px;
-    width: 93%;
   }
 }
 .infoAddress {
@@ -264,13 +260,12 @@ h1 {
 }
 @media(max-width: 1023px) {
   .infoAddress {
-    width: 93%;
+    width: 90%;
   }
 }
 @media(max-width: 640px) {
   .infoAddress {
     font-size: 16px;
-    width: 93%;
   }
 }
 span {
@@ -289,7 +284,6 @@ span {
 @media(max-width: 640px) {
   .memberCheck {
     font-size: 16px;
-    width: 100%;
   }
 }
 .supplement {
@@ -301,13 +295,12 @@ span {
 }
 @media(max-width: 1023px) {
   .supplement {
-    width: 93%;
+    width: 90%;
   }
 }
 @media(max-width: 640px) {
   .supplement {
     font-size: 14px;
-    width: 93%;
     padding: 5px 10px;
   }
 }
@@ -320,12 +313,12 @@ span {
 }
 @media(max-width: 1023px) {
   .transactions {
-    width: 80%;
+    width: 90%;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .transactions {
-    width: 370px;
+    width: 98%;
   }
 }
 .transactionLink {
@@ -339,13 +332,13 @@ span {
 }
 @media(max-width: 1023px) {
   .transactionLink {
-    width: 93%;
+    width: 480px;
     padding: 10px;
   }
 }
 @media(max-width: 640px) {
   .transactionLink {
-    width: 93%;
+    width: 90%;
     padding: 10px;
   }
 }
@@ -354,11 +347,6 @@ span {
   margin: 15px auto;
 }
 @media(max-width: 1023px) {
-  .linkToTransaction {
-    margin: 5px auto;
-  }
-}
-@media(max-width: 640px) {
   .linkToTransaction {
     margin: 5px auto;
   }
@@ -372,22 +360,12 @@ span {
     margin: 5px auto;
   }
 }
-@media(max-width: 640px) {
-  .enter {
-    margin: 5px auto;
-  }
-}
 .noDisplay {
   color: red;
   display: inline-block;
   margin: 15px auto;
 }
 @media(max-width: 1023px) {
-  .noDisplay {
-    margin: 5px auto;  
-  }
-}
-@media(max-width: 640px) {
   .noDisplay {
     margin: 5px auto;  
   }
@@ -414,9 +392,9 @@ button:hover {
     padding: 20px 30px;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .transaction {
-    padding: 20px 30px;
+    padding: 10px;
   }
 }
 .transaction h2 {
@@ -449,26 +427,13 @@ button:hover {
     margin: 10px 0;
   }
 }
-@media(max-width: 640px) {
+@media(max-width: 480px) {
   .creditDebtInfo {
-    width: 87%;
-    padding: 0 15px;
-  }
-  .creditDebtInfo li {
-    font-size: 15px;
-    padding: 0;
-    margin: 10px 0;
+    width: 92%;
+    padding: 0 10px;
   }
 }
 @media(max-width: 1023px) {
-  #collectDebtFrom p {
-    margin: 10px 0;
-  }
-  #returnDebtTo p {
-    margin: 10px 0;
-  }
-}
-@media(max-width: 640px) {
   #collectDebtFrom p {
     margin: 10px 0;
   }
@@ -502,11 +467,6 @@ button:hover {
     margin: 10px 0;
   }
 }
-@media(max-width: 640px) {
-  .history p {
-    margin: 10px 0;
-  }
-}
 .log {
   width: 850px;
   margin: 20px auto;
@@ -523,19 +483,6 @@ button:hover {
   margin: 10px 10px;
 }
 @media(max-width: 1023px) {
-  .log {
-    width: 97%;
-  }
-  .log ul {
-    padding: 0 15px;
-  }
-  .log li {
-    font-size: 15px;
-    padding: 0;
-    margin: 10px 0;
-  }
-}
-@media(max-width: 640px) {
   .log {
     width: 97%;
   }
