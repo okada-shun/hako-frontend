@@ -13,11 +13,11 @@ body {
   }
 }
 header {
-  width: 1024px;
+  width: 1000px;
   margin: 30px auto;
 }
 .header-item {
-  width: 1000px;
+  width: 960px;
   margin: 0 auto;
   background-color: blanchedalmond;
   border: solid 3px saddlebrown;
@@ -74,22 +74,22 @@ a:hover {
   margin: 0 auto;
 }
 .container {
-  width: 1024px;
-  margin: 20px auto 250px auto;
+  width: 1000px;
+  margin: 20px auto 150px auto;
 }
 @media(max-width: 1023px) {
   .container {
     width: 100%;
-    margin: 0 auto 250px auto;
+    margin: 0 auto 150px auto;
   }
 }
 .tab {
   display: inline-block;
-  width: 1024px;
+  width: 1000px;
   margin: 0 auto;
 }
 .tab-four {
-  width: 972px;
+  width: 936px;
   margin: 0 auto;
 }
 @media(max-width: 1023px) {
@@ -97,7 +97,7 @@ a:hover {
     width: 100%;
   }
   .tab-four {
-    width: 510px;
+    width: 492px;
   }
 }
 @media(max-width: 640px) {
@@ -117,7 +117,7 @@ a:hover {
   font-size: 20px;
   display: inline-block;
   text-align: center;
-  width: 219px;
+  width: 210px;
   padding: 10px;
   background-color: blanchedalmond;
   border: solid 1px saddlebrown;
@@ -172,7 +172,7 @@ h1 {
   }
 }
 .hakoInfo {
-  width: 1000px;
+  width: 960px;
   margin: 0 auto;
   background-color: blanchedalmond;
   border: solid 3px saddlebrown;
@@ -212,7 +212,7 @@ h1 {
   }
 }
 .userInfo {
-  width: 1000px;
+  width: 960px;
   margin: 0 auto;
   background-color: blanchedalmond;
   border: solid 3px saddlebrown;
@@ -305,7 +305,7 @@ span {
   }
 }
 .transactions {
-  width: 1000px;
+  width: 960px;
   margin: 0 auto;
   background-color: blanchedalmond;
   border: solid 3px saddlebrown;
@@ -369,6 +369,30 @@ span {
   .noDisplay {
     margin: 5px auto;  
   }
+}
+footer {
+  width: 100%;
+  background-color: saddlebrown;
+}
+.footer-item {
+  width: 960px;
+  padding: 50px 0 30px 0;
+  margin: 0 auto;
+}
+@media(max-width: 1023px) {
+  .footer-item {
+    width: 90%;
+  }
+}
+footer a:hover {
+  color: blanchedalmond;
+}
+.footer-link {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.footer-icon {
+  margin: 0 10px;
 }
 [v-cloak] {
   display: none;
