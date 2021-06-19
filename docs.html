@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Docs</title>
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="icon" href="hako_icon.png">
+  <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.9/web3.min.js"></script>
+  <script src="hako-address/Hako_abi.js"></script>
+  <script src="hako-address/Hako_address.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  <style>
+    h1 {
+      margin-bottom: 0;
+    }
+    @media(max-width: 640px) {
+      h2 {
+        font-size: 22px;
+      }
+    }
+    h3 {
+      font-size: 22px;
+    }
+    @media(max-width: 640px) {
+      h3 {
+        font-size: 18px;
+      }
+    }
+    .transaction a {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-item">
+      <div class="header-logo">
+        <a href="index.html">Hako Finance</a>
+      </div>
+      <p class="introduction">
+        Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
+        Welcome to next-generation DeFi!
+      </p>
+    </div>
+  </header>
+  <div class="container">
+    <div class="transactions">
+      <h1>Hako Finance Docs</h1>
+      <div class="transaction">
+        <h2>Abstract</h2>
+        <p>
+          Welcome to Hako Finance!<br>
+          Hako Finance is a DeFi application.
+          This app makes it possible for user to transfer, get, lend, borrow and create valuable token.
+          <br><br>
+          Hako Finance application has three components, Hako, hako token and hako member.<br>
+          Hako is a smart contract deployed to ethereum network.
+          Hako token, or token, is a token used in this app.
+          Hako member, or member, is an account to join Hako Finance system.
+          You can turn your account into hako member account in "join Hako" transaction.
+          By using member account, you can do various transactions.
+          <br><br>
+          Please see <a href="https://github.com/okada-shun/hako-finance#readme" target="_blank">GitHub docs</a> for more details.
+        </p>
+      </div>
+      <div id="hakoInfo" class="transaction">
+        <h2>Hako Information</h2>
+        <p>
+          In the following, I write items' descriptions in Hako Information.
+        </p>
+        <div class="document">
+          <h3 id="hako-address">Hako's address</h3>
+          <p>
+            This is the smart contract's address deployed to ethereum network.
+            This contract is called "Hako" in this app and this contract's address is Hako's address.
+          </p>
+          <h3 id="hako-balance">Hako's balance of token</h3>
+          <p>
+            This is balance of hako token owned by hako contract.
+            If hako member deposits his token to Hako, the token value is added to this hako's balance.
+          </p>
+          <h3 id="total-supply">Total supply of token</h3>
+          <p>
+            This is the amount of total supply of hako token.
+            It is equal to the sum of hako's balance of token and total balances of token owned by all accounts.
+          </p>
+          <h3 id="hako-credit">Hako's credit to Members</h3>
+          <p>
+            This is the value of hako contract's credit to hako members.
+            It is equal to the total debts of all member accounts. About member's debt, please see <a href="#debt">here</a>.
+          </p>
+          <h3 id="hako-debt">Hako's debt to Members</h3>
+          <p>
+            This is the value of hako contract's debt to hako members.
+            It is equal to the total credits of all member accounts. About member's credit, please see <a href="#credit">here</a>.
+          </p>
+          <h3 id="member-count">Member count</h3>
+          <p>
+            This is the number of all hako members' accounts.
+          </p>
+          <h3 id="upper-limit">Upper limit</h3>
+          <p>
+            This is the upper limit of credit value that hako member can borrow and create.
+            Only hako owner can change it.
+          </p>
+        </div>
+      </div>
+      <div id="userInfo" class="transaction">
+        <h2>User Information</h2>
+        <p>
+          In the following, I write items' descriptions in User Information.
+        </p>
+        <div class="document">
+          <h3 id="your-address">Your address</h3>
+          <p>
+            This is your own account's address.
+          </p>
+          <h3 id="balance-token">balance of token</h3>
+          <p>
+            This is balance of hako token owned by your account.
+            You can transfer your token to other account in "transfer token" transaction.
+          </p>
+          <h3 id="credit">credit</h3>
+          <p>
+            This is the value of your credit to Hako.
+            You can get it by depositing your token to Hako in "join Hako" or "deposit token" transaction.
+            You can transfer your credit to other member account in "transfer credit" transaction
+            and you can lend it in "lend credit" transaction.
+            You can even create credit in return for owing equivalent debt in "credit creation" transaction.
+          </p>
+          <h3 id="debt">debt</h3>
+          <p>
+            This is the value of your debt to Hako.
+            You come to owe it if you can't return your debt to creditor member or if you create credit in "credit creation" transaction.
+            If you owe debt, you become unable to withdraw your token from Hako, unable to borrow credit, unable to create credit
+            and unable to get credit (in "withdraw token", "lend credit", "credit creation", "transfer credit" transaction).
+            You can reduce your debt in return for reducing equivalent credit in "arrangement debt" transaction.
+          </p>
+          <h3 id="lending">lending</h3>
+          <p>
+            This is the value of your credit to other member account.
+            You come to get it by lending your credit to other member in "lend credit" transaction.
+          </p>
+          <h3 id="borrowing">borrowing</h3>
+          <p>
+            This is the value of your debt to other member account.
+            You come to owe it by borrowing credit from other member in "lend credit" transaction.
+          </p>
+          <h3 id="net-assets">net assets</h3>
+          <p>
+            This is the value of your net assets. It is equal to (balance of token + credit - debt + lending - borrowing).
+            You can borrow and create credit within this net assets and within the upper limit.
+          </p>
+          <h3 id="borrow-value">borrow value</h3>
+          <p>
+            This is the maximum value of credit that you can borrow from other member.
+            You can register this value in "register borrowing" transaction.
+          </p>
+          <h3 id="borrow-duration">borrow duration</h3>
+          <p>
+            This is the minimum duration of lending that you can borrow credit from other member.
+            You can register this duration in "register borrowing" transaction.
+          </p>
+        </div>
+      </div>
+      <div id="transaction" class="transaction">
+        <h2>Transactions</h2>
+        <p>
+          In the following, I write items' descriptions in Transactions.
+        </p>
+        <div class="document">
+          <h3 id="transfer-token">transfer token</h3>
+          <p>
+            This is the transaction that you transfer your token to other account.
+          </p>
+          <h3 id="transfer-credit">transfer credit</h3>
+          <p>
+            This is the transaction that you transfer your credit to other member account.<br>
+            (You can't transfer it to non-member account and to the account that has debt to Hako.)
+          </p>
+          <h3 id="join-hako">join Hako</h3>
+          <p>
+            This is the transaction that you join Hako by depositing some token to Hako. By joining Hako, you can become hako member.<br>
+            (If you are already hako member, you can't join twice.)
+          </p>
+          <h3 id="leave-hako">leave Hako</h3>
+          <p>
+            This is the transaction that you leave Hako.<br>
+            (If you have debt, you are lending your credit or you are borrowing credit, you can't leave.)
+          </p>
+          <h3 id="deposit-token">deposit token</h3>
+          <p>
+            This is the transaction that you deposit your token to Hako.
+            By deposting, you lose your token but you get equivalent credit.
+            In other words, you translate your token into credit.
+          </p>
+          <h3 id="withdraw-token">withdraw token</h3>
+          <p>
+            This is the transaction that you withdraw your token from Hako.
+            By withdrawing, you lose your credit but you get equivalent token.
+            In other words, you translate your credit into token.
+            This is the opposite of deposit token.<br>
+            (If you have debt or you are borrowing credit, you can't withdraw.)
+          </p>
+          <h3 id="register-borrowing">register borrowing</h3>
+          <p>
+            This is the transaction that you register borrow value and borrow duration.
+            When you borrow credit, the lender can lend less than the value of credit and
+            the lender can lend credit for more than the duration.<br>
+            (If you are borrowing credit, you can't change these value and duration.)
+          </p>
+          <h3 id="lend-credit">lend credit</h3>
+          <p>
+            This is the transaction that you lend your credit to other member account.
+            The maximum value of credit that you can lend is the borrow value of borrower member
+            and the minimum duration of lending that you can lend is the borrow duration of borrower member.<br>
+            (You can't lend your credit to the account that has debt to Hako.)
+          </p>
+          <h3 id="collect-debt">collect debt</h3>
+          <p>
+            This is the transaction that you, the creditor, collect debt from the debtor member.<br>
+            (You can't collect if the duration is yet to be passed.)
+          </p>
+          <h3 id="return-debt">return debt</h3>
+          <p>
+            This is the transaction that you, the debtor, return debt to the creditor memebr.
+          </p>
+          <h3 id="credit-creation">credit creation</h3>
+          <p>
+            This is the transaction that you create credit by owing equivalent debt to Hako.
+            By doing this, you can get credit but you owe equivalent debt to Hako.<br>
+            (If you have debt to Hako, you can't do credit creation.)
+          </p>
+          <h3 id="arrangement-debt">arrangement debt</h3>
+          <p>
+            This is the transaction that you reduce your debt to Hako by reducing your credit.
+            By doing this, you can reduce your debt to Hako but you reduce your equivalent credit.
+            This is the opposite of credit creation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-item">
+      <div class="footer-link">
+        <a href="https://twitter.com/hakofinance" target="_blank" class="footer-icon">
+          <i class="fab fa-twitter fa-fw fa-lg"></i>
+        </a>
+        <a href="https://github.com/okada-shun/hako-finance" target="_blank" class="footer-icon">
+          <i class="fab fa-github fa-fw fa-lg"></i>
+        </a>
+      </div>
+      <small>© 2021 hako finance.</small>
+    </div>
+  </footer>
+</body>
+</html>
