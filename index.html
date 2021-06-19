@@ -40,20 +40,40 @@
         <h1>Hako Information</h1>
         <div class="info-content" v-show="!isNotMember">
           <ul>
-            <li class="infoAddress" v-cloak>Hako's address<br>{{hakoData.hakoAddress}}</li>
-            <li class="infoData" v-cloak>Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
-            <li class="infoData" v-cloak>Total supply of token<br>{{hakoData.totalSupply}}</li>
-            <li class="infoData" v-cloak>Hako's credit to Members<br>{{hakoData.creditOfHako}}</li>
-            <li class="infoData" v-cloak>Hako's debt to Members<br>{{hakoData.debtOfHako}}</li>
-            <li class="infoData" v-cloak>Member count<br>{{hakoData.memberCount}}</li>
-            <li class="infoData" v-cloak>Upper limit<br>{{hakoData.upperLimit}}</li>
+            <li class="infoAddress" v-cloak>
+              <a href="docs.html#hako-address" target="_blank">Hako's address</a><br>{{hakoData.hakoAddress}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#hako-balance" target="_blank">Hako's balance of token</a><br>{{hakoData.balanceOfHako}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#total-supply" target="_blank">Total supply of token</a><br>{{hakoData.totalSupply}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#hako-credit" target="_blank">Hako's credit to Members</a><br>{{hakoData.creditOfHako}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#hako-debt" target="_blank">Hako's debt to Members</a><br>{{hakoData.debtOfHako}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#member-count" target="_blank">Member count</a><br>{{hakoData.memberCount}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#upper-limit" target="_blank">Upper limit</a><br>{{hakoData.upperLimit}}
+            </li>
           </ul>
         </div>
         <div class="info-content" v-show="isNotMember">
           <ul>
-            <li class="infoAddress" v-cloak>Hako's address<br>{{hakoData.hakoAddress}}</li>
-            <li class="infoData" v-cloak>Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
-            <li class="infoData" v-cloak>Total supply of token<br>{{hakoData.totalSupply}}</li>
+            <li class="infoAddress" v-cloak>
+              <a href="docs.html#hako-address" target="_blank">Hako's address</a><br>{{hakoData.hakoAddress}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#hako-balance" target="_blank">Hako's balance of token</a><br>{{hakoData.balanceOfHako}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#total-supply" target="_blank">Total supply of token</a><br>{{hakoData.totalSupply}}
+            </li>
             <li class="infoData" v-cloak>Hako's credit to Members<br><span>{{hakoData.creditOfHako}}</span></li>
             <li class="infoData" v-cloak>Hako's debt to Members<br><span>{{hakoData.debtOfHako}}</span></li>
             <li class="infoData" v-cloak>Member count<br><span>{{hakoData.memberCount}}</span></li>
@@ -62,34 +82,56 @@
         </div>
       </div>
       <div class="tab-pane userInfo" v-show="active === 1">
-        <h1>User Infomation</h1>
+        <h1>User Information</h1>
         <div class="info-content" v-show="!isNotMember">
           <ul>
-            <li class="infoAddress" v-cloak>Your address<br>{{userData.userAccount}}</li>
-            <li class="infoData" v-cloak>balance of token<br>{{userData.balanceOfUser}}</li>
+            <li class="infoAddress" v-cloak>
+              <a href="docs.html#your-address" target="_blank">Your address</a><br>{{userData.userAccount}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#balance-token" target="_blank">balance of token</a><br>{{userData.balanceOfUser}}
+            </li>
           </ul>
           <ul>
             <li class="memberCheck" v-cloak>{{userData.memberCheckOfUser}}</li>
-            <li class="infoData" v-cloak>credit<br>{{userData.creditToHakoOfUser}}</li>
-            <li class="infoData" v-cloak>debt<br>{{userData.debtToHakoOfUser}}</li>
-            <li class="infoData" v-cloak>lending<br>{{userData.creditToMemberOfUser}}</li>
-            <li class="infoData" v-cloak>borrowing<br>{{userData.debtToMemberOfUser}}</li>
-            <li class="infoData" v-cloak>net assets<br>{{userData.netAssetsOfUser}}</li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#credit" target="_blank">credit</a><br>{{userData.creditToHakoOfUser}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#debt" target="_blank">debt</a><br>{{userData.debtToHakoOfUser}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#lending" target="_blank">lending</a><br>{{userData.creditToMemberOfUser}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#borrowing" target="_blank">borrowing</a><br>{{userData.debtToMemberOfUser}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#net-assets" target="_blank">net assets</a><br>{{userData.netAssetsOfUser}}
+            </li>
             <li class="supplement">* net assets = balance + credit - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>
-            <li class="infoData" v-cloak>value<br>{{userData.valueDuration.value}}</li>
-            <li class="infoAddress" v-cloak>duration<br>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#borrow-value" target="_blank">value</a><br>{{userData.valueDuration.value}}
+            </li>
+            <li class="infoAddress" v-cloak>
+              <a href="docs.html#borrow-duration" target="_blank">duration</a><br>
               {{userData.valueDuration.durationData.days}} days {{userData.valueDuration.durationData.hours}} hours 
               {{userData.valueDuration.durationData.minutes}} minutes {{userData.valueDuration.durationData.seconds}} seconds 
-              ( = {{userData.valueDuration.duration}} seconds)</li>
+              ( = {{userData.valueDuration.duration}} seconds)
+            </li>
           </ul>
         </div>
         <div class="info-content" v-show="isNotMember">
           <ul>
-            <li class="infoAddress" v-cloak>Your address<br>{{userData.userAccount}}</li>
-            <li class="infoData" v-cloak>balance of token<br>{{userData.balanceOfUser}}</li>
+            <li class="infoAddress" v-cloak>
+              <a href="docs.html#your-address" target="_blank">Your address</a><br>{{userData.userAccount}}
+            </li>
+            <li class="infoData" v-cloak>
+              <a href="docs.html#balance-token" target="_blank">balance of token</a><br>{{userData.balanceOfUser}}
+            </li>
           </ul>
           <ul>
             <li class="memberCheck" v-cloak>{{userData.memberCheckOfUser}}</li>
@@ -114,7 +156,7 @@
             <div class="transactionLink transfer">
               <div v-if="haveToken">
                 <li class="linkToTransaction">
-                  <a href="transactions/transfer_token.html">transfer token</a>
+                  <a href="docs.html#transfer-token" target="_blank">transfer token</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/transfer_token.html">enter</a>
@@ -132,7 +174,7 @@
             <div class="transactionLink transferCredit">
               <div v-if="isMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/transfer_credit.html">transfer credit</a>
+                  <a href="docs.html#transfer-credit" target="_blank">transfer credit</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/transfer_credit.html">enter</a>
@@ -158,7 +200,7 @@
             <div class="transactionLink joinHako">
               <div v-if="!isMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/join_hako.html">join Hako</a>
+                  <a href="docs.html#join-hako" target="_blank">join Hako</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/join_hako.html">enter</a>
@@ -176,7 +218,7 @@
             <div class="transactionLink leaveHako">
               <div v-if="isMember && haveNotDebtToHako && haveNotDebtToMember && haveNotCreditToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/leave_hako.html">leave Hako</a>
+                  <a href="docs.html#leave-hako" target="_blank">leave Hako</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/leave_hako.html">enter</a>
@@ -218,7 +260,7 @@
             <div class="transactionLink depositToken">
               <div v-if="isMember && haveToken">
                 <li class="linkToTransaction">
-                  <a href="transactions/deposit_token.html">deposit token</a>
+                  <a href="docs.html#deposit-token" target="_blank">deposit token</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/deposit_token.html">enter</a>
@@ -244,7 +286,7 @@
             <div class="transactionLink withdrawToken">
               <div v-if="isMember && haveCredit && haveNotDebtToHako && haveNotDebtToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/withdraw_token.html">withdraw token</a>
+                  <a href="docs.html#withdraw-token" target="_blank">withdraw token</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/withdraw_token.html">enter</a>
@@ -286,7 +328,7 @@
             <div class="transactionLink registerBorrowValueDuration">
               <div v-if="isMember && haveNotDebtToMember && havePlusNetAssets">
                 <li class="linkToTransaction">
-                  <a href="transactions/register_borrowing.html">register borrowing</a>
+                  <a href="docs.html#register-borrowing" target="_blank">register borrowing</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/register_borrowing.html">enter</a>
@@ -320,7 +362,7 @@
             <div class="transactionLink lendCredit">
               <div v-if="isMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/lend_credit.html">lend credit</a>
+                  <a href="docs.html#lend-credit" target="_blank">lend credit</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/lend_credit.html">enter</a>
@@ -346,7 +388,7 @@
             <div class="transactionLink collectDebtFrom">
               <div v-if="isMember && !haveNotCreditToMember">
                 <li class="linkToTransaction">
-                  <a href="transactions/collect_debt.html">collect debt</a>
+                  <a href="docs.html#collect-debt" target="_blank">collect debt</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/collect_debt.html">enter</a>
@@ -372,7 +414,7 @@
             <div class="transactionLink returnDebtTo">
               <div v-if="isMember && !haveNotDebtToMember && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/return_debt.html">return debt</a>
+                  <a href="docs.html#return-debt" target="_blank">return debt</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/return_debt.html">enter</a>
@@ -406,7 +448,7 @@
             <div class="transactionLink creditCreationByMember">
               <div v-if="isMember && haveNotDebtToHako && havePlusNetAssets">
                 <li class="linkToTransaction">
-                  <a href="transactions/credit_creation.html">credit creation</a>
+                  <a href="docs.html#credit-creation" target="_blank">credit creation</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/credit_creation.html">enter</a>
@@ -440,7 +482,7 @@
             <div class="transactionLink arrangement">
               <div v-if="isMember && !haveNotDebtToHako && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/arrangement_debt.html">arrangement debt</a>
+                  <a href="docs.html#arrangement-debt" target="_blank">arrangement debt</a>
                 </li><br>
                 <div class="enter">
                   <a href="transactions/arrangement_debt.html">enter</a>
@@ -480,7 +522,7 @@
           <ul>
             <div class="transactionLink transfer">
               <li class="linkToTransaction">
-                <a href="history/transfer_token_history.html">transfer token</a>
+                <a href="docs.html#transfer-token" target="_blank">transfer token</a>
               </li><br>
               <div class="enter">
                 <a href="history/transfer_token_history.html">watch the history</a>
@@ -488,7 +530,7 @@
             </div>
             <div class="transactionLink transferCredit">
               <li class="linkToTransaction">
-                <a href="history/transfer_credit_history.html">transfer credit</a>
+                <a href="docs.html#transfer-credit" target="_blank">transfer credit</a>
               </li><br>
               <div class="enter">
                 <a href="history/transfer_credit_history.html">watch the history</a>
@@ -496,7 +538,7 @@
             </div>
             <div class="transactionLink joinHako">
               <li class="linkToTransaction">
-                <a href="history/join_hako_history.html">join Hako</a>
+                <a href="docs.html#join-hako" target="_blank">join Hako</a>
               </li><br>
               <div class="enter">
                 <a href="history/join_hako_history.html">watch the history</a>
@@ -504,7 +546,7 @@
             </div>
             <div class="transactionLink leaveHako">
               <li class="linkToTransaction">
-                <a href="history/leave_hako_history.html">leave Hako</a>
+                <a href="docs.html#leave-hako" target="_blank">leave Hako</a>
               </li><br>
               <div class="enter">
                 <a href="history/leave_hako_history.html">watch the history</a>
@@ -512,7 +554,7 @@
             </div>
             <div class="transactionLink depositToken">
               <li class="linkToTransaction">
-                <a href="history/deposit_token_history.html">deposit token</a>
+                <a href="docs.html#deposit-token" target="_blank">deposit token</a>
               </li><br>
               <div class="enter">
                 <a href="history/deposit_token_history.html">watch the history</a>
@@ -520,7 +562,7 @@
             </div>
             <div class="transactionLink withdrawToken">
               <li class="linkToTransaction">
-                <a href="history/withdraw_token_history.html">withdraw token</a>
+                <a href="docs.html#withdraw-token" target="_blank">withdraw token</a>
               </li><br>
               <div class="enter">
                 <a href="history/withdraw_token_history.html">watch the history</a>
@@ -528,7 +570,7 @@
             </div>
             <div class="transactionLink registerBorrowValueDuration">
               <li class="linkToTransaction">
-                <a href="history/register_borrowing_history.html">register borrowing</a>
+                <a href="docs.html#register-borrowing" target="_blank">register borrowing</a>
               </li><br>
               <div class="enter">
                 <a href="history/register_borrowing_history.html">watch the history</a>
@@ -536,7 +578,7 @@
             </div>
             <div class="transactionLink lendCredit">
               <li class="linkToTransaction">
-                <a href="history/lend_credit_history.html">lend credit</a>
+                <a href="docs.html#lend-credit" target="_blank">lend credit</a>
               </li><br>
               <div class="enter">
                 <a href="history/lend_credit_history.html">watch the history</a>
@@ -544,7 +586,7 @@
             </div>
             <div class="transactionLink collectDebtFrom">
               <li class="linkToTransaction">
-                <a href="history/collect_debt_history.html">collect debt</a>
+                <a href="docs.html#collect-debt" target="_blank">collect debt</a>
               </li><br>
               <div class="enter">
                 <a href="history/collect_debt_history.html">watch the history</a>
@@ -552,7 +594,7 @@
             </div>
             <div class="transactionLink returnDebtTo">
               <li class="linkToTransaction">
-                <a href="history/return_debt_history.html">return debt</a>
+                <a href="docs.html#return-debt" target="_blank">return debt</a>
               </li><br>
               <div class="enter">
                 <a href="history/return_debt_history.html">watch the history</a>
@@ -560,7 +602,7 @@
             </div>
             <div class="transactionLink creditCreationByMember">
               <li class="linkToTransaction">
-                <a href="history/credit_creation_history.html">credit creation</a>
+                <a href="docs.html#credit-creation" target="_blank">credit creation</a>
               </li><br>
               <div class="enter">
                 <a href="history/credit_creation_history.html">watch the history</a>
@@ -568,7 +610,7 @@
             </div>
             <div class="transactionLink arrangement">
               <li class="linkToTransaction">
-                <a href="history/arrangement_debt_history.html">arrangement debt</a>
+                <a href="docs.html#arrangement-debt" target="_blank">arrangement debt</a>
               </li><br>
               <div class="enter">
                 <a href="history/arrangement_debt_history.html">watch the history</a>
