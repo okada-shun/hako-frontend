@@ -65,7 +65,11 @@ a {
   color: black;
 }
 a:hover {
+  text-decoration: underline;
   color: chocolate;
+}
+.header-logo a:hover {
+  text-decoration: none;
 }
 .introduction {
   text-align: center;
@@ -386,6 +390,7 @@ footer {
 }
 footer a:hover {
   color: blanchedalmond;
+  text-decoration: none;
 }
 .footer-link {
   text-align: center;
