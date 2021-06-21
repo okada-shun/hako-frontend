@@ -140,9 +140,11 @@
             "NO! You are borrowing credit! You can't withdraw token unless you return all of your debt to creditor!";
           } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
+            "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else {
-            this.okCheckSentence = "OK! You withdraw " + this.value + " credit!";
+            this.okCheckSentence = 
+            "OK! You withdraw " + Number(this.value).toLocaleString() + " credit!";
             this.ok = true;
           }
           this.txData.value = this.value;

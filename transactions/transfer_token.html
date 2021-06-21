@@ -140,10 +140,11 @@
           this.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
           if (Number(this.value) > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.balanceOfUser + " token! " + this.value + " is over!";
+            "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else {
-            this.okCheckSentence = "OK! You transfer " + this.value
-              + " token to <" + this.to + ">!";
+            this.okCheckSentence = 
+            "OK! You transfer " + Number(this.value).toLocaleString() + " token to <" + this.to + ">!";
             this.ok = true;
           }
           this.txData.to = this.to;

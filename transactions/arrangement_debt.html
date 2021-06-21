@@ -131,12 +131,16 @@
             "NO! You are not a member! Non-member account can't reduce credit!";
           } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
+            "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else if (Number(this.value) > Number(this.debtToHakoOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.debtToHakoOfUser + " debt! " + this.value + " is over!";
+            "NO! You have only " + Number(this.debtToHakoOfUser).toLocaleString() + " debt! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else {
-            this.okCheckSentence = "OK! You reduce " + this.value + " debt by reducing " + this.value + " credit!";
+            this.okCheckSentence = 
+            "OK! You reduce " + Number(this.value).toLocaleString() + " debt by reducing "
+             + Number(this.value).toLocaleString() + " credit!";
             this.ok = true;
           }
           this.txData.value = this.value;

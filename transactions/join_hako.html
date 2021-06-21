@@ -135,9 +135,11 @@
             "NO! You are hako owner! Hako owner can't join Hako!";
           } else if (Number(this.value) > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.balanceOfUser + " token! " + this.value + " is over!";
+            "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else {
-            this.okCheckSentence = "OK! You join Hako with depositing " + this.value + " token!";
+            this.okCheckSentence = 
+            "OK! You join Hako with depositing " + Number(this.value).toLocaleString() + " token!";
             this.ok = true;
           }
           this.txData.value = this.value;

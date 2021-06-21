@@ -160,7 +160,7 @@
           }
           for (let i = 0; i < this.txDataA.event.length; i++) {
             this.txDataA.logs[i].to = "<" + this.txDataA.event[i].returnValues[1] + ">";
-            this.txDataA.logs[i].value = this.txDataA.event[i].returnValues[2];
+            this.txDataA.logs[i].value = Number(this.txDataA.event[i].returnValues[2]).toLocaleString();
             this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
             this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
             this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
@@ -197,7 +197,7 @@
           }
           for (let i = 0; i < this.txDataB.event.length; i++) {
             this.txDataB.logs[i].from = "<" + this.txDataB.event[i].returnValues[0] + ">";
-            this.txDataB.logs[i].value = this.txDataB.event[i].returnValues[2];
+            this.txDataB.logs[i].value = Number(this.txDataB.event[i].returnValues[2]).toLocaleString();
             this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
             this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
             this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);

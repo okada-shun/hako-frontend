@@ -163,12 +163,12 @@
             let lendRecord = await hako.methods.getLendRecords(this.idList[j]).call();
             this.lendRecordsOfUser[j].id = "ID: " + lendRecord[0];
             this.lendRecordsOfUser[j].debtor = "Debtor: " + lendRecord[2];
-            this.lendRecordsOfUser[j].value = "Value: " + lendRecord[3];
+            this.lendRecordsOfUser[j].value = "Value: " + Number(lendRecord[3]).toLocaleString();
             this.arrangeDuration(Number(lendRecord[4]), j);
             this.lendRecordsOfUser[j].duration = "Duration: " + 
             this.lendRecordsOfUser[j].durationData.days + " days " + this.lendRecordsOfUser[j].durationData.hours + " hours " + 
             this.lendRecordsOfUser[j].durationData.minutes + " minutes " + this.lendRecordsOfUser[j].durationData.seconds + " seconds " + 
-            "( = " + lendRecord[4] + " seconds)";
+            "( = " + Number(lendRecord[4]).toLocaleString() + " seconds)";
             this.lendRecordsOfUser[j].time = "Time: " + String(new Date(Number(lendRecord[5]) * 1000));
             this.lendRecordsOfUser[j].deadline = 
             "Deadline: " + String(new Date(Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000));
@@ -204,14 +204,14 @@
         arrangeDuration: function(duration, i) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.lendRecordsOfUser[i].durationData.days = quotientA / 86400;
+          this.lendRecordsOfUser[i].durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.lendRecordsOfUser[i].durationData.hours = quotientB / 3600;
+          this.lendRecordsOfUser[i].durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.lendRecordsOfUser[i].durationData.minutes = quotientC / 60;
-          this.lendRecordsOfUser[i].durationData.seconds = remainderC;
+          this.lendRecordsOfUser[i].durationData.minutes = (quotientC / 60).toString();
+          this.lendRecordsOfUser[i].durationData.seconds = remainderC.toString();
         },
         collectDebtFromCheck: async function() {
           if (this.active === true) {
@@ -286,7 +286,8 @@
             this.noCheckSentence = 
             "NO! Lending ID: " + this.id + " is wrong or this lending had already finished!";
           } else {
-            this.okCheckSentence = "OK! You collect " + this.lendRecords['3'] + " debt from <" + this.debtor + ">!";
+            this.okCheckSentence = 
+            "OK! You collect " + Number(this.lendRecords['3']).toLocaleString() + " debt from <" + this.debtor + ">!";
             this.ok = true;
           }
           this.txData.debtor = this.debtor;

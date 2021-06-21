@@ -180,9 +180,9 @@
           }
           for (let i = 0; i < this.txDataA.event.length; i++) {
             this.txDataA.logs[i].debtor = "<" + this.txDataA.event[i].returnValues[1] + ">";
-            this.txDataA.logs[i].value = this.txDataA.event[i].returnValues[2];
-            this.txDataA.logs[i].duration = this.txDataA.event[i].returnValues[3];
-            this.arrangeDurationA(Number(this.txDataA.logs[i].duration), i);
+            this.txDataA.logs[i].value = Number(this.txDataA.event[i].returnValues[2]).toLocaleString();
+            this.txDataA.logs[i].duration = Number(this.txDataA.event[i].returnValues[3]).toLocaleString();
+            this.arrangeDurationA(Number(this.txDataA.event[i].returnValues[3]), i);
             this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
             this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
             this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
@@ -211,14 +211,14 @@
         arrangeDurationA: function(duration, i) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.txDataA.logs[i].durationData.days = quotientA / 86400;
+          this.txDataA.logs[i].durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.txDataA.logs[i].durationData.hours = quotientB / 3600;
+          this.txDataA.logs[i].durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.txDataA.logs[i].durationData.minutes = quotientC / 60;
-          this.txDataA.logs[i].durationData.seconds = remainderC;
+          this.txDataA.logs[i].durationData.minutes = (quotientC / 60).toString();
+          this.txDataA.logs[i].durationData.seconds = remainderC.toString();
         },
         watchToLog: async function() {
           if (this.txDataB.active === true) {
@@ -238,9 +238,9 @@
           }
           for (let i = 0; i < this.txDataB.event.length; i++) {
             this.txDataB.logs[i].creditor = "<" + this.txDataB.event[i].returnValues[0] + ">";
-            this.txDataB.logs[i].value = this.txDataB.event[i].returnValues[2];
-            this.txDataB.logs[i].duration = this.txDataB.event[i].returnValues[3];
-            this.arrangeDurationB(Number(this.txDataB.logs[i].duration), i);
+            this.txDataB.logs[i].value = Number(this.txDataB.event[i].returnValues[2]).toLocaleString();
+            this.txDataB.logs[i].duration = Number(this.txDataB.event[i].returnValues[3]).toLocaleString();
+            this.arrangeDurationB(Number(this.txDataB.event[i].returnValues[3]), i);
             this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
             this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
             this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);
@@ -269,14 +269,14 @@
         arrangeDurationB: function(duration, i) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.txDataB.logs[i].durationData.days = quotientA / 86400;
+          this.txDataB.logs[i].durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.txDataB.logs[i].durationData.hours = quotientB / 3600;
+          this.txDataB.logs[i].durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.txDataB.logs[i].durationData.minutes = quotientC / 60;
-          this.txDataB.logs[i].durationData.seconds = remainderC;
+          this.txDataB.logs[i].durationData.minutes = (quotientC / 60).toString();
+          this.txDataB.logs[i].durationData.seconds = remainderC.toString();
         },
       }
     });

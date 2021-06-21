@@ -169,7 +169,7 @@
             let lendRecord = await hako.methods.getLendRecords(id).call();
             this.txDataA.logs[i].creditor = "<" + this.txDataA.event[i].returnValues[0] + ">";
             this.txDataA.logs[i].id = "ID: " + id;
-            this.txDataA.logs[i].value = lendRecord[3];
+            this.txDataA.logs[i].value = Number(lendRecord[3]).toLocaleString();
             this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
             this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
             this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
@@ -210,7 +210,7 @@
             let lendRecord = await hako.methods.getLendRecords(id).call();
             this.txDataB.logs[i].debtor = "<" + this.txDataB.event[i].returnValues[1] + ">";
             this.txDataB.logs[i].id = "ID: " + id;
-            this.txDataB.logs[i].value = lendRecord[3];
+            this.txDataB.logs[i].value = Number(lendRecord[3]).toLocaleString();
             this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
             this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
             this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);

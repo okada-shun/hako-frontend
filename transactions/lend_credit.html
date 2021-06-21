@@ -236,13 +236,15 @@
             "NO! <" + this.to + "> is not a member account! You can't lend your credit to non-member account!";
           } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.creditToHakoOfUser + " credit! " + this.value + " is over!";
+            "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else if (this.debtToHakoOfTo !== '0') {
             this.noCheckSentence = 
             "NO! <" + this.to + "> has debt to Hako! You can't lend your credit to the account that has debt to Hako!";
           } else if (Number(this.value) > Number(this.valueDuration.value)) {
             this.noCheckSentence = 
-            "NO! The borrower wants to borrow only " + this.valueDuration.value + " credit! " + this.value + " is over!";
+            "NO! The borrower wants to borrow only " + Number(this.valueDuration.value).toLocaleString() + " credit! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else if (this.duration < Number(this.valueDuration.duration)) {
             this.arrangeDuration(this.duration);
             this.arrangeBorrowerDuration(Number(this.valueDuration.duration));
@@ -250,16 +252,17 @@
             "NO! The borrower wants to borrow credit for "
               + this.valueDuration.durationData.days + " days " + this.valueDuration.durationData.hours + " hours "
               + this.valueDuration.durationData.minutes + " minutes " + this.valueDuration.durationData.seconds + " seconds ( = "
-              + this.valueDuration.duration + " seconds) over! "
+              + Number(this.valueDuration.duration).toLocaleString() + " seconds) over! "
               + this.durationData.days + " days " + this.durationData.hours + " hours "
               + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = "
-              + this.duration + " seconds) is not enough!";
+              + this.duration.toLocaleString() + " seconds) is not enough!";
           } else {
             this.arrangeDuration(this.duration);
             this.okCheckSentence = 
-            "OK! You lend " + this.value + " credit to <" + this.to + "> for "
+            "OK! You lend " + Number(this.value).toLocaleString() + " credit to <" + this.to + "> for "
               + this.durationData.days + " days " + this.durationData.hours + " hours "
-              + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = " + this.duration + " seconds)!";
+              + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = "
+              + this.duration.toLocaleString() + " seconds)!";
             this.ok = true;
           }
           this.txData.to = this.to;
@@ -273,30 +276,30 @@
         arrangeDuration: function(duration) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.durationData.days = quotientA / 86400;
+          this.durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.durationData.hours = quotientB / 3600;
+          this.durationData.hours = (quotientB / 36009).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.durationData.minutes = quotientC / 60;
-          this.durationData.seconds = remainderC;
+          this.durationData.minutes = (quotientC / 60).toString();
+          this.durationData.seconds = remainderC.toString();
         },
         arrangeBorrowerDuration: function(duration) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.valueDuration.durationData.days = quotientA / 86400;
+          this.valueDuration.durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.valueDuration.durationData.hours = quotientB / 3600;
+          this.valueDuration.durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.valueDuration.durationData.minutes = quotientC / 60;
-          this.valueDuration.durationData.seconds = remainderC;
+          this.valueDuration.durationData.minutes = (quotientC / 60).toString();
+          this.valueDuration.durationData.seconds = remainderC.toString();
         },
         lendCredit: function() {
           this.txStatus = "Lending credit on the blockchain. This may take a while...";
-          return hako.methods.lendCredit(this.to, Number(this.value), Number(this.duration))
+          return hako.methods.lendCredit(this.to, Number(this.value), this.duration)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               lendCreditVM.txStatus = "";

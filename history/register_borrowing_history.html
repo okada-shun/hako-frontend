@@ -131,9 +131,9 @@
             return;
           }
           for (let i = 0; i < this.event.length; i++) {
-            this.logs[i].value = this.event[i].returnValues[1];
-            this.logs[i].duration = this.event[i].returnValues[2];
-            this.arrangeDuration(Number(this.logs[i].duration), i);
+            this.logs[i].value = Number(this.event[i].returnValues[1]).toLocaleString();
+            this.logs[i].duration = Number(this.event[i].returnValues[2]).toLocaleString();
+            this.arrangeDuration(Number(this.event[i].returnValues[2]), i);
             this.logs[i].txHash = this.event[i].transactionHash;
             this.logs[i].blockN = await web3.eth.getTransaction(this.logs[i].txHash);
             this.logs[i].blockData = await web3.eth.getBlock(this.logs[i].blockN.blockNumber);
@@ -161,14 +161,14 @@
         arrangeDuration: function(duration, i) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.logs[i].durationData.days = quotientA / 86400;
+          this.logs[i].durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.logs[i].durationData.hours = quotientB / 3600;
+          this.logs[i].durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.logs[i].durationData.minutes = quotientC / 60;
-          this.logs[i].durationData.seconds = remainderC;
+          this.logs[i].durationData.minutes = (quotientC / 60).toString();
+          this.logs[i].durationData.seconds = remainderC.toString();
         },
       }
     });

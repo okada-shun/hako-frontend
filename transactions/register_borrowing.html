@@ -215,18 +215,19 @@
             "NO! Your net assets is 0 or minus! You can't register any borrow value!";
           } else if (Number(this.value) > Number(this.upperLimit)) {
             this.noCheckSentence = 
-            "NO! The upper limit is " + this.upperLimit + "! You can't register more than "
-              + this.upperLimit + " credit!";
+            "NO! The upper limit is " + Number(this.upperLimit).toLocaleString() + "! You can't register more than "
+              + Number(this.upperLimit).toLocaleString() + " credit!";
           } else if (Number(this.value) > this.netAssetsOfUser) {
             this.noCheckSentence = 
-            "NO! Your net assets is only " + this.netAssetsOfUser + "! You can't register more than "
-              + this.netAssetsOfUser + " credit!";
+            "NO! Your net assets is only " + this.netAssetsOfUser.toLocaleString() + "! You can't register more than "
+              + this.netAssetsOfUser.toLocaleString() + " credit!";
           } else {
             this.arrangeDuration(this.duration);
             this.okCheckSentence = 
-            "OK! You register that you want to borrow " + this.value + " credit for "
+            "OK! You register that you want to borrow " + Number(this.value).toLocaleString() + " credit for "
               + this.durationData.days + " days " + this.durationData.hours + " hours "
-              + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = " + this.duration + " seconds)!";
+              + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = "
+              + this.duration.toLocaleString() + " seconds)!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -239,18 +240,18 @@
         arrangeDuration: function(duration) {
           let remainderA = duration % 86400;
           let quotientA = duration - remainderA;
-          this.durationData.days = quotientA / 86400;
+          this.durationData.days = (quotientA / 86400).toLocaleString();
           let remainderB = remainderA % 3600;
           let quotientB = remainderA - remainderB;
-          this.durationData.hours = quotientB / 3600;
+          this.durationData.hours = (quotientB / 3600).toString();
           let remainderC = remainderB % 60;
           let quotientC = remainderB - remainderC;
-          this.durationData.minutes = quotientC / 60;
-          this.durationData.seconds = remainderC;
+          this.durationData.minutes = (quotientC / 60).toString();
+          this.durationData.seconds = remainderC.toString();
         },
         registerBorrowValueDuration: function() {
           this.txStatus = "Registering borrow value and duration on the blockchain. This may take a while...";
-          return hako.methods.registerBorrowValueDuration(Number(this.value), Number(this.duration))
+          return hako.methods.registerBorrowValueDuration(Number(this.value), this.duration)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
             registerBorrowValueDurationVM.txStatus = "";

@@ -130,9 +130,11 @@
             "NO! You are not a member! Non-member account can't deposit token!";
           } else if (Number(this.value) > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
-            "NO! You have only " + this.balanceOfUser + " token! " + this.value + " is over!";
+            "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
+             + Number(this.value).toLocaleString() + " is over!";
           } else {
-            this.okCheckSentence = "OK! You deposit " + this.value + " token!";
+            this.okCheckSentence = 
+            "OK! You deposit " + Number(this.value).toLocaleString() + " token!";
             this.ok = true;
           }
           this.txData.value = this.value;

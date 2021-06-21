@@ -113,7 +113,8 @@
             this.noCheckSentence = 
             "NO! You are lending credit! You can't leave Hako unless you collect all of your credit from debtor!";
           } else {
-            this.okCheckSentence = "OK! You leave Hako! " + this.creditToHakoOfUser + " credit returns to you!";
+            this.okCheckSentence = 
+            "OK! You leave Hako! " + Number(this.creditToHakoOfUser).toLocaleString() + " credit returns to you!";
             this.ok = true;
           }
           this.active = true;

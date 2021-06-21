@@ -121,7 +121,7 @@
             return;
           }
           for (let i = 0; i < this.event.length; i++) {
-            this.logs[i].value = this.event[i].returnValues[1];
+            this.logs[i].value = Number(this.event[i].returnValues[1]).toLocaleString();
             this.logs[i].txHash = this.event[i].transactionHash;
             this.logs[i].blockN = await web3.eth.getTransaction(this.logs[i].txHash);
             this.logs[i].blockData = await web3.eth.getBlock(this.logs[i].blockN.blockNumber);

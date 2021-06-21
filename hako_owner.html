@@ -163,7 +163,12 @@
             <div v-show="!txDataC.loading">
               <div v-show="txDataC.event.length > 0">
                 <div class="log" v-for="log in txDataC.logs" :key="log.id" v-show="txDataC.active">
-                  <p v-cloak>Hako owner changed from {{log.oldOwner}} to {{log.newOwner}} at {{log.time}}.</p>
+                  <ul>
+                    <li>Hako owner changed from {{log.oldOwner}} to {{log.newOwner}}.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
                 </div>
               </div>
               <div v-show="txDataC.event.length === 0">
@@ -181,7 +186,12 @@
             <div v-show="!txDataD.loading">
               <div v-show="txDataD.event.length > 0">
                 <div class="log" v-for="log in txDataD.logs" :key="log.id" v-show="txDataD.active">
-                  <p v-cloak>Hako owner, {{log.owner}}, changed upper limit to {{log.upperLimit}} at {{log.time}}.</p>
+                  <ul>
+                    <li>Hako owner, {{log.owner}}, changed upper limit to {{log.upperLimit}}.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
                 </div>
               </div>
               <div v-show="txDataD.event.length === 0">
@@ -300,6 +310,9 @@
             0: {
               oldOwner: '',
               newOwner: '',
+              txHash: '',
+              blockN: '',
+              blockData: '',
               time: ''
             }
           }
@@ -315,6 +328,9 @@
             0: {
               owner: '',
               upperLimit: '',
+              txHash: '',
+              blockN: '',
+              blockData: '',
               time: ''
             }
           }
@@ -323,14 +339,14 @@
       methods: {
         displayHakoInfo: function() {
           this.hakoAddress = hakoAddress;
-          this.balanceOfHako = balanceOfHako;
-          this.totalSupply = totalSupply;
-          this.creditOfHako = creditOfHako;
-          this.debtOfHako = debtOfHako;
-          this.balanceOfHakoOwner = balanceOfHakoOwner;
-          this.lendCount = lendCount;
-          this.memberCount = memberCount;
-          this.upperLimit = upperLimit;
+          this.balanceOfHako = Number(balanceOfHako).toLocaleString();
+          this.totalSupply = Number(totalSupply).toLocaleString();
+          this.creditOfHako = Number(creditOfHako).toLocaleString();
+          this.debtOfHako = Number(debtOfHako).toLocaleString();
+          this.balanceOfHakoOwner = Number(balanceOfHakoOwner).toLocaleString();
+          this.lendCount = Number(lendCount).toLocaleString();
+          this.memberCount = Number(memberCount).toLocaleString();
+          this.upperLimit = Number(upperLimit).toLocaleString();
         },
         changeHakoOwnerCheck: async function() {
           if (this.txDataA.active === true) {
@@ -410,7 +426,7 @@
             return;
           }
           this.txDataB.okCheckSentence = 
-          "OK! You, the current hako owner, change the upper limit to " + this.txDataB.value + "!";
+          "OK! You, the current hako owner, change the upper limit to " + Number(this.txDataB.value).toLocaleString() + "!";
           this.txDataB.ok = true;
           this.txDataB.txData.value = this.txDataB.value;
           this.txDataB.active = true;
@@ -447,14 +463,17 @@
           for (let i = 0; i < this.txDataC.event.length; i++) {
             this.txDataC.logs[i].oldOwner = "<" + this.txDataC.event[i].returnValues[0] + ">";
             this.txDataC.logs[i].newOwner = "<" + this.txDataC.event[i].returnValues[1] + ">";
-            this.txDataC.txHash = this.txDataC.event[i].transactionHash;
-            this.txDataC.blockN = await web3.eth.getTransaction(this.txDataC.txHash);
-            this.txDataC.blockData = await web3.eth.getBlock(this.txDataC.blockN.blockNumber);
-            this.txDataC.logs[i].time = String(new Date(this.txDataC.blockData.timestamp * 1000));
+            this.txDataC.logs[i].txHash = this.txDataC.event[i].transactionHash;
+            this.txDataC.logs[i].blockN = await web3.eth.getTransaction(this.txDataC.logs[i].txHash);
+            this.txDataC.logs[i].blockData = await web3.eth.getBlock(this.txDataC.logs[i].blockN.blockNumber);
+            this.txDataC.logs[i].time = String(new Date(this.txDataC.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataC.event.length) {
               this.txDataC.logs[i + 1] = {
                 oldOwner: '',
                 newOwner: '',
+                txHash: '',
+                blockN: '',
+                blockData: '',
                 time: ''
               }
             }
@@ -480,15 +499,18 @@
           }
           for (let i = 0; i < this.txDataD.event.length; i++) {
             this.txDataD.logs[i].owner = "<" + this.txDataD.event[i].returnValues[0] + ">";
-            this.txDataD.logs[i].upperLimit = this.txDataD.event[i].returnValues[1];
-            this.txDataD.txHash = this.txDataD.event[i].transactionHash;
-            this.txDataD.blockN = await web3.eth.getTransaction(this.txDataD.txHash);
-            this.txDataD.blockData = await web3.eth.getBlock(this.txDataD.blockN.blockNumber);
-            this.txDataD.logs[i].time = String(new Date(this.txDataD.blockData.timestamp * 1000));
+            this.txDataD.logs[i].upperLimit = Number(this.txDataD.event[i].returnValues[1]).toLocaleString();
+            this.txDataD.logs[i].txHash = this.txDataD.event[i].transactionHash;
+            this.txDataD.logs[i].blockN = await web3.eth.getTransaction(this.txDataD.logs[i].txHash);
+            this.txDataD.logs[i].blockData = await web3.eth.getBlock(this.txDataD.logs[i].blockN.blockNumber);
+            this.txDataD.logs[i].time = String(new Date(this.txDataD.logs[i].blockData.timestamp * 1000));
             if (i + 1 != this.txDataD.event.length) {
               this.txDataD.logs[i + 1] = {
                 owner: '',
                 upperLimit: '',
+                txHash: '',
+                blockN: '',
+                blockData: '',
                 time: ''
               }
             }

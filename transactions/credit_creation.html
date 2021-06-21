@@ -154,14 +154,16 @@
             "NO! Your net assets is 0 or minus! You can't create any credit!";
           } else if (Number(this.value) > Number(this.upperLimit)) {
             this.noCheckSentence = 
-            "NO! The upper limit is " + this.upperLimit + "! You can't create more than "
-              + this.upperLimit + " credit!";
-          } else if (Number(this.value) > Number(this.netAssetsOfUser)) {
+            "NO! The upper limit is " + Number(this.upperLimit).toLocaleString() + "! You can't create more than "
+              + Number(this.upperLimit).toLocaleString() + " credit!";
+          } else if (Number(this.value) > this.netAssetsOfUser) {
             this.noCheckSentence = 
-            "NO! Your net assets is only " + this.netAssetsOfUser + "! You can't create more than " + this.netAssetsOfUser + " credit!";
+            "NO! Your net assets is only " + this.netAssetsOfUser.toLocaleString()
+              + "! You can't create more than " + this.netAssetsOfUser.toLocaleString() + " credit!";
           } else {
             this.okCheckSentence = 
-            "OK! You create " + this.value + " credit! At the same time, you have " + this.value + " debt to Hako!";
+            "OK! You create " + Number(this.value).toLocaleString()
+              + " credit! At the same time, you have " + Number(this.value).toLocaleString() + " debt to Hako!";
             this.ok = true;
           }
           this.txData.value = this.value;

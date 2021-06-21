@@ -97,13 +97,13 @@ var appVM = new Vue({
     },
     displayHakoInfo: function() {
       this.hakoData.hakoAddress = hakoAddress;
-      this.hakoData.totalSupply = totalSupply;
-      this.hakoData.balanceOfHako = balanceOfHako;
+      this.hakoData.totalSupply = Number(totalSupply).toLocaleString();
+      this.hakoData.balanceOfHako = Number(balanceOfHako).toLocaleString();
       if (this.isMember) {
-        this.hakoData.creditOfHako = creditOfHako;
-        this.hakoData.debtOfHako = debtOfHako;
-        this.hakoData.memberCount = memberCount;
-        this.hakoData.upperLimit = upperLimit;
+        this.hakoData.creditOfHako = Number(creditOfHako).toLocaleString();
+        this.hakoData.debtOfHako = Number(debtOfHako).toLocaleString();
+        this.hakoData.memberCount = Number(memberCount).toLocaleString();
+        this.hakoData.upperLimit = Number(upperLimit).toLocaleString();
       } else {
         this.hakoData.creditOfHako = "Member Only";
         this.hakoData.debtOfHako = "Member Only";
@@ -113,16 +113,16 @@ var appVM = new Vue({
     },
     displayUserInfo: function() {
       this.userData.userAccount = userAccount;
-      this.userData.balanceOfUser = balanceOfUser;
+      this.userData.balanceOfUser = Number(balanceOfUser).toLocaleString();
       if (this.isMember) {
-        this.userData.creditToHakoOfUser = creditToHakoOfUser;
-        this.userData.debtToHakoOfUser = debtToHakoOfUser;
-        this.userData.creditToMemberOfUser = creditToMemberOfUser;
-        this.userData.debtToMemberOfUser = debtToMemberOfUser;
-        this.userData.netAssetsOfUser = netAssetsOfUser;
-        this.userData.valueDuration.value = borrowValueDurationOfUser['0'];
-        this.userData.valueDuration.duration = borrowValueDurationOfUser['1'];
-        this.arrangeDuration(Number(this.userData.valueDuration.duration));
+        this.userData.creditToHakoOfUser = Number(creditToHakoOfUser).toLocaleString();
+        this.userData.debtToHakoOfUser = Number(debtToHakoOfUser).toLocaleString();
+        this.userData.creditToMemberOfUser = Number(creditToMemberOfUser).toLocaleString();
+        this.userData.debtToMemberOfUser = Number(debtToMemberOfUser).toLocaleString();
+        this.userData.netAssetsOfUser = netAssetsOfUser.toLocaleString();
+        this.userData.valueDuration.value = Number(borrowValueDurationOfUser['0']).toLocaleString();
+        this.userData.valueDuration.duration = Number(borrowValueDurationOfUser['1']).toLocaleString();
+        this.arrangeDuration(Number(borrowValueDurationOfUser['1']));
       } else {
         this.userData.creditToHakoOfUser = "Member Only";
         this.userData.debtToHakoOfUser = "Member Only";
@@ -143,14 +143,14 @@ var appVM = new Vue({
     arrangeDuration: function(duration) {
       let remainderA = duration % 86400;
       let quotientA = duration - remainderA;
-      this.userData.valueDuration.durationData.days = quotientA / 86400;
+      this.userData.valueDuration.durationData.days = (quotientA / 86400).toLocaleString();
       let remainderB = remainderA % 3600;
       let quotientB = remainderA - remainderB;
-      this.userData.valueDuration.durationData.hours = quotientB / 3600;
+      this.userData.valueDuration.durationData.hours = (quotientB / 3600).toString();
       let remainderC = remainderB % 60;
       let quotientC = remainderB - remainderC;
-      this.userData.valueDuration.durationData.minutes = quotientC / 60;
-      this.userData.valueDuration.durationData.seconds = remainderC;
+      this.userData.valueDuration.durationData.minutes = (quotientC / 60).toString();
+      this.userData.valueDuration.durationData.seconds = remainderC.toString();
     }
   },
   computed: {
@@ -176,7 +176,7 @@ var appVM = new Vue({
       return this.userData.creditToHakoOfUser !== '0';
     },
     havePlusNetAssets() {
-      return this.userData.netAssetsOfUser > 0;
+      return Number(this.userData.netAssetsOfUser.replace(/,/g, '')) > 0;
     }
   }
 });
