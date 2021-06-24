@@ -1,3 +1,4 @@
+/* new */
 var hakoABI = [
   {
     "constant": true,
@@ -222,6 +223,20 @@ var hakoABI = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "getReward",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "hakoAddress",
@@ -419,6 +434,20 @@ var hakoABI = [
       }
     ],
     "name": "creditToMemberOf",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "rewardTime",
     "outputs": [
       {
         "name": "",
@@ -932,6 +961,23 @@ var hakoABI = [
       }
     ],
     "name": "ChangeUpperLimit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "hakoOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "rewardValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "GetReward",
     "type": "event"
   },
   {
