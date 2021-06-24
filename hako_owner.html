@@ -151,6 +151,16 @@
           </div>
           <p v-cloak>{{txDataB.txStatus}}</p>
         </div>
+        <div class="transaction getReward">
+          <h2>get reward</h2>
+          <p>Get token from Hako as reward<br>
+          (You can get it every 24 hours.)</p>
+          <button class="button" @click="getRewardCheck">check</button>
+          <p class="okCheckSentence" v-show="txDataE.ok && txDataE.active" v-cloak>{{txDataE.okCheckSentence}}</p>
+          <p class="noCheckSentence" v-show="!txDataE.ok && txDataE.active" v-cloak>{{txDataE.noCheckSentence}}</p>
+          <button class="button" @click="getReward" v-show="txDataE.ok && txDataE.active">get</button>
+          <p v-cloak>{{txDataE.txStatus}}</p>
+        </div>
       </div>
       <div class="tab-pane transactions" v-show="isHakoOwner"> 
         <h1>History</h1>
@@ -196,6 +206,29 @@
               </div>
               <div v-show="txDataD.event.length === 0">
                 <p class="noHistory" v-show="txDataD.active">No History</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="transaction">
+          <h2>owner's reward history</h2>
+          <div class="history">
+            <p>You can watch the record of token that hako owner got as reward.</p>
+            <button class="button" @click="watchRewardLog">watch</button><br>
+            <p v-show="txDataF.loading">Now searching history...</p>
+            <div v-show="!txDataF.loading">
+              <div v-show="txDataF.event.length > 0">
+                <div class="log" v-for="log in txDataF.logs" :key="log.id" v-show="txDataF.active">
+                  <ul>
+                    <li>Hako owner, {{log.owner}}, got {{log.reward}} token as reward.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
+                </div>
+              </div>
+              <div v-show="txDataF.event.length === 0">
+                <p class="noHistory" v-show="txDataF.active">No History</p>
               </div>
             </div>
           </div>
@@ -334,6 +367,34 @@
               time: ''
             }
           }
+        },
+        txDataE: {
+          rewardTime: '',
+          rewardValue: '',
+          readyTime: '',
+          noCheckSentence: '',
+          okCheckSentence: '',
+          ok: false,
+          active: false,
+          txStatus: ''
+        },
+        txDataF: {
+          event: '',
+          loading: false,
+          active: false,
+          txHash: '',
+          blockN: '',
+          blockData: '',
+          logs: {
+            0: {
+              owner: '',
+              reward: '',
+              txHash: '',
+              blockN: '',
+              blockData: '',
+              time: ''
+            }
+          }
         }
       },
       methods: {
@@ -444,6 +505,38 @@
               alert('Transaction errored!');
             });
         },
+        getRewardCheck: async function() {
+          if (this.txDataE.active === true) {
+            this.txDataE.active = false;
+            return;
+          }
+          this.txDataE.ok = false;
+          this.txDataE.rewardTime = await hako.methods.rewardTime().call();
+          this.txDataE.rewardValue = Math.floor(Number(balanceOfHako) / 100);
+          this.txDataE.readyTime = String(new Date((Number(this.txDataE.rewardTime) + 86400) * 1000));
+          if ((Date.now() / 1000) < Number(this.txDataE.rewardTime) + 86400) {
+            this.txDataE.noCheckSentence = 
+            "NO! 24 hours is yet to be passed! Please wait until " + this.txDataE.readyTime + "!";
+          } else {
+            this.txDataE.okCheckSentence = 
+            "OK! You, the current hako owner, get " + this.txDataE.rewardValue.toLocaleString() + " token as reward!";
+            this.txDataE.ok = true;
+          }
+          this.txDataE.active = true;
+        },
+        getReward: function() {
+          this.txDataE.txStatus = "Getting reward on the blockchain. This may take a while...";
+          return hako.methods.getReward()
+            .send({ from: userAccount })
+            .on("receipt", function (receipt) {
+              ownerVM.txDataE.txStatus = "";
+              alert('Transaction successed!');
+            })
+            .on("error", function (error) {
+              ownerVM.txDataE.txStatus = "";
+              alert('Transaction errored!');
+            });
+        },
         watchOwnerLog: async function() {
           if (this.txDataC.active === true) {
             this.txDataC.active = false;
@@ -517,6 +610,43 @@
           }
           this.txDataD.active = true;
           this.txDataD.loading = false;
+        },
+        watchRewardLog: async function() {
+          if (this.txDataF.active === true) {
+            this.txDataF.active = false;
+            return;
+          }
+          if (this.txDataF.event) {
+            this.txDataF.active = true;
+            return;
+          }
+          this.txDataF.loading = true;
+          this.txDataF.event = await hako.getPastEvents("GetReward", {fromBlock: 0, toBlock: "latest"});
+          if (this.txDataF.event.length === 0) {
+            this.txDataF.active = true;
+            this.txDataF.loading = false;
+            return;
+          }
+          for (let i = 0; i < this.txDataF.event.length; i++) {
+            this.txDataF.logs[i].owner = "<" + this.txDataF.event[i].returnValues[0] + ">";
+            this.txDataF.logs[i].reward = Number(this.txDataF.event[i].returnValues[1]).toLocaleString();
+            this.txDataF.logs[i].txHash = this.txDataF.event[i].transactionHash;
+            this.txDataF.logs[i].blockN = await web3.eth.getTransaction(this.txDataF.logs[i].txHash);
+            this.txDataF.logs[i].blockData = await web3.eth.getBlock(this.txDataF.logs[i].blockN.blockNumber);
+            this.txDataF.logs[i].time = String(new Date(this.txDataF.logs[i].blockData.timestamp * 1000));
+            if (i + 1 != this.txDataF.event.length) {
+              this.txDataF.logs[i + 1] = {
+                owner: '',
+                reward: '',
+                txHash: '',
+                blockN: '',
+                blockData: '',
+                time: ''
+              }
+            }
+          }
+          this.txDataF.active = true;
+          this.txDataF.loading = false;
         }
       },
       computed: {
