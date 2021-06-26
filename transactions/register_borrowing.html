@@ -31,8 +31,8 @@
         <h2>register borrowing</h2>
         <p>Register the credit value that you want to borrow from other member accounts, and
         register the duration that you want to borrow the credit for<br>
-        (The upper limit value you can register is {{upperLimit}}.)<br>
-        (You can't register more value than {{netAssetsOfUser}}, your net assets.)</p>
+        (The upper limit value you can register is {{upperLimitValue}}.)<br>
+        (You can't register more value than {{netAssetsValue}}, your net assets.)</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
         how long? <br>
         <input class="question duration" type="text" name="duration" v-model="days">days
@@ -72,6 +72,7 @@
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
       registerBorrowValueDurationVM.upperLimit = await hako.methods.upperLimit().call();
+      registerBorrowValueDurationVM.upperLimitValue = Number(registerBorrowValueDurationVM.upperLimit).toLocaleString();
       registerBorrowValueDurationVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
       registerBorrowValueDurationVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
       registerBorrowValueDurationVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
@@ -83,6 +84,7 @@
       Number(registerBorrowValueDurationVM.debtToHakoOfUser) + 
       Number(registerBorrowValueDurationVM.creditToMemberOfUser) - 
       Number(registerBorrowValueDurationVM.debtToMemberOfUser);
+      registerBorrowValueDurationVM.netAssetsValue = registerBorrowValueDurationVM.netAssetsOfUser.toLocaleString();
     }
 
     window.addEventListener('load', function () {
@@ -113,6 +115,8 @@
         debtToMemberOfUser: '',
         netAssetsOfUser: '-',
         upperLimit: '-',
+        netAssetsValue: '-',
+        upperLimitValue: '-',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,

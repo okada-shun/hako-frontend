@@ -30,8 +30,8 @@
       <div class="transaction" id="creditCreationByMember">
         <h2>credit creation</h2>
         <p>Create your credit by owing debt to Hako<br>
-          (The upper limit value you can create is {{upperLimit}}.)<br>
-          (You can't create more credit than {{netAssetsOfUser}}, your net assets.)</p>
+          (The upper limit value you can create is {{upperLimitValue}}.)<br>
+          (You can't create more credit than {{netAssetsValue}}, your net assets.)</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
         <button class="button" @click="creditCreationByMemberCheck">check</button>
         <div v-show="isFill">
@@ -66,6 +66,7 @@
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
       creditCreationByMemberVM.upperLimit = await hako.methods.upperLimit().call();
+      creditCreationByMemberVM.upperLimitValue = Number(creditCreationByMemberVM.upperLimit).toLocaleString();
       creditCreationByMemberVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
       creditCreationByMemberVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
       creditCreationByMemberVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
@@ -77,6 +78,7 @@
       Number(creditCreationByMemberVM.debtToHakoOfUser) + 
       Number(creditCreationByMemberVM.creditToMemberOfUser) - 
       Number(creditCreationByMemberVM.debtToMemberOfUser);
+      creditCreationByMemberVM.netAssetsValue = creditCreationByMemberVM.netAssetsOfUser.toLocaleString();
     }
 
     window.addEventListener('load', function () {
@@ -102,6 +104,8 @@
         debtToMemberOfUser: '',
         netAssetsOfUser: '-',
         upperLimit: '-',
+        netAssetsValue: '-',
+        upperLimitValue: '-',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,
