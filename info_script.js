@@ -31,7 +31,7 @@ async function startApp() {
   debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
   netAssetsOfUser = Number(balanceOfUser) + Number(creditToHakoOfUser)
     - Number(debtToHakoOfUser) + Number(creditToMemberOfUser) - Number(debtToMemberOfUser);
-  borrowValueDurationOfUser = await hako.methods.getBorrowValueDurationOf(userAccount).call();
+  borrowValueDurationOfUser = await hako.methods.borrowValueDurationOf(userAccount).call();
   appVM.userData.memberOrNot = memberOrNot;
   appVM.memberCheck();
   appVM.displayHakoInfo();

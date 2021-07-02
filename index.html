@@ -284,7 +284,7 @@
                 </div>
               </div>
             </div>
-            <div class="transactionLink registerBorrowValueDuration">
+            <div class="transactionLink registerBorrowing">
               <div v-if="isMember && haveNotDebtToMember && havePlusNetAssets">
                 <li class="linkToTransaction">
                   <a href="transactions/register_borrowing.html">register borrowing</a>
@@ -404,18 +404,18 @@
                 </div>
               </div>
             </div>
-            <div class="transactionLink creditCreationByMember">
+            <div class="transactionLink createCredit">
               <div v-if="isMember && haveNotDebtToHako && havePlusNetAssets">
                 <li class="linkToTransaction">
-                  <a href="transactions/credit_creation.html">credit creation</a>
+                  <a href="transactions/create_credit.html">create credit</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/credit_creation.html">enter</a>
+                  <a href="transactions/create_credit.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
                 <li class="linkToTransaction">
-                  credit creation
+                  create credit
                 </li><br>
                 <div class="noDisplay">
                   Member Only
@@ -423,7 +423,7 @@
               </div>
               <div v-else-if="!haveNotDebtToHako">
                 <li class="linkToTransaction">
-                  credit creation
+                  create credit
                 </li><br>
                 <div class="noDisplay">
                   You have debt!
@@ -431,25 +431,25 @@
               </div>
               <div v-else>
                 <li class="linkToTransaction">
-                  credit creation
+                  create credit
                 </li><br>
                 <div class="noDisplay">
                   Net assets is 0 or minus!
                 </div>
               </div>
             </div>
-            <div class="transactionLink arrangement">
+            <div class="transactionLink reduceDebt">
               <div v-if="isMember && !haveNotDebtToHako && haveCredit">
                 <li class="linkToTransaction">
-                  <a href="transactions/arrangement_debt.html">arrangement debt</a>
+                  <a href="transactions/reduce_debt.html">reduce debt</a>
                 </li><br>
                 <div class="enter">
-                  <a href="transactions/arrangement_debt.html">enter</a>
+                  <a href="transactions/reduce_debt.html">enter</a>
                 </div>
               </div>
               <div v-else-if="!isMember">
                 <li class="linkToTransaction">
-                  arrangement debt
+                  reduce debt
                 </li><br>
                 <div class="noDisplay">
                   Member Only
@@ -457,7 +457,7 @@
               </div>
               <div v-else-if="haveNotDebtToHako">
                 <li class="linkToTransaction">
-                  arrangement debt
+                  reduce debt
                 </li><br>
                 <div class="noDisplay">
                   You don't have debt!
@@ -465,7 +465,7 @@
               </div>
               <div v-else>
                 <li class="linkToTransaction">
-                  arrangement debt
+                  reduce debt
                 </li><br>
                 <div class="noDisplay">
                   You don't have credit!
@@ -527,7 +527,7 @@
                 <a href="history/withdraw_token_history.html">watch the history</a>
               </div>
             </div>
-            <div class="transactionLink registerBorrowValueDuration">
+            <div class="transactionLink registerBorrowing">
               <li class="linkToTransaction">
                 <a href="history/register_borrowing_history.html">register borrowing</a>
               </li><br>
@@ -559,20 +559,20 @@
                 <a href="history/return_debt_history.html">watch the history</a>
               </div>
             </div>
-            <div class="transactionLink creditCreationByMember">
+            <div class="transactionLink createCredit">
               <li class="linkToTransaction">
-                <a href="history/credit_creation_history.html">credit creation</a>
+                <a href="history/create_credit_history.html">create credit</a>
               </li><br>
               <div class="enter">
-                <a href="history/credit_creation_history.html">watch the history</a>
+                <a href="history/create_credit_history.html">watch the history</a>
               </div>
             </div>
-            <div class="transactionLink arrangement">
+            <div class="transactionLink reduceDebt">
               <li class="linkToTransaction">
-                <a href="history/arrangement_debt_history.html">arrangement debt</a>
+                <a href="history/reduce_debt_history.html">reduce debt</a>
               </li><br>
               <div class="enter">
-                <a href="history/arrangement_debt_history.html">watch the history</a>
+                <a href="history/reduce_debt_history.html">watch the history</a>
               </div>
             </div>
           </ul>

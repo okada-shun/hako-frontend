@@ -41,8 +41,8 @@ Displays the link to each transaction page. In particular,
 8. lend credit
 9. collect debt
 10. return debt
-11. credit creation
-12. arrangement debt
+11. create credit
+12. reduce debt
 
 ## Transactions History
 
