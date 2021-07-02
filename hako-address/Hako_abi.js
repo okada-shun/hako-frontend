@@ -4,25 +4,6 @@ var hakoABI = [
     "constant": true,
     "inputs": [
       {
-        "name": "_member",
-        "type": "address"
-      }
-    ],
-    "name": "getBorrowValueDurationOf",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256[2]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "name": "_who",
         "type": "address"
       }
@@ -102,25 +83,6 @@ var hakoABI = [
         "type": "uint256"
       }
     ],
-    "name": "arrangement",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_value",
-        "type": "uint256"
-      }
-    ],
     "name": "changeUpperLimit",
     "outputs": [
       {
@@ -134,38 +96,9 @@ var hakoABI = [
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "getLendRecords",
+    "inputs": [],
+    "name": "decimals",
     "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
       {
         "name": "",
         "type": "uint256"
@@ -177,9 +110,38 @@ var hakoABI = [
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "decimals",
+    "inputs": [
+      {
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "lendRecordOf",
     "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      },
       {
         "name": "",
         "type": "uint256"
@@ -201,25 +163,6 @@ var hakoABI = [
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_value",
-        "type": "uint256"
-      }
-    ],
-    "name": "creditCreationByMember",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -278,6 +221,29 @@ var hakoABI = [
       }
     ],
     "name": "joinHako",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      },
+      {
+        "name": "_duration",
+        "type": "uint256"
+      }
+    ],
+    "name": "registerBorrowing",
     "outputs": [
       {
         "name": "",
@@ -445,6 +411,25 @@ var hakoABI = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "createCredit",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "rewardTime",
@@ -466,6 +451,25 @@ var hakoABI = [
       {
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_member",
+        "type": "address"
+      }
+    ],
+    "name": "borrowValueDurationOf",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256[2]"
       }
     ],
     "payable": false,
@@ -508,29 +512,6 @@ var hakoABI = [
       }
     ],
     "name": "transfer",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_value",
-        "type": "uint256"
-      },
-      {
-        "name": "_duration",
-        "type": "uint256"
-      }
-    ],
-    "name": "registerBorrowValueDuration",
     "outputs": [
       {
         "name": "",
@@ -599,6 +580,25 @@ var hakoABI = [
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "reduceDebt",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -716,7 +716,7 @@ var hakoABI = [
         "type": "uint256"
       }
     ],
-    "name": "CreditCreationByMember",
+    "name": "CreateCredit",
     "type": "event"
   },
   {
@@ -733,7 +733,7 @@ var hakoABI = [
         "type": "uint256"
       }
     ],
-    "name": "Arrangement",
+    "name": "ReduceDebt",
     "type": "event"
   },
   {
@@ -755,7 +755,7 @@ var hakoABI = [
         "type": "uint256"
       }
     ],
-    "name": "RegisterBorrowValueDuration",
+    "name": "RegisterBorrowing",
     "type": "event"
   },
   {
