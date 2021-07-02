@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Credit Creation</title>
+  <title>Create Credit</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
@@ -27,17 +27,17 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="creditCreationByMember">
-        <h2>credit creation</h2>
+      <div class="transaction" id="createCredit">
+        <h2>create credit</h2>
         <p>Create your credit by owing debt to Hako<br>
           (The upper limit value you can create is {{upperLimitValue}}.)<br>
           (You can't create more credit than {{netAssetsValue}}, your net assets.)</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
-        <button class="button" @click="creditCreationByMemberCheck">check</button>
+        <button class="button" @click="createCreditCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
           <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
-          <button class="button" @click="creditCreationByMember" v-show="ok && active">do</button>
+          <button class="button" @click="createCredit" v-show="ok && active">create</button>
         </div>
         <p v-cloak>{{txStatus}}</p>
       </div>
@@ -65,20 +65,20 @@
     async function startApp() {
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
-      creditCreationByMemberVM.upperLimit = await hako.methods.upperLimit().call();
-      creditCreationByMemberVM.upperLimitValue = Number(creditCreationByMemberVM.upperLimit).toLocaleString();
-      creditCreationByMemberVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
-      creditCreationByMemberVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
-      creditCreationByMemberVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
-      creditCreationByMemberVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
-      creditCreationByMemberVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
-      creditCreationByMemberVM.netAssetsOfUser = 
-      Number(creditCreationByMemberVM.balanceOfUser) + 
-      Number(creditCreationByMemberVM.creditToHakoOfUser) - 
-      Number(creditCreationByMemberVM.debtToHakoOfUser) + 
-      Number(creditCreationByMemberVM.creditToMemberOfUser) - 
-      Number(creditCreationByMemberVM.debtToMemberOfUser);
-      creditCreationByMemberVM.netAssetsValue = creditCreationByMemberVM.netAssetsOfUser.toLocaleString();
+      createCreditVM.upperLimit = await hako.methods.upperLimit().call();
+      createCreditVM.upperLimitValue = Number(createCreditVM.upperLimit).toLocaleString();
+      createCreditVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+      createCreditVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+      createCreditVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+      createCreditVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
+      createCreditVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
+      createCreditVM.netAssetsOfUser = 
+      Number(createCreditVM.balanceOfUser) + 
+      Number(createCreditVM.creditToHakoOfUser) - 
+      Number(createCreditVM.debtToHakoOfUser) + 
+      Number(createCreditVM.creditToMemberOfUser) - 
+      Number(createCreditVM.debtToMemberOfUser);
+      createCreditVM.netAssetsValue = createCreditVM.netAssetsOfUser.toLocaleString();
     }
 
     window.addEventListener('load', function () {
@@ -92,8 +92,8 @@
       startApp();
     });
 
-    var creditCreationByMemberVM = new Vue({
-      el: '#creditCreationByMember',
+    var createCreditVM = new Vue({
+      el: '#createCredit',
       data: {
         value: '',
         memberOrNotOfUser: '',
@@ -116,7 +116,7 @@
         txStatus: ''
       },
       methods: {
-        creditCreationByMemberCheck: async function() {
+        createCreditCheck: async function() {
           if (this.active === true) {
             this.active = false;
             return;
@@ -173,16 +173,16 @@
           this.txData.value = this.value;
           this.active = true;
         },
-        creditCreationByMember: function() {
+        createCredit: function() {
           this.txStatus = "Creating credit on the blockchain. This may take a while...";
-          return hako.methods.creditCreationByMember(Number(this.value))
+          return hako.methods.createCredit(Number(this.value))
           .send({from: userAccount})
           .on("receipt", function(receipt) {
-            creditCreationByMemberVM.txStatus = "";
+            createCreditVM.txStatus = "";
             alert('Transaction successed!');
           })
           .on("error", function(error) {
-            creditCreationByMemberVM.txStatus = "";
+            createCreditVM.txStatus = "";
             alert('Transaction errored!');
           });
         }
