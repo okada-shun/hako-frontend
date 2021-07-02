@@ -222,7 +222,7 @@
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
           this.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
           this.debtToHakoOfTo = await hako.methods.debtToHakoOf(this.to).call();
-          this.borrowValueDurationOfTo = await hako.methods.getBorrowValueDurationOf(this.to).call();
+          this.borrowValueDurationOfTo = await hako.methods.borrowValueDurationOf(this.to).call();
           this.valueDuration.value = this.borrowValueDurationOfTo['0'];
           this.valueDuration.duration = this.borrowValueDurationOfTo['1'];
           if (this.memberOrNotOfUser === '0') {

@@ -27,7 +27,7 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="registerBorrowValueDuration">
+      <div class="transaction" id="registerBorrowing">
         <h2>register borrowing</h2>
         <p>Register the credit value that you want to borrow from other member accounts, and
         register the duration that you want to borrow the credit for<br>
@@ -39,11 +39,11 @@
         <input class="question duration" type="text" name="duration" v-model="hours">hours
         <input class="question duration" type="text" name="duration" v-model="minutes">minutes
         <input class="question duration" type="text" name="duration" v-model="seconds">seconds<br>
-        <button class="button" @click="registerBorrowValueDurationCheck">check</button>
+        <button class="button" @click="registerBorrowingCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
           <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
-          <button class="button" @click="registerBorrowValueDuration" v-show="ok && active">register</button>
+          <button class="button" @click="registerBorrowing" v-show="ok && active">register</button>
         </div>
         <p v-cloak>{{txStatus}}</p>
       </div>  
@@ -71,20 +71,20 @@
     async function startApp() {
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
-      registerBorrowValueDurationVM.upperLimit = await hako.methods.upperLimit().call();
-      registerBorrowValueDurationVM.upperLimitValue = Number(registerBorrowValueDurationVM.upperLimit).toLocaleString();
-      registerBorrowValueDurationVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
-      registerBorrowValueDurationVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
-      registerBorrowValueDurationVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
-      registerBorrowValueDurationVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
-      registerBorrowValueDurationVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
-      registerBorrowValueDurationVM.netAssetsOfUser = 
-      Number(registerBorrowValueDurationVM.balanceOfUser) + 
-      Number(registerBorrowValueDurationVM.creditToHakoOfUser) - 
-      Number(registerBorrowValueDurationVM.debtToHakoOfUser) + 
-      Number(registerBorrowValueDurationVM.creditToMemberOfUser) - 
-      Number(registerBorrowValueDurationVM.debtToMemberOfUser);
-      registerBorrowValueDurationVM.netAssetsValue = registerBorrowValueDurationVM.netAssetsOfUser.toLocaleString();
+      registerBorrowingVM.upperLimit = await hako.methods.upperLimit().call();
+      registerBorrowingVM.upperLimitValue = Number(registerBorrowingVM.upperLimit).toLocaleString();
+      registerBorrowingVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+      registerBorrowingVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+      registerBorrowingVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+      registerBorrowingVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
+      registerBorrowingVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
+      registerBorrowingVM.netAssetsOfUser = 
+      Number(registerBorrowingVM.balanceOfUser) + 
+      Number(registerBorrowingVM.creditToHakoOfUser) - 
+      Number(registerBorrowingVM.debtToHakoOfUser) + 
+      Number(registerBorrowingVM.creditToMemberOfUser) - 
+      Number(registerBorrowingVM.debtToMemberOfUser);
+      registerBorrowingVM.netAssetsValue = registerBorrowingVM.netAssetsOfUser.toLocaleString();
     }
 
     window.addEventListener('load', function () {
@@ -98,8 +98,8 @@
       startApp();
     });
 
-    var registerBorrowValueDurationVM = new Vue({
-      el: '#registerBorrowValueDuration',
+    var registerBorrowingVM = new Vue({
+      el: '#registerBorrowing',
       data: {
         value: '',
         duration: '',
@@ -137,7 +137,7 @@
         txStatus: ''
       },
       methods: {
-        registerBorrowValueDurationCheck: async function() {
+        registerBorrowingCheck: async function() {
           if (this.active === true) {
             this.active = false;
             return;
@@ -253,16 +253,16 @@
           this.durationData.minutes = (quotientC / 60).toString();
           this.durationData.seconds = remainderC.toString();
         },
-        registerBorrowValueDuration: function() {
+        registerBorrowing: function() {
           this.txStatus = "Registering borrow value and duration on the blockchain. This may take a while...";
-          return hako.methods.registerBorrowValueDuration(Number(this.value), this.duration)
+          return hako.methods.registerBorrowing(Number(this.value), this.duration)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
-            registerBorrowValueDurationVM.txStatus = "";
+            registerBorrowingVM.txStatus = "";
             alert('Transaction successed!');
           })
           .on("error", function(error) {
-            registerBorrowValueDurationVM.txStatus = "";
+            registerBorrowingVM.txStatus = "";
             alert('Transaction errored!');
           });
         }

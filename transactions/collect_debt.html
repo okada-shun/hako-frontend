@@ -142,7 +142,7 @@
           this.event = await hako.getPastEvents("LendCredit", {filter: {from: userAccount}, fromBlock: 0, toBlock: "latest"});
           for (let i = 0; i < this.event.length; i++) {
             let id = this.event[i].returnValues[4];
-            let lendRecord = await hako.methods.getLendRecords(id).call();
+            let lendRecord = await hako.methods.lendRecordOf(id).call();
             if (lendRecord[6] === '1') {
               this.idList.push(id);
             }
@@ -160,7 +160,7 @@
             return;
           }
           for (let j = 0; j < this.idList.length; j++) {
-            let lendRecord = await hako.methods.getLendRecords(this.idList[j]).call();
+            let lendRecord = await hako.methods.lendRecordOf(this.idList[j]).call();
             this.lendRecordsOfUser[j].id = "ID: " + lendRecord[0];
             this.lendRecordsOfUser[j].debtor = "Debtor: " + lendRecord[2];
             this.lendRecordsOfUser[j].value = "Value: " + Number(lendRecord[3]).toLocaleString();
@@ -174,10 +174,10 @@
             "Deadline: " + String(new Date(Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000));
             if (Number(new Date()) >= Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000) {
               this.lendRecordsOfUser[j].over = 
-              "Deadline has already passed! You can collect debt!";
+              "Deadline has already passed! You can collect debt from debtor!";
             } else {
               this.lendRecordsOfUser[j].over = 
-              "Deadline has not passed yet! You can't collect debt!";
+              "Deadline has not passed yet! You can't collect debt from debtor!";
             }
             if (j + 1 != this.idList.length) {
               this.lendRecordsOfUser[j + 1] = {
@@ -257,7 +257,7 @@
             return;
           }
           try {
-            this.lendRecords = await hako.methods.getLendRecords(this.id).call();
+            this.lendRecords = await hako.methods.lendRecordOf(this.id).call();
           } catch (error) {
             this.noCheckSentence = "Lending ID error! Make sure ID again!";
             this.txData.debtor = this.debtor;

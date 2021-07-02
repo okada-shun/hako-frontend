@@ -166,7 +166,7 @@
           }
           for (let i = 0; i < this.txDataA.event.length; i++) {
             let id = this.txDataA.event[i].returnValues[2];
-            let lendRecord = await hako.methods.getLendRecords(id).call();
+            let lendRecord = await hako.methods.lendRecordOf(id).call();
             this.txDataA.logs[i].creditor = "<" + this.txDataA.event[i].returnValues[1] + ">";
             this.txDataA.logs[i].id = "ID: " + id;
             this.txDataA.logs[i].value = Number(lendRecord[3]).toLocaleString();
@@ -207,7 +207,7 @@
           }
           for (let i = 0; i < this.txDataB.event.length; i++) {
             let id = this.txDataB.event[i].returnValues[2];
-            let lendRecord = await hako.methods.getLendRecords(id).call();
+            let lendRecord = await hako.methods.lendRecordOf(id).call();
             this.txDataB.logs[i].debtor = "<" + this.txDataB.event[i].returnValues[0] + ">";
             this.txDataB.logs[i].id = "ID: " + id;
             this.txDataB.logs[i].value = Number(lendRecord[3]).toLocaleString();

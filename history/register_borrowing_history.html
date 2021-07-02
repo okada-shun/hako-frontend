@@ -27,7 +27,7 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="regiterBorrowValueDurationLog">
+      <div class="transaction" id="regiterBorrowingLog">
         <h2>register borrowing history</h2>
         <div class="history">
           <p>You can watch the record when you registered borrow value and duration.</p>
@@ -90,8 +90,8 @@
       startApp();
     });
 
-    var regiterBorrowValueDurationLogVM = new Vue({
-      el: '#regiterBorrowValueDurationLog',
+    var regiterBorrowingLogVM = new Vue({
+      el: '#regiterBorrowingLog',
       data: {
         event: '',
         loading: false,
@@ -124,7 +124,7 @@
             return;
           }
           this.loading = true;
-          this.event = await hako.getPastEvents("RegisterBorrowValueDuration", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.event = await hako.getPastEvents("RegisterBorrowing", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.event.length === 0) {
             this.active = true;
             this.loading = false;
