@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Arrangement Debt</title>
+  <title>Reduce Debt</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
@@ -27,15 +27,15 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="arrangement">
-        <h2>arrangement debt</h2>
+      <div class="transaction" id="reduceDebt">
+        <h2>reduce debt</h2>
         <p>Reduce your debt by reducing your credit</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
-        <button class="button" @click="arrangementCheck">check</button>
+        <button class="button" @click="reduceDebtCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
           <p class="noCheckSentence" v-show="!ok && active" v-cloak>{{noCheckSentence}}</p>
-          <button class="button" @click="arrangement" v-show="ok && active">do</button>
+          <button class="button" @click="reduceDebt" v-show="ok && active">reduce</button>
         </div>
         <p v-cloak>{{txStatus}}</p>
       </div>
@@ -76,8 +76,8 @@
       startApp();
     });
 
-    var arrangementVM = new Vue({
-      el: '#arrangement',
+    var reduceDebtVM = new Vue({
+      el: '#reduceDebt',
       data: {
         value: '',
         memberOrNotOfUser: '',
@@ -93,7 +93,7 @@
         txStatus: ''
       },
       methods: {
-        arrangementCheck: async function() {
+        reduceDebtCheck: async function() {
           if (this.active === true) {
             this.active = false;
             return;
@@ -128,7 +128,7 @@
           this.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
-            "NO! You are not a member! Non-member account can't reduce credit!";
+            "NO! You are not a member! Non-member account can't reduce debt!";
           } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
@@ -146,16 +146,16 @@
           this.txData.value = this.value;
           this.active = true;
         },
-        arrangement: function() {
-          this.txStatus = "Arranging debt on the blockchain. This may take a while...";
-          return hako.methods.arrangement(Number(this.value))
+        reduceDebt: function() {
+          this.txStatus = "Reducing debt on the blockchain. This may take a while...";
+          return hako.methods.reduceDebt(Number(this.value))
           .send({from: userAccount})
           .on("receipt", function(receipt) {
-            arrangementVM.txStatus = "";
+            reduceDebtVM.txStatus = "";
             alert('Transaction successed!');
           })
           .on("error", function(error) {
-            arrangementVM.txStatus = "";
+            reduceDebtVM.txStatus = "";
             alert('Transaction errored!');
           });
         }

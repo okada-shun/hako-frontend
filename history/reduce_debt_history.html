@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Arrangement Debt History</title>
+  <title>Reduce Debt History</title>
   <link rel="stylesheet" href="../stylesheet.css">
   <link rel="icon" href="../hako_icon.png">
   <link href="https://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
@@ -27,10 +27,10 @@
   </header>
   <div class="container">
     <div class="transactions">
-      <div class="transaction" id="arrangementLog">
-        <h2>arrangement debt history</h2>
+      <div class="transaction" id="reduceDebtLog">
+        <h2>reduce debt history</h2>
         <div class="history">
-          <p>You can watch the record of credit you reduced.</p>
+          <p>You can watch the record of debt you reduced.</p>
           <button class="button" @click="watchLog">watch</button><br>
           <p v-show="loading">Now searching history...</p>
           <div v-show="!loading">
@@ -87,8 +87,8 @@
       startApp();
     });
 
-    var arrangementLogVM = new Vue({
-      el: '#arrangementLog',
+    var reduceDebtLogVM = new Vue({
+      el: '#reduceDebtLog',
       data: {
         event: '',
         loading: false,
@@ -114,7 +114,7 @@
             return;
           }
           this.loading = true;
-          this.event = await hako.getPastEvents("Arrangement", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
+          this.event = await hako.getPastEvents("ReduceDebt", {filter: {member: userAccount}, fromBlock: 0, toBlock: "latest"});
           if (this.event.length === 0) {
             this.active = true;
             this.loading = false;
