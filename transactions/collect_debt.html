@@ -14,16 +14,8 @@
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <div class="header-item">
-      <div class="header-logo">
-        <a href="../index.html">Hako Finance</a>
-      </div>
-      <p class="introduction">
-        Transfer, get, lend, borrow, and credit creation, all transactions are realized on Hako Finance!<br>
-        Welcome to next-generation DeFi!
-      </p>
-    </div>
+  <header id="header">
+    <header-component></header-component>
   </header>
   <div class="container">
     <div class="transactions">
@@ -54,22 +46,11 @@
       </div>
     </div> 
   </div>
-  <footer>
-    <div class="footer-item">
-      <div class="footer-link">
-        <a href="https://twitter.com/hakofinance" target="_blank" class="footer-icon">
-          <i class="fab fa-twitter fa-fw fa-lg"></i>
-        </a>
-        <a href="https://github.com/okada-shun/hako-finance" target="_blank" class="footer-icon">
-          <i class="fab fa-github fa-fw fa-lg"></i>
-        </a>
-        <a href="https://discord.gg/3hGkVqkqg9" target="_blank" class="footer-icon">
-          <i class="fab fa-discord fa-fw fa-lg"></i>
-        </a>
-      </div>
-      <small>© 2021 hako finance.</small>
-    </div>
+  <footer id="footer">
+    <footer-component></footer-component>
   </footer>
+  <script src="../components/header.js"></script>
+  <script src="../components/footer.js"></script>
   <script>
     var hako;
     var userAccount;
