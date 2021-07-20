@@ -21,7 +21,7 @@
     <div class="transactions">
       <div class="transaction" id="createCredit">
         <h2>create credit</h2>
-        <p>Create your credit by owing debt to Hako<br>
+        <p v-cloak>Create your credit by owing debt to Hako<br>
           (The upper limit value you can create is {{upperLimitValue}}.)<br>
           (You can't create more credit than {{netAssetsValue}}, your net assets.)</p>
         how much? <input class="question" type="text" name="value" v-model="value"><br>
@@ -46,20 +46,25 @@
     async function startApp() {
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
-      createCreditVM.upperLimit = await hako.methods.upperLimit().call();
-      createCreditVM.upperLimitValue = Number(createCreditVM.upperLimit).toLocaleString();
-      createCreditVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
-      createCreditVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
-      createCreditVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
-      createCreditVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
-      createCreditVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
-      createCreditVM.netAssetsOfUser = 
-      Number(createCreditVM.balanceOfUser) + 
-      Number(createCreditVM.creditToHakoOfUser) - 
-      Number(createCreditVM.debtToHakoOfUser) + 
-      Number(createCreditVM.creditToMemberOfUser) - 
-      Number(createCreditVM.debtToMemberOfUser);
-      createCreditVM.netAssetsValue = createCreditVM.netAssetsOfUser.toLocaleString();
+    }
+
+    var upperLimit;
+    var balanceOfUser;
+    var creditToHakoOfUser;
+    var debtToHakoOfUser;
+    var creditToMemberOfUser;
+    var debtToMemberOfUser;
+    var netAssetsOfUser;
+    async function calculateNetAssets() {
+      upperLimit = await hako.methods.upperLimit().call();
+      balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+      creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+      debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+      creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
+      debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
+      netAssetsOfUser = Number(balanceOfUser) + Number(creditToHakoOfUser)
+       - Number(debtToHakoOfUser) + Number(creditToMemberOfUser) - Number(debtToMemberOfUser);
+      createCreditVM.displayValue();
     }
 
     window.addEventListener('load', function () {
@@ -71,6 +76,7 @@
         console.log('install wallet!');
       }
       startApp();
+      calculateNetAssets();
     });
 
     var createCreditVM = new Vue({
@@ -78,15 +84,11 @@
       data: {
         value: '',
         memberOrNotOfUser: '',
-        balanceOfUser: '',
-        creditToHakoOfUser: '',
         debtToHakoOfUser: '',
-        creditToMemberOfUser: '',
-        debtToMemberOfUser: '',
-        netAssetsOfUser: '-',
         upperLimit: '-',
-        netAssetsValue: '-',
         upperLimitValue: '-',
+        netAssetsOfUser: '-',
+        netAssetsValue: '-',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,
@@ -97,6 +99,10 @@
         txStatus: ''
       },
       methods: {
+        displayValue: function() {
+          this.upperLimitValue = Number(upperLimit).toLocaleString();
+          this.netAssetsValue = netAssetsOfUser.toLocaleString();
+        },
         createCreditCheck: async function() {
           if (this.active === true) {
             this.active = false;
@@ -128,6 +134,9 @@
             return;
           }
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
+          this.debtToHakoOfUser = debtToHakoOfUser;
+          this.upperLimit = upperLimit;
+          this.netAssetsOfUser = netAssetsOfUser;
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
             "NO! You are not a member! Non-member account can't create credit!";

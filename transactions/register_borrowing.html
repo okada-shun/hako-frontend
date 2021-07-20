@@ -21,7 +21,7 @@
     <div class="transactions">
       <div class="transaction" id="registerBorrowing">
         <h2>register borrowing</h2>
-        <p>Register the credit value that you want to borrow from other member accounts, and
+        <p v-cloak>Register the credit value that you want to borrow from other member accounts, and
         register the duration that you want to borrow the credit for<br>
         (The upper limit value you can register is {{upperLimitValue}}.)<br>
         (You can't register more value than {{netAssetsValue}}, your net assets.)</p>
@@ -52,20 +52,25 @@
     async function startApp() {
       hako = new web3.eth.Contract(hakoABI, hakoAddress);
       userAccount = await web3.eth.getCoinbase();
-      registerBorrowingVM.upperLimit = await hako.methods.upperLimit().call();
-      registerBorrowingVM.upperLimitValue = Number(registerBorrowingVM.upperLimit).toLocaleString();
-      registerBorrowingVM.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
-      registerBorrowingVM.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
-      registerBorrowingVM.debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
-      registerBorrowingVM.creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
-      registerBorrowingVM.debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
-      registerBorrowingVM.netAssetsOfUser = 
-      Number(registerBorrowingVM.balanceOfUser) + 
-      Number(registerBorrowingVM.creditToHakoOfUser) - 
-      Number(registerBorrowingVM.debtToHakoOfUser) + 
-      Number(registerBorrowingVM.creditToMemberOfUser) - 
-      Number(registerBorrowingVM.debtToMemberOfUser);
-      registerBorrowingVM.netAssetsValue = registerBorrowingVM.netAssetsOfUser.toLocaleString();
+    }
+
+    var upperLimit;
+    var balanceOfUser;
+    var creditToHakoOfUser;
+    var debtToHakoOfUser;
+    var creditToMemberOfUser;
+    var debtToMemberOfUser;
+    var netAssetsOfUser;
+    async function calculateNetAssets() {
+      upperLimit = await hako.methods.upperLimit().call();
+      balanceOfUser = await hako.methods.balanceOf(userAccount).call();
+      creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
+      debtToHakoOfUser = await hako.methods.debtToHakoOf(userAccount).call();
+      creditToMemberOfUser = await hako.methods.creditToMemberOf(userAccount).call();
+      debtToMemberOfUser = await hako.methods.debtToMemberOf(userAccount).call();
+      netAssetsOfUser = Number(balanceOfUser) + Number(creditToHakoOfUser)
+       - Number(debtToHakoOfUser) + Number(creditToMemberOfUser) - Number(debtToMemberOfUser);
+      registerBorrowingVM.displayValue();
     }
 
     window.addEventListener('load', function () {
@@ -77,6 +82,7 @@
         console.log('install wallet!');
       }
       startApp();
+      calculateNetAssets();
     });
 
     var registerBorrowingVM = new Vue({
@@ -89,15 +95,11 @@
         minutes: '',
         seconds: '',
         memberOrNotOfUser: '',
-        balanceOfUser: '',
-        creditToHakoOfUser: '',
-        debtToHakoOfUser: '',
-        creditToMemberOfUser: '',
         debtToMemberOfUser: '',
-        netAssetsOfUser: '-',
         upperLimit: '-',
-        netAssetsValue: '-',
         upperLimitValue: '-',
+        netAssetsOfUser: '-',
+        netAssetsValue: '-',
         noCheckSentence: '',
         okCheckSentence: '',
         ok: false,
@@ -118,6 +120,10 @@
         txStatus: ''
       },
       methods: {
+        displayValue: function() {
+          this.upperLimitValue = Number(upperLimit).toLocaleString();
+          this.netAssetsValue = netAssetsOfUser.toLocaleString();
+        },
         registerBorrowingCheck: async function() {
           if (this.active === true) {
             this.active = false;
@@ -189,6 +195,9 @@
           Number(this.days) * 86400 + Number(this.hours) * 3600
            + Number(this.minutes) * 60 + Number(this.seconds);
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
+          this.debtToMemberOfUser = debtToMemberOfUser;
+          this.upperLimit = upperLimit;
+          this.netAssetsOfUser = netAssetsOfUser;
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
             "NO! You are not a member! Non-member account can't register!";
