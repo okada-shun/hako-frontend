@@ -24,20 +24,22 @@
         <div class="history">
           <p>You can watch the record of credit you created.</p>
           <button class="button" @click="watchLog">watch</button><br>
-          <p v-show="loading">Now searching history...</p>
-          <div v-show="!loading">
-            <div v-show="event.length > 0">
-              <div class="log" v-for="log in logs" :key="log.id" v-show="active">
-                <ul>
-                  <li>You created {{log.value}} credit by owing {{log.value}} debt to Hako.</li>
-                  <li>Transaction Hash: {{log.txHash}}</li>
-                  <li>Block: {{log.blockN.blockNumber}}</li>
-                  <li>Timestamp: {{log.time}}</li>
-                </ul>
+          <div v-cloak>
+            <p v-show="loading">Now searching history...</p>
+            <div v-show="!loading">
+              <div v-show="event.length > 0">
+                <div class="log" v-for="log in logs" :key="log.id" v-show="active">
+                  <ul>
+                    <li>You created {{log.value}} credit by owing {{log.value}} debt to Hako.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div v-show="event.length === 0">
-              <p class="noHistory" v-show="active">No History</p>
+              <div v-show="event.length === 0">
+                <p class="noHistory" v-show="active">No History</p>
+              </div>
             </div>
           </div>
         </div>

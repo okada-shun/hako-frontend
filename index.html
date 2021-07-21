@@ -19,9 +19,9 @@
   </header>
   <div class="container" id="app">
     <div class="tab">
-      <div class="tab-four">
+      <div class="tab-four" v-cloak>
         <ul>
-          <li class="tab-item" v-for="(item, index) in items" :key="index" :class="{active: active === index}" @click="activate(index)" v-cloak>
+          <li class="tab-item" v-for="(item, index) in items" :key="index" :class="{active: active === index}" @click="activate(index)">
             {{ item }}
           </li>
         </ul>
@@ -30,79 +30,79 @@
     <div class="tab-content">
       <div class="tab-pane hakoInfo" v-show="active === 0">
         <h1>Hako Information</h1>
-        <div class="info-content" v-show="!isNotMember">
+        <div class="info-content" v-show="!isNotMember" v-cloak>
           <ul>
-            <li class="infoAddress" v-cloak>Hako's address<br>{{hakoData.hakoAddress}}</li>
-            <li class="infoData" v-cloak>Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
-            <li class="infoData" v-cloak>Total supply of token<br>{{hakoData.totalSupply}}</li>
-            <li class="infoData" v-cloak>Hako's credit to Members<br>{{hakoData.creditOfHako}}</li>
-            <li class="infoData" v-cloak>Hako's debt to Members<br>{{hakoData.debtOfHako}}</li>
-            <li class="infoData" v-cloak>Member count<br>{{hakoData.memberCount}}</li>
-            <li class="infoData" v-cloak>Upper limit<br>{{hakoData.upperLimit}}</li>
+            <li class="infoAddress">Hako's address<br>{{hakoData.hakoAddress}}</li>
+            <li class="infoData">Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
+            <li class="infoData">Total supply of token<br>{{hakoData.totalSupply}}</li>
+            <li class="infoData">Hako's credit to Members<br>{{hakoData.creditOfHako}}</li>
+            <li class="infoData">Hako's debt to Members<br>{{hakoData.debtOfHako}}</li>
+            <li class="infoData">Member count<br>{{hakoData.memberCount}}</li>
+            <li class="infoData">Upper limit<br>{{hakoData.upperLimit}}</li>
           </ul>
         </div>
-        <div class="info-content" v-show="isNotMember">
+        <div class="info-content" v-show="isNotMember" v-cloak>
           <ul>
-            <li class="infoAddress" v-cloak>Hako's address<br>{{hakoData.hakoAddress}}</li>
-            <li class="infoData" v-cloak>Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
-            <li class="infoData" v-cloak>Total supply of token<br>{{hakoData.totalSupply}}</li>
-            <li class="infoData" v-cloak>Hako's credit to Members<br><span>{{hakoData.creditOfHako}}</span></li>
-            <li class="infoData" v-cloak>Hako's debt to Members<br><span>{{hakoData.debtOfHako}}</span></li>
-            <li class="infoData" v-cloak>Member count<br><span>{{hakoData.memberCount}}</span></li>
-            <li class="infoData" v-cloak>Upper limit<br><span>{{hakoData.upperLimit}}</span></li>
+            <li class="infoAddress">Hako's address<br>{{hakoData.hakoAddress}}</li>
+            <li class="infoData">Hako's balance of token<br>{{hakoData.balanceOfHako}}</li>
+            <li class="infoData">Total supply of token<br>{{hakoData.totalSupply}}</li>
+            <li class="infoData">Hako's credit to Members<br><span>{{hakoData.creditOfHako}}</span></li>
+            <li class="infoData">Hako's debt to Members<br><span>{{hakoData.debtOfHako}}</span></li>
+            <li class="infoData">Member count<br><span>{{hakoData.memberCount}}</span></li>
+            <li class="infoData">Upper limit<br><span>{{hakoData.upperLimit}}</span></li>
           </ul>
         </div>
       </div>
       <div class="tab-pane userInfo" v-show="active === 1">
         <h1>User Information</h1>
-        <div class="info-content" v-show="!isNotMember">
+        <div class="info-content" v-show="!isNotMember" v-cloak>
           <ul>
-            <li class="infoAddress" v-cloak>Your address<br>{{userData.userAccount}}</li>
-            <li class="infoData" v-cloak>balance of token<br>{{userData.balanceOfUser}}</li>
+            <li class="infoAddress">Your address<br>{{userData.userAccount}}</li>
+            <li class="infoData">balance of token<br>{{userData.balanceOfUser}}</li>
           </ul>
           <ul>
-            <li class="memberCheck" v-cloak>{{userData.memberCheckOfUser}}</li>
-            <li class="infoData" v-cloak>credit<br>{{userData.creditToHakoOfUser}}</li>
-            <li class="infoData" v-cloak>debt<br>{{userData.debtToHakoOfUser}}</li>
-            <li class="infoData" v-cloak>lending<br>{{userData.creditToMemberOfUser}}</li>
-            <li class="infoData" v-cloak>borrowing<br>{{userData.debtToMemberOfUser}}</li>
-            <li class="infoData" v-cloak>net assets<br>{{userData.netAssetsOfUser}}</li>
+            <li class="memberCheck">{{userData.memberCheckOfUser}}</li>
+            <li class="infoData">credit<br>{{userData.creditToHakoOfUser}}</li>
+            <li class="infoData">debt<br>{{userData.debtToHakoOfUser}}</li>
+            <li class="infoData">lending<br>{{userData.creditToMemberOfUser}}</li>
+            <li class="infoData">borrowing<br>{{userData.debtToMemberOfUser}}</li>
+            <li class="infoData">net assets<br>{{userData.netAssetsOfUser}}</li>
             <li class="supplement">* net assets = balance + credit - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>
-            <li class="infoData" v-cloak>value<br>{{userData.valueDuration.value}}</li>
-            <li class="infoAddress" v-cloak>duration<br>
+            <li class="infoData">value<br>{{userData.valueDuration.value}}</li>
+            <li class="infoAddress">duration<br>
               {{userData.valueDuration.durationData.days}} days {{userData.valueDuration.durationData.hours}} hours 
               {{userData.valueDuration.durationData.minutes}} minutes {{userData.valueDuration.durationData.seconds}} seconds 
               ( = {{userData.valueDuration.duration}} seconds)
             </li>
           </ul>
         </div>
-        <div class="info-content" v-show="isNotMember">
+        <div class="info-content" v-show="isNotMember" v-cloak>
           <ul>
-            <li class="infoAddress" v-cloak>Your address<br>{{userData.userAccount}}</li>
-            <li class="infoData" v-cloak>balance of token<br>{{userData.balanceOfUser}}</li>
+            <li class="infoAddress">Your address<br>{{userData.userAccount}}</li>
+            <li class="infoData">balance of token<br>{{userData.balanceOfUser}}</li>
           </ul>
           <ul>
-            <li class="memberCheck" v-cloak>{{userData.memberCheckOfUser}}</li>
-            <li class="infoData" v-cloak>credit<br><span>{{userData.creditToHakoOfUser}}</span></li>
-            <li class="infoData" v-cloak>debt<br><span>{{userData.debtToHakoOfUser}}</span></li>
-            <li class="infoData" v-cloak>lending<br><span>{{userData.creditToMemberOfUser}}</span></li>
-            <li class="infoData" v-cloak>borrowing<br><span>{{userData.debtToMemberOfUser}}</span></li>
-            <li class="infoData" v-cloak>net assets<br><span>{{userData.netAssetsOfUser}}</span></li>
+            <li class="memberCheck">{{userData.memberCheckOfUser}}</li>
+            <li class="infoData">credit<br><span>{{userData.creditToHakoOfUser}}</span></li>
+            <li class="infoData">debt<br><span>{{userData.debtToHakoOfUser}}</span></li>
+            <li class="infoData">lending<br><span>{{userData.creditToMemberOfUser}}</span></li>
+            <li class="infoData">borrowing<br><span>{{userData.debtToMemberOfUser}}</span></li>
+            <li class="infoData">net assets<br><span>{{userData.netAssetsOfUser}}</span></li>
             <li class="supplement">* net assets = balance + credit - debt + lending - borrowing</li>
           </ul>
           <ul>
             <li class="memberCheck">value and duration you can borrow</li>
-            <li class="infoData" v-cloak>value<br><span>{{userData.valueDuration.value}}</span></li>
-            <li class="infoAddress" v-cloak>duration<br><span>{{userData.valueDuration.duration}}</span></li>
+            <li class="infoData">value<br><span>{{userData.valueDuration.value}}</span></li>
+            <li class="infoAddress">duration<br><span>{{userData.valueDuration.duration}}</span></li>
           </ul>
         </div>
       </div>
       <div class="tab-pane transactions" v-show="active === 2">
         <h1>Transactions</h1>
-        <div class="info-content">
+        <div class="info-content" v-cloak>
           <ul>
             <div class="transactionLink transfer">
               <div v-if="haveToken">
@@ -469,7 +469,7 @@
       </div>
       <div class="tab-pane transactions" v-show="active === 3">
         <h1>Transactions History</h1>
-        <div class="info-content">
+        <div class="info-content" v-cloak>
           <ul>
             <div class="transactionLink transfer">
               <li class="linkToTransaction">
@@ -572,7 +572,7 @@
       </div>
     </div>
     <div class="docs">
-      <div class="docs-item">
+      <div class="docs-item" v-cloak>
         <ul>
           <li class="docs-link">
             <a href="docs.html" target="_blank">Docs</a>

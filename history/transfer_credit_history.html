@@ -24,40 +24,44 @@
         <div class="history">
           <p>You can watch the record of credit you transferred.</p>
           <button class="button" @click="watchFromLog">watch</button><br>
-          <p v-show="txDataA.loading">Now searching history...</p>
-          <div v-show="!txDataA.loading">
-            <div v-show="txDataA.event.length > 0">
-              <div class="log" v-for="log in txDataA.logs" :key="log.id" v-show="txDataA.active">
-                <ul>
-                  <li>You transferred {{log.value}} credit to {{log.to}}.</li>
-                  <li>Transaction Hash: {{log.txHash}}</li>
-                  <li>Block: {{log.blockN.blockNumber}}</li>
-                  <li>Timestamp: {{log.time}}</li>
-                </ul>
+          <div v-cloak>
+            <p v-show="txDataA.loading">Now searching history...</p>
+            <div v-show="!txDataA.loading">
+              <div v-show="txDataA.event.length > 0">
+                <div class="log" v-for="log in txDataA.logs" :key="log.id" v-show="txDataA.active">
+                  <ul>
+                    <li>You transferred {{log.value}} credit to {{log.to}}.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div v-show="txDataA.event.length === 0">
-              <p class="noHistory" v-show="txDataA.active">No History</p>
+              <div v-show="txDataA.event.length === 0">
+                <p class="noHistory" v-show="txDataA.active">No History</p>
+              </div>
             </div>
           </div>
         </div>
         <div class="history">
           <p>You can watch the record of credit you got transferred.</p>
           <button class="button" @click="watchToLog">watch</button><br>
-          <p v-show="txDataB.loading">Now searching history...</p>
-          <div v-show="!txDataB.loading">
-            <div v-show="txDataB.event.length > 0">
-              <div class="log" v-for="log in txDataB.logs" :key="log.id" v-show="txDataB.active">
-                <ul>
-                  <li>{{log.from}} transferred {{log.value}} credit to you.</li>
-                  <li>Transaction Hash: {{log.txHash}}</li>
-                  <li>Block: {{log.blockN.blockNumber}}</li>
-                  <li>Timestamp: {{log.time}}</li>
-                </ul>
+          <div v-cloak>
+            <p v-show="txDataB.loading">Now searching history...</p>
+            <div v-show="!txDataB.loading">
+              <div v-show="txDataB.event.length > 0">
+                <div class="log" v-for="log in txDataB.logs" :key="log.id" v-show="txDataB.active">
+                  <ul>
+                    <li>{{log.from}} transferred {{log.value}} credit to you.</li>
+                    <li>Transaction Hash: {{log.txHash}}</li>
+                    <li>Block: {{log.blockN.blockNumber}}</li>
+                    <li>Timestamp: {{log.time}}</li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div v-show="txDataB.event.length === 0">
-              <p class="noHistory" v-show="txDataB.active">No History</p>
+              <div v-show="txDataB.event.length === 0">
+                <p class="noHistory" v-show="txDataB.active">No History</p>
+              </div>
             </div>
           </div>
         </div>

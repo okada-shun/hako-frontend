@@ -101,18 +101,18 @@
     <div class="tab-content">
       <div class="tab-pane hakoInfo" v-show="isHakoOwner">       
         <h1>Hako Information</h1>
-        <div class="info-content">
+        <div class="info-content" v-cloak>
           <ul>
-            <li class="infoAddress" v-cloak>Hako's address<br>{{hakoAddress}}</li>
-            <li class="infoAddress" v-cloak>Hako Owner's address<br>{{hakoOwner}}</li>
-            <li class="infoData" v-cloak>Hako's balance of token<br>{{balanceOfHako}}</li>
-            <li class="infoData" v-cloak>Total supply of token<br>{{totalSupply}}</li>
-            <li class="infoData" v-cloak>Hako's credit to Members<br>{{creditOfHako}}</li>
-            <li class="infoData" v-cloak>Hako's debt to Members<br>{{debtOfHako}}</li>
-            <li class="infoData" v-cloak>Owner's balance of token<br>{{balanceOfHakoOwner}}</li>
-            <li class="infoData" v-cloak>Lending count<br>{{lendCount}}</li>
-            <li class="infoData" v-cloak>Member count<br>{{memberCount}}</li>
-            <li class="infoData" v-cloak>Upper limit<br>{{upperLimit}}</li>
+            <li class="infoAddress">Hako's address<br>{{hakoAddress}}</li>
+            <li class="infoAddress">Hako Owner's address<br>{{hakoOwner}}</li>
+            <li class="infoData">Hako's balance of token<br>{{balanceOfHako}}</li>
+            <li class="infoData">Total supply of token<br>{{totalSupply}}</li>
+            <li class="infoData">Hako's credit to Members<br>{{creditOfHako}}</li>
+            <li class="infoData">Hako's debt to Members<br>{{debtOfHako}}</li>
+            <li class="infoData">Owner's balance of token<br>{{balanceOfHakoOwner}}</li>
+            <li class="infoData">Lending count<br>{{lendCount}}</li>
+            <li class="infoData">Member count<br>{{memberCount}}</li>
+            <li class="infoData">Upper limit<br>{{upperLimit}}</li>
           </ul>
         </div>
       </div>
