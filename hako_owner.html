@@ -161,20 +161,22 @@
           <div class="history">
             <p>You can watch hako owner transition.</p>     
             <button class="button" @click="watchOwnerLog">watch</button><br>
-            <p v-show="txDataC.loading">Now searching history...</p>
-            <div v-show="!txDataC.loading">
-              <div v-show="txDataC.event.length > 0">
-                <div class="log" v-for="log in txDataC.logs" :key="log.id" v-show="txDataC.active">
-                  <ul>
-                    <li>Hako owner changed from {{log.oldOwner}} to {{log.newOwner}}.</li>
-                    <li>Transaction Hash: {{log.txHash}}</li>
-                    <li>Block: {{log.blockN.blockNumber}}</li>
-                    <li>Timestamp: {{log.time}}</li>
-                  </ul>
+            <div v-cloak>
+              <p v-show="txDataC.loading">Now searching history...</p>
+              <div v-show="!txDataC.loading">
+                <div v-show="txDataC.event.length > 0">
+                  <div class="log" v-for="log in txDataC.logs" :key="log.id" v-show="txDataC.active">
+                    <ul>
+                      <li>Hako owner changed from {{log.oldOwner}} to {{log.newOwner}}.</li>
+                      <li>Transaction Hash: {{log.txHash}}</li>
+                      <li>Block: {{log.blockN.blockNumber}}</li>
+                      <li>Timestamp: {{log.time}}</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div v-show="txDataC.event.length === 0">
-                <p class="noHistory" v-show="txDataC.active">No History</p>
+                <div v-show="txDataC.event.length === 0">
+                  <p class="noHistory" v-show="txDataC.active">No History</p>
+                </div>
               </div>
             </div>
           </div>
@@ -184,20 +186,22 @@
           <div class="history">
             <p>You can watch upper limit transition.</p>
             <button class="button" @click="watchUpperLog">watch</button><br>
-            <p v-show="txDataD.loading">Now searching history...</p>
-            <div v-show="!txDataD.loading">
-              <div v-show="txDataD.event.length > 0">
-                <div class="log" v-for="log in txDataD.logs" :key="log.id" v-show="txDataD.active">
-                  <ul>
-                    <li>Hako owner, {{log.owner}}, changed upper limit to {{log.upperLimit}}.</li>
-                    <li>Transaction Hash: {{log.txHash}}</li>
-                    <li>Block: {{log.blockN.blockNumber}}</li>
-                    <li>Timestamp: {{log.time}}</li>
-                  </ul>
+            <div v-cloak>
+              <p v-show="txDataD.loading">Now searching history...</p>
+              <div v-show="!txDataD.loading">
+                <div v-show="txDataD.event.length > 0">
+                  <div class="log" v-for="log in txDataD.logs" :key="log.id" v-show="txDataD.active">
+                    <ul>
+                      <li>Hako owner, {{log.owner}}, changed upper limit to {{log.upperLimit}}.</li>
+                      <li>Transaction Hash: {{log.txHash}}</li>
+                      <li>Block: {{log.blockN.blockNumber}}</li>
+                      <li>Timestamp: {{log.time}}</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div v-show="txDataD.event.length === 0">
-                <p class="noHistory" v-show="txDataD.active">No History</p>
+                <div v-show="txDataD.event.length === 0">
+                  <p class="noHistory" v-show="txDataD.active">No History</p>
+                </div>
               </div>
             </div>
           </div>
@@ -207,20 +211,22 @@
           <div class="history">
             <p>You can watch the record of token that hako owner got as reward.</p>
             <button class="button" @click="watchRewardLog">watch</button><br>
-            <p v-show="txDataF.loading">Now searching history...</p>
-            <div v-show="!txDataF.loading">
-              <div v-show="txDataF.event.length > 0">
-                <div class="log" v-for="log in txDataF.logs" :key="log.id" v-show="txDataF.active">
-                  <ul>
-                    <li>Hako owner, {{log.owner}}, got {{log.reward}} token as reward.</li>
-                    <li>Transaction Hash: {{log.txHash}}</li>
-                    <li>Block: {{log.blockN.blockNumber}}</li>
-                    <li>Timestamp: {{log.time}}</li>
-                  </ul>
+            <div v-cloak>
+              <p v-show="txDataF.loading">Now searching history...</p>
+              <div v-show="!txDataF.loading">
+                <div v-show="txDataF.event.length > 0">
+                  <div class="log" v-for="log in txDataF.logs" :key="log.id" v-show="txDataF.active">
+                    <ul>
+                      <li>Hako owner, {{log.owner}}, got {{log.reward}} token as reward.</li>
+                      <li>Transaction Hash: {{log.txHash}}</li>
+                      <li>Block: {{log.blockN.blockNumber}}</li>
+                      <li>Timestamp: {{log.time}}</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div v-show="txDataF.event.length === 0">
-                <p class="noHistory" v-show="txDataF.active">No History</p>
+                <div v-show="txDataF.event.length === 0">
+                  <p class="noHistory" v-show="txDataF.active">No History</p>
+                </div>
               </div>
             </div>
           </div>
