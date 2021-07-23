@@ -543,10 +543,11 @@
           for (let i = 0; i < this.txDataC.event.length; i++) {
             this.txDataC.logs[i].oldOwner = "<" + this.txDataC.event[i].returnValues[0] + ">";
             this.txDataC.logs[i].newOwner = "<" + this.txDataC.event[i].returnValues[1] + ">";
-            this.txDataC.logs[i].txHash = this.txDataC.event[i].transactionHash;
-            this.txDataC.logs[i].blockN = await web3.eth.getTransaction(this.txDataC.logs[i].txHash);
-            this.txDataC.logs[i].blockData = await web3.eth.getBlock(this.txDataC.logs[i].blockN.blockNumber);
-            this.txDataC.logs[i].time = String(new Date(this.txDataC.logs[i].blockData.timestamp * 1000));
+            let transactionData = await this.getTransactionData(this.txDataC.event[i]);
+            this.txDataC.logs[i].txHash = transactionData[0];
+            this.txDataC.logs[i].blockN = transactionData[1];
+            this.txDataC.logs[i].blockData = transactionData[2];
+            this.txDataC.logs[i].time = transactionData[3];
             if (i + 1 != this.txDataC.event.length) {
               this.txDataC.logs[i + 1] = {
                 oldOwner: '',
@@ -580,10 +581,11 @@
           for (let i = 0; i < this.txDataD.event.length; i++) {
             this.txDataD.logs[i].owner = "<" + this.txDataD.event[i].returnValues[0] + ">";
             this.txDataD.logs[i].upperLimit = Number(this.txDataD.event[i].returnValues[1]).toLocaleString();
-            this.txDataD.logs[i].txHash = this.txDataD.event[i].transactionHash;
-            this.txDataD.logs[i].blockN = await web3.eth.getTransaction(this.txDataD.logs[i].txHash);
-            this.txDataD.logs[i].blockData = await web3.eth.getBlock(this.txDataD.logs[i].blockN.blockNumber);
-            this.txDataD.logs[i].time = String(new Date(this.txDataD.logs[i].blockData.timestamp * 1000));
+            let transactionData = await this.getTransactionData(this.txDataD.event[i]);
+            this.txDataD.logs[i].txHash = transactionData[0];
+            this.txDataD.logs[i].blockN = transactionData[1];
+            this.txDataD.logs[i].blockData = transactionData[2];
+            this.txDataD.logs[i].time = transactionData[3];
             if (i + 1 != this.txDataD.event.length) {
               this.txDataD.logs[i + 1] = {
                 owner: '',
@@ -617,10 +619,11 @@
           for (let i = 0; i < this.txDataF.event.length; i++) {
             this.txDataF.logs[i].owner = "<" + this.txDataF.event[i].returnValues[0] + ">";
             this.txDataF.logs[i].reward = Number(this.txDataF.event[i].returnValues[1]).toLocaleString();
-            this.txDataF.logs[i].txHash = this.txDataF.event[i].transactionHash;
-            this.txDataF.logs[i].blockN = await web3.eth.getTransaction(this.txDataF.logs[i].txHash);
-            this.txDataF.logs[i].blockData = await web3.eth.getBlock(this.txDataF.logs[i].blockN.blockNumber);
-            this.txDataF.logs[i].time = String(new Date(this.txDataF.logs[i].blockData.timestamp * 1000));
+            let transactionData = await this.getTransactionData(this.txDataF.event[i]);
+            this.txDataF.logs[i].txHash = transactionData[0];
+            this.txDataF.logs[i].blockN = transactionData[1];
+            this.txDataF.logs[i].blockData = transactionData[2];
+            this.txDataF.logs[i].time = transactionData[3];
             if (i + 1 != this.txDataF.event.length) {
               this.txDataF.logs[i + 1] = {
                 owner: '',
@@ -634,6 +637,13 @@
           }
           this.txDataF.active = true;
           this.txDataF.loading = false;
+        },
+        getTransactionData: async function(event) {
+          let txHash = event.transactionHash;
+          let blockN = await web3.eth.getTransaction(txHash);
+          let blockData = await web3.eth.getBlock(blockN.blockNumber);
+          let time = String(new Date(blockData.timestamp * 1000));
+          return ([txHash, blockN, blockData, time]);
         }
       },
       computed: {

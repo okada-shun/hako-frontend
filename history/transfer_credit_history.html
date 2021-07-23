@@ -129,10 +129,11 @@
           for (let i = 0; i < this.txDataA.event.length; i++) {
             this.txDataA.logs[i].to = "<" + this.txDataA.event[i].returnValues[1] + ">";
             this.txDataA.logs[i].value = Number(this.txDataA.event[i].returnValues[2]).toLocaleString();
-            this.txDataA.logs[i].txHash = this.txDataA.event[i].transactionHash;
-            this.txDataA.logs[i].blockN = await web3.eth.getTransaction(this.txDataA.logs[i].txHash);
-            this.txDataA.logs[i].blockData = await web3.eth.getBlock(this.txDataA.logs[i].blockN.blockNumber);
-            this.txDataA.logs[i].time = String(new Date(this.txDataA.logs[i].blockData.timestamp * 1000));
+            let transactionData = await getTransactionData(this.txDataA.event[i]);
+            this.txDataA.logs[i].txHash = transactionData[0];
+            this.txDataA.logs[i].blockN = transactionData[1];
+            this.txDataA.logs[i].blockData = transactionData[2];
+            this.txDataA.logs[i].time = transactionData[3];
             if (i + 1 != this.txDataA.event.length) {
               this.txDataA.logs[i + 1] = {
                 to: '',
@@ -166,10 +167,11 @@
           for (let i = 0; i < this.txDataB.event.length; i++) {
             this.txDataB.logs[i].from = "<" + this.txDataB.event[i].returnValues[0] + ">";
             this.txDataB.logs[i].value = Number(this.txDataB.event[i].returnValues[2]).toLocaleString();
-            this.txDataB.logs[i].txHash = this.txDataB.event[i].transactionHash;
-            this.txDataB.logs[i].blockN = await web3.eth.getTransaction(this.txDataB.logs[i].txHash);
-            this.txDataB.logs[i].blockData = await web3.eth.getBlock(this.txDataB.logs[i].blockN.blockNumber);
-            this.txDataB.logs[i].time = String(new Date(this.txDataB.logs[i].blockData.timestamp * 1000));
+            let transactionData = await getTransactionData(this.txDataB.event[i]);
+            this.txDataB.logs[i].txHash = transactionData[0];
+            this.txDataB.logs[i].blockN = transactionData[1];
+            this.txDataB.logs[i].blockData = transactionData[2];
+            this.txDataB.logs[i].time = transactionData[3];
             if (i + 1 != this.txDataB.event.length) {
               this.txDataB.logs[i + 1] = {
                 from: '',

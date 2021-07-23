@@ -15,3 +15,11 @@ window.addEventListener('load', function () {
   }
   startApp();
 });
+
+async function getTransactionData(event) {
+  let txHash = event.transactionHash;
+  let blockN = await web3.eth.getTransaction(txHash);
+  let blockData = await web3.eth.getBlock(blockN.blockNumber);
+  let time = String(new Date(blockData.timestamp * 1000));
+  return ([txHash, blockN, blockData, time]);
+}

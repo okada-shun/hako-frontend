@@ -24,16 +24,18 @@
         <p>Return your debt to the creditor account<br>
           (You can return your debt even if the borrow duration is yet to be passsed.)</p>
         <button class="button" @click="getDebtToMemberInfo">search</button><br>
-        <p v-show="loading">Now searching your borrowing records...</p>
-        <ul class="creditDebtInfo" v-for="lendRecord in lendRecordsOfUser" :key="lendRecord.id" v-show="lendRecordActive && !loading">
-          <li v-cloak>{{lendRecord.id}}</li>
-          <li v-cloak>{{lendRecord.creditor}}</li>
-          <li v-cloak>{{lendRecord.value}}</li>
-          <li v-cloak>{{lendRecord.duration}}</li>
-          <li v-cloak>{{lendRecord.time}}</li>
-          <li v-cloak>{{lendRecord.deadline}}</li>
-          <li v-cloak>{{lendRecord.over}}</li>
-        </ul>
+        <div v-cloak>
+          <p v-show="loading">Now searching your borrowing records...</p>
+          <ul class="creditDebtInfo" v-for="lendRecord in lendRecordsOfUser" :key="lendRecord.id" v-show="lendRecordActive && !loading">
+            <li>{{lendRecord.id}}</li>
+            <li>{{lendRecord.creditor}}</li>
+            <li>{{lendRecord.value}}</li>
+            <li>{{lendRecord.duration}}</li>
+            <li>{{lendRecord.time}}</li>
+            <li>{{lendRecord.deadline}}</li>
+            <li>{{lendRecord.over}}</li>
+          </ul>
+        </div>
         to who? <input class="question" type="text" name="creditor" v-model="creditor"><br>
         lending ID: <input class="question" type="text" name="id" v-model="id"><br>
         <button class="button" @click="returnDebtToCheck">check</button>

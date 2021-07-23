@@ -100,10 +100,11 @@
             this.logs[i].value = Number(this.event[i].returnValues[1]).toLocaleString();
             this.logs[i].duration = Number(this.event[i].returnValues[2]).toLocaleString();
             this.arrangeDuration(Number(this.event[i].returnValues[2]), i);
-            this.logs[i].txHash = this.event[i].transactionHash;
-            this.logs[i].blockN = await web3.eth.getTransaction(this.logs[i].txHash);
-            this.logs[i].blockData = await web3.eth.getBlock(this.logs[i].blockN.blockNumber);
-            this.logs[i].time = String(new Date(this.logs[i].blockData.timestamp * 1000));
+            let transactionData = await getTransactionData(this.event[i]);
+            this.logs[i].txHash = transactionData[0];
+            this.logs[i].blockN = transactionData[1];
+            this.logs[i].blockData = transactionData[2];
+            this.logs[i].time = transactionData[3];
             if (i + 1 != this.event.length) {
               this.logs[i + 1] = {
                 value: '',
