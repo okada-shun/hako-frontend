@@ -89,6 +89,34 @@ var appVM = new Vue({
           seconds: '-'
         }
       }
+    },
+    transactionUrl: {
+      transferTokenUrl: "transactions/transfer_token.html",
+      transferCreditUrl: "transactions/transfer_credit.html",
+      joinHakoUrl: "transactions/join_hako.html",
+      leaveHakoUrl: "transactions/leave_hako.html",
+      depositTokenUrl: "transactions/deposit_token.html",
+      withdrawTokenUrl: "transactions/withdraw_token.html",
+      registerBorrowingUrl: "transactions/register_borrowing.html",
+      lendCreditUrl: "transactions/lend_credit.html",
+      collectDebtUrl: "transactions/collect_debt.html",
+      returnDebtUrl: "transactions/return_debt.html",
+      createCreditUrl: "transactions/create_credit.html",
+      reduceDebtUrl: "transactions/reduce_debt.html"
+    },
+    historyUrl: {
+      transferTokenUrl: "history/transfer_token_history.html",
+      transferCreditUrl: "history/transfer_credit_history.html",
+      joinHakoUrl: "history/join_hako_history.html",
+      leaveHakoUrl: "history/leave_hako_history.html",
+      depositTokenUrl: "history/deposit_token_history.html",
+      withdrawTokenUrl: "history/withdraw_token_history.html",
+      registerBorrowingUrl: "history/register_borrowing_history.html",
+      lendCreditUrl: "history/lend_credit_history.html",
+      collectDebtUrl: "history/collect_debt_history.html",
+      returnDebtUrl: "history/return_debt_history.html",
+      createCreditUrl: "history/create_credit_history.html",
+      reduceDebtUrl: "history/reduce_debt_history.html"
     }
   },
   methods: {
