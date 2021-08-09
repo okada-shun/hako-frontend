@@ -23,7 +23,7 @@
         <h2>withdraw token</h2>
         <p>Withdraw your token from Hako<br>
           (Translate your credit into token.)</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="withdrawTokenCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -77,13 +77,13 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0) {
+          if (this.value <= 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.active = true;
@@ -102,13 +102,13 @@
           } else if (this.debtToMemberOfUser !== '0') {
             this.noCheckSentence = 
             "NO! You are borrowing credit! You can't withdraw token unless you return all of your debt to creditor!";
-          } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
+          } else if (this.value > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else {
             this.okCheckSentence = 
-            "OK! You withdraw " + Number(this.value).toLocaleString() + " credit!";
+            "OK! You withdraw " + this.value.toLocaleString() + " credit!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -116,7 +116,7 @@
         },
         withdrawToken: function() {
           this.txStatus = "Withdrawing token on the blockchain. This may take a while...";
-          return hako.methods.withdrawToken(Number(this.value))
+          return hako.methods.withdrawToken(this.value)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               withdrawTokenVM.txStatus = "";

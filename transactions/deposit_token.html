@@ -23,7 +23,7 @@
         <h2>deposit token</h2>
         <p>Deposit your token to Hako<br>
           (Translate your token into credit.)</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="depositTokenCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -75,13 +75,13 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0) {
+          if (this.value <= 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.active = true;
@@ -92,13 +92,13 @@
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
             "NO! You are not a member! Non-member account can't deposit token!";
-          } else if (Number(this.value) > Number(this.balanceOfUser)) {
+          } else if (this.value > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else {
             this.okCheckSentence = 
-            "OK! You deposit " + Number(this.value).toLocaleString() + " token!";
+            "OK! You deposit " + this.value.toLocaleString() + " token!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -106,7 +106,7 @@
         },
         depositToken: function() {
           this.txStatus = "Depositing token on the blockchain. This may take a while...";
-          return hako.methods.depositToken(Number(this.value))
+          return hako.methods.depositToken(this.value)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               depositTokenVM.txStatus = "";

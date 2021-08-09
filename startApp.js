@@ -20,6 +20,6 @@ async function getTransactionData(event) {
   let txHash = event.transactionHash;
   let blockN = await web3.eth.getTransaction(txHash);
   let blockData = await web3.eth.getBlock(blockN.blockNumber);
-  let time = String(new Date(blockData.timestamp * 1000));
+  let time = new Date(blockData.timestamp * 1000).toLocaleString();
   return ([txHash, blockN, blockData, time]);
 }

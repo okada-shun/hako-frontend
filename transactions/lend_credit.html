@@ -24,13 +24,13 @@
         <p>Lend your credit to another member account<br>
           (You can't lend more credit than the borrower registered and 
           you can't lend credit for more duration than the borrower registered.)</p>
-        to who? <input class="question" type="text" name="to" v-model="to"><br>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        to who? <input class="question" type="text" name="to" v-model.trim="to" placeholder="address"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         how long? <br>
-        <input class="question duration" type="text" name="duration" v-model="days">days
-        <input class="question duration" type="text" name="duration" v-model="hours">hours
-        <input class="question duration" type="text" name="duration" v-model="minutes">minutes
-        <input class="question duration" type="text" name="duration" v-model="seconds">seconds<br>
+        <input class="question duration" type="text" name="duration" v-model.number="days">days
+        <input class="question duration" type="text" name="duration" v-model.number="hours">hours
+        <input class="question duration" type="text" name="duration" v-model.number="minutes">minutes
+        <input class="question duration" type="text" name="duration" v-model.number="seconds">seconds<br>
         <button class="button" @click="lendCreditCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -133,7 +133,7 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0 || Number(this.days) < 0 || Number(this.hours) < 0 || Number(this.minutes) < 0 || Number(this.seconds) < 0) {
+          if (this.value <= 0 || this.days < 0 || this.hours < 0 || this.minutes < 0 || this.seconds < 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.to = this.to;
             this.txData.value = this.value;
@@ -144,7 +144,7 @@
             this.active = true;
             return;
           }
-          if (Number(this.days) === 0 && Number(this.hours) === 0 && Number(this.minutes) === 0 && Number(this.seconds) === 0) {
+          if (this.days === 0 && this.hours === 0 && this.minutes === 0 && this.seconds === 0) {
             this.noCheckSentence = "Please input a duration as positive number!";
             this.txData.to = this.to;
             this.txData.value = this.value;
@@ -155,8 +155,8 @@
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value)) || !Number.isInteger(Number(this.days)) || !Number.isInteger(Number(this.hours))
-           || !Number.isInteger(Number(this.minutes)) || !Number.isInteger(Number(this.seconds))) {
+          if (!Number.isInteger(this.value) || !Number.isInteger(this.days) || !Number.isInteger(this.hours)
+           || !Number.isInteger(this.minutes) || !Number.isInteger(this.seconds)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.to = this.to;
             this.txData.value = this.value;
@@ -181,8 +181,8 @@
             return;
           }
           this.duration = 
-          Number(this.days) * 86400 + Number(this.hours) * 3600
-           + Number(this.minutes) * 60 + Number(this.seconds);
+          this.days * 86400 + this.hours * 3600
+           + this.minutes * 60 + this.seconds;
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
           this.creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
           this.debtToHakoOfTo = await hako.methods.debtToHakoOf(this.to).call();
@@ -198,17 +198,17 @@
           } else if (this.memberOrNotOfTo !== '1') {
             this.noCheckSentence = 
             "NO! <" + this.to + "> is not a member account! You can't lend your credit to non-member account!";
-          } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
+          } else if (this.value > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else if (this.debtToHakoOfTo !== '0') {
             this.noCheckSentence = 
             "NO! <" + this.to + "> has debt to Hako! You can't lend your credit to the account that has debt to Hako!";
-          } else if (Number(this.value) > Number(this.valueDuration.value)) {
+          } else if (this.value > Number(this.valueDuration.value)) {
             this.noCheckSentence = 
             "NO! The borrower wants to borrow only " + Number(this.valueDuration.value).toLocaleString() + " credit! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else if (this.duration < Number(this.valueDuration.duration)) {
             this.arrangeDuration(this.duration);
             this.arrangeBorrowerDuration(Number(this.valueDuration.duration));
@@ -223,7 +223,7 @@
           } else {
             this.arrangeDuration(this.duration);
             this.okCheckSentence = 
-            "OK! You lend " + Number(this.value).toLocaleString() + " credit to <" + this.to + "> for "
+            "OK! You lend " + this.value.toLocaleString() + " credit to <" + this.to + "> for "
               + this.durationData.days + " days " + this.durationData.hours + " hours "
               + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = "
               + this.duration.toLocaleString() + " seconds)!";
@@ -263,7 +263,7 @@
         },
         lendCredit: function() {
           this.txStatus = "Lending credit on the blockchain. This may take a while...";
-          return hako.methods.lendCredit(this.to, Number(this.value), this.duration)
+          return hako.methods.lendCredit(this.to, this.value, this.duration)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               lendCreditVM.txStatus = "";

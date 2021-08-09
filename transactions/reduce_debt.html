@@ -22,7 +22,7 @@
       <div class="transaction" id="reduceDebt">
         <h2>reduce debt</h2>
         <p>Reduce your debt by reducing your credit</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="reduceDebtCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -75,13 +75,13 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0) {
+          if (this.value <= 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.active = true;
@@ -93,18 +93,18 @@
           if (this.memberOrNotOfUser === '0') {
             this.noCheckSentence = 
             "NO! You are not a member! Non-member account can't reduce debt!";
-          } else if (Number(this.value) > Number(this.creditToHakoOfUser)) {
+          } else if (this.value > Number(this.creditToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.creditToHakoOfUser).toLocaleString() + " credit! "
-             + Number(this.value).toLocaleString() + " is over!";
-          } else if (Number(this.value) > Number(this.debtToHakoOfUser)) {
+             + this.value.toLocaleString() + " is over!";
+          } else if (this.value > Number(this.debtToHakoOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.debtToHakoOfUser).toLocaleString() + " debt! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else {
             this.okCheckSentence = 
-            "OK! You reduce " + Number(this.value).toLocaleString() + " debt by reducing "
-             + Number(this.value).toLocaleString() + " credit!";
+            "OK! You reduce " + this.value.toLocaleString() + " debt by reducing "
+             + this.value.toLocaleString() + " credit!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -112,7 +112,7 @@
         },
         reduceDebt: function() {
           this.txStatus = "Reducing debt on the blockchain. This may take a while...";
-          return hako.methods.reduceDebt(Number(this.value))
+          return hako.methods.reduceDebt(this.value)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
             reduceDebtVM.txStatus = "";

@@ -122,7 +122,7 @@
           <h2>change hako owner</h2>
           <p>Change hako owner to new owner<br>
           (Hako member can't be new hako owner.)</p>
-          to who? <input class="question" type="text" name="to" v-model="txDataA.to"><br>
+          to who? <input class="question" type="text" name="to" v-model.trim="txDataA.to" placeholder="address"><br>
           <button class="button" @click="changeHakoOwnerCheck">check</button>
           <div v-show="isFillA">
             <p class="okCheckSentence" v-show="txDataA.ok && txDataA.active" v-cloak>{{txDataA.okCheckSentence}}</p>
@@ -134,7 +134,7 @@
         <div class="transaction changeUpperLimit">
           <h2>change upper limit</h2>
           <p>Change the upper limit of borrowing and credit creation value</p>
-          new upper limit <input class="question" type="text" name="value" v-model="txDataB.value"><br>
+          new upper limit <input class="question" type="text" name="value" v-model.number="txDataB.value" placeholder="value"><br>
           <button class="button" @click="changeUpperLimitCheck">check</button>
           <div v-show="isFillB">
             <p class="okCheckSentence" v-show="txDataB.ok && txDataB.active" v-cloak>{{txDataB.okCheckSentence}}</p>
@@ -461,27 +461,27 @@
             this.txDataB.active = true;
             return;
           }
-          if (Number(this.txDataB.value) <= 0) {
+          if (this.txDataB.value <= 0) {
             this.txDataB.noCheckSentence = "Please input a value as positive number!";
             this.txDataB.txData.value = this.txDataB.value;
             this.txDataB.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.txDataB.value))) {
+          if (!Number.isInteger(this.txDataB.value)) {
             this.txDataB.noCheckSentence = "Please input a value as integer!";
             this.txDataB.txData.value = this.txDataB.value;
             this.txDataB.active = true;
             return;
           }
           this.txDataB.okCheckSentence = 
-          "OK! You, the current hako owner, change the upper limit to " + Number(this.txDataB.value).toLocaleString() + "!";
+          "OK! You, the current hako owner, change the upper limit to " + this.txDataB.value.toLocaleString() + "!";
           this.txDataB.ok = true;
           this.txDataB.txData.value = this.txDataB.value;
           this.txDataB.active = true;
         },
         changeUpperLimit: function() {
           this.txDataB.txStatus = "Changing upper limit on the blockchain. This may take a while...";
-          return hako.methods.changeUpperLimit(Number(this.txDataB.value))
+          return hako.methods.changeUpperLimit(this.txDataB.value)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               ownerVM.txDataB.txStatus = "";
@@ -500,7 +500,7 @@
           this.txDataE.ok = false;
           this.txDataE.rewardTime = await hako.methods.rewardTime().call();
           this.txDataE.rewardValue = Math.floor(Number(balanceOfHako) / 100);
-          this.txDataE.readyTime = String(new Date((Number(this.txDataE.rewardTime) + 86400) * 1000));
+          this.txDataE.readyTime = new Date((Number(this.txDataE.rewardTime) + 86400) * 1000).toLocaleString();
           if ((Date.now() / 1000) < Number(this.txDataE.rewardTime) + 86400) {
             this.txDataE.noCheckSentence = 
             "NO! 24 hours is yet to be passed! Please wait until " + this.txDataE.readyTime + "!";
@@ -642,7 +642,7 @@
           let txHash = event.transactionHash;
           let blockN = await web3.eth.getTransaction(txHash);
           let blockData = await web3.eth.getBlock(blockN.blockNumber);
-          let time = String(new Date(blockData.timestamp * 1000));
+          let time = new Date(blockData.timestamp * 1000).toLocaleString();
           return ([txHash, blockN, blockData, time]);
         }
       },

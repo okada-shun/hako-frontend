@@ -25,12 +25,12 @@
         register the duration that you want to borrow the credit for<br>
         (The upper limit value you can register is {{upperLimitValue}}.)<br>
         (You can't register more value than {{netAssetsValue}}, your net assets.)</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         how long? <br>
-        <input class="question duration" type="text" name="duration" v-model="days">days
-        <input class="question duration" type="text" name="duration" v-model="hours">hours
-        <input class="question duration" type="text" name="duration" v-model="minutes">minutes
-        <input class="question duration" type="text" name="duration" v-model="seconds">seconds<br>
+        <input class="question duration" type="text" name="duration" v-model.number="days">days
+        <input class="question duration" type="text" name="duration" v-model.number="hours">hours
+        <input class="question duration" type="text" name="duration" v-model.number="minutes">minutes
+        <input class="question duration" type="text" name="duration" v-model.number="seconds">seconds<br>
         <button class="button" @click="registerBorrowingCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -160,7 +160,7 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0 || Number(this.days) < 0 || Number(this.hours) < 0 || Number(this.minutes) < 0 || Number(this.seconds) < 0) {
+          if (this.value <= 0 || this.days < 0 || this.hours < 0 || this.minutes < 0 || this.seconds < 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.value = this.value;
             this.txData.days = this.days;
@@ -170,7 +170,7 @@
             this.active = true;
             return;
           }
-          if (Number(this.days) === 0 && Number(this.hours) === 0 && Number(this.minutes) === 0 && Number(this.seconds) === 0) {
+          if (this.days === 0 && this.hours === 0 && this.minutes === 0 && this.seconds === 0) {
             this.noCheckSentence = "Please input a duration as positive number!";
             this.txData.value = this.value;
             this.txData.days = this.days;
@@ -180,8 +180,8 @@
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value)) || !Number.isInteger(Number(this.days)) || !Number.isInteger(Number(this.hours))
-           || !Number.isInteger(Number(this.minutes)) || !Number.isInteger(Number(this.seconds))) {
+          if (!Number.isInteger(this.value) || !Number.isInteger(this.days) || !Number.isInteger(this.hours)
+           || !Number.isInteger(this.minutes) || !Number.isInteger(this.seconds)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.txData.days = this.days;
@@ -192,8 +192,8 @@
             return;
           }
           this.duration = 
-          Number(this.days) * 86400 + Number(this.hours) * 3600
-           + Number(this.minutes) * 60 + Number(this.seconds);
+          this.days * 86400 + this.hours * 3600
+           + this.minutes * 60 + this.seconds;
           this.memberOrNotOfUser = await hako.methods.memberCheckOf(userAccount).call();
           this.debtToMemberOfUser = debtToMemberOfUser;
           this.upperLimit = upperLimit;
@@ -207,18 +207,18 @@
           } else if (this.netAssetsOfUser <= 0) {
             this.noCheckSentence = 
             "NO! Your net assets is 0 or minus! You can't register any borrow value!";
-          } else if (Number(this.value) > Number(this.upperLimit)) {
+          } else if (this.value > Number(this.upperLimit)) {
             this.noCheckSentence = 
             "NO! The upper limit is " + Number(this.upperLimit).toLocaleString() + "! You can't register more than "
               + Number(this.upperLimit).toLocaleString() + " credit!";
-          } else if (Number(this.value) > this.netAssetsOfUser) {
+          } else if (this.value > this.netAssetsOfUser) {
             this.noCheckSentence = 
             "NO! Your net assets is only " + this.netAssetsOfUser.toLocaleString() + "! You can't register more than "
               + this.netAssetsOfUser.toLocaleString() + " credit!";
           } else {
             this.arrangeDuration(this.duration);
             this.okCheckSentence = 
-            "OK! You register that you want to borrow " + Number(this.value).toLocaleString() + " credit for "
+            "OK! You register that you want to borrow " + this.value.toLocaleString() + " credit for "
               + this.durationData.days + " days " + this.durationData.hours + " hours "
               + this.durationData.minutes + " minutes " + this.durationData.seconds + " seconds ( = "
               + this.duration.toLocaleString() + " seconds)!";
@@ -245,7 +245,7 @@
         },
         registerBorrowing: function() {
           this.txStatus = "Registering borrow value and duration on the blockchain. This may take a while...";
-          return hako.methods.registerBorrowing(Number(this.value), this.duration)
+          return hako.methods.registerBorrowing(this.value, this.duration)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
             registerBorrowingVM.txStatus = "";

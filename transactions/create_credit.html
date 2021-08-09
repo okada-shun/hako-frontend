@@ -24,7 +24,7 @@
         <p v-cloak>Create your credit by owing debt to Hako<br>
           (The upper limit value you can create is {{upperLimitValue}}.)<br>
           (You can't create more credit than {{netAssetsValue}}, your net assets.)</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="createCreditCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -121,13 +121,13 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0) {
+          if (this.value <= 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.active = true;
@@ -146,18 +146,18 @@
           } else if (this.netAssetsOfUser <= 0) {
             this.noCheckSentence = 
             "NO! Your net assets is 0 or minus! You can't create any credit!";
-          } else if (Number(this.value) > Number(this.upperLimit)) {
+          } else if (this.value > Number(this.upperLimit)) {
             this.noCheckSentence = 
             "NO! The upper limit is " + Number(this.upperLimit).toLocaleString() + "! You can't create more than "
               + Number(this.upperLimit).toLocaleString() + " credit!";
-          } else if (Number(this.value) > this.netAssetsOfUser) {
+          } else if (this.value > this.netAssetsOfUser) {
             this.noCheckSentence = 
             "NO! Your net assets is only " + this.netAssetsOfUser.toLocaleString()
               + "! You can't create more than " + this.netAssetsOfUser.toLocaleString() + " credit!";
           } else {
             this.okCheckSentence = 
-            "OK! You create " + Number(this.value).toLocaleString()
-              + " credit! At the same time, you have " + Number(this.value).toLocaleString() + " debt to Hako!";
+            "OK! You create " + this.value.toLocaleString()
+              + " credit! At the same time, you have " + this.value.toLocaleString() + " debt to Hako!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -165,7 +165,7 @@
         },
         createCredit: function() {
           this.txStatus = "Creating credit on the blockchain. This may take a while...";
-          return hako.methods.createCredit(Number(this.value))
+          return hako.methods.createCredit(this.value)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
             createCreditVM.txStatus = "";

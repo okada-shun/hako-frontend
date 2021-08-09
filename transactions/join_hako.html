@@ -23,7 +23,7 @@
         <h2>join Hako</h2>
         <p>Join Hako by depositing some token to Hako<br>
           (You can join Hako with depositing 0 token!)</p>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="joinHakoCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -76,13 +76,13 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) < 0) {
+          if (this.value < 0) {
             this.noCheckSentence = "Please input a value as 0 or positive number!";
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.value = this.value;
             this.active = true;
@@ -97,13 +97,13 @@
           } else if (userAccount.toUpperCase() === this.hakoOwner.toUpperCase()) {
             this.noCheckSentence = 
             "NO! You are hako owner! Hako owner can't join Hako!";
-          } else if (Number(this.value) > Number(this.balanceOfUser)) {
+          } else if (this.value > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else {
             this.okCheckSentence = 
-            "OK! You join Hako with depositing " + Number(this.value).toLocaleString() + " token!";
+            "OK! You join Hako with depositing " + this.value.toLocaleString() + " token!";
             this.ok = true;
           }
           this.txData.value = this.value;
@@ -111,7 +111,7 @@
         },
         joinHako: function() {
           this.txStatus = "Joining Hako on the blockchain. This may take a while...";
-          return hako.methods.joinHako(Number(this.value))
+          return hako.methods.joinHako(this.value)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               joinHakoVM.txStatus = "";

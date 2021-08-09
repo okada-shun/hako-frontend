@@ -36,8 +36,8 @@
             <li>{{lendRecord.over}}</li>
           </ul>
         </div>
-        from who? <input class="question" type="text" name="debtor" v-model="debtor"><br>
-        lending ID: <input class="question" type="text" name="id" v-model="id"><br>
+        from who? <input class="question" type="text" name="debtor" v-model.trim="debtor" placeholder="address"><br>
+        lending ID: <input class="question" type="text" name="id" v-model.number="id" placeholder="id"><br>
         <button class="button" @click="collectDebtFromCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -135,9 +135,9 @@
             this.lendRecordsOfUser[j].durationData.days + " days " + this.lendRecordsOfUser[j].durationData.hours + " hours " + 
             this.lendRecordsOfUser[j].durationData.minutes + " minutes " + this.lendRecordsOfUser[j].durationData.seconds + " seconds " + 
             "( = " + Number(lendRecord[4]).toLocaleString() + " seconds)";
-            this.lendRecordsOfUser[j].time = "Time: " + String(new Date(Number(lendRecord[5]) * 1000));
+            this.lendRecordsOfUser[j].time = "Time: " + new Date(Number(lendRecord[5]) * 1000).toLocaleString();
             this.lendRecordsOfUser[j].deadline = 
-            "Deadline: " + String(new Date(Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000));
+            "Deadline: " + new Date(Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000).toLocaleString();
             if (Number(new Date()) >= Number(lendRecord[5]) * 1000 + Number(lendRecord[4]) * 1000) {
               this.lendRecordsOfUser[j].over = 
               "Deadline has already passed! You can collect debt from debtor!";
@@ -199,14 +199,14 @@
             this.active = true;
             return;
           }
-          if (Number(this.id) <= 0) {
+          if (this.id <= 0) {
             this.noCheckSentence = "Please input an id as positive number!";
             this.txData.debtor = this.debtor;
             this.txData.id = this.id;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.id))) {
+          if (!Number.isInteger(this.id)) {
             this.noCheckSentence = "Please input an id as integer!";
             this.txData.debtor = this.debtor;
             this.txData.id = this.id;
@@ -250,7 +250,7 @@
             "NO! The duration is yet to be passed!";
           } else if (this.lendRecords['6'] !== "1") {
             this.noCheckSentence = 
-            "NO! Lending ID: " + this.id + " is wrong or this lending had already finished!";
+            "NO! Lending ID: " + this.id.toLocaleString() + " is wrong or this lending had already finished!";
           } else {
             this.okCheckSentence = 
             "OK! You collect " + Number(this.lendRecords['3']).toLocaleString() + " debt from <" + this.debtor + ">!";
@@ -262,7 +262,7 @@
         },
         collectDebtFrom: function() {
           this.txStatus = "Collecting debt from the debtor on the blockchain. This may take a while...";
-          return hako.methods.collectDebtFrom(this.debtor, Number(this.id))
+          return hako.methods.collectDebtFrom(this.debtor, this.id)
           .send({from: userAccount})
           .on("receipt", function(receipt) {
             collectDebtFromVM.txStatus = "";

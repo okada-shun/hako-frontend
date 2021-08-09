@@ -22,8 +22,8 @@
       <div class="transaction" id="transfer">
         <h2>transfer token</h2>
         <p>Transfer your token to another account</p>
-        to who? <input class="question" type="text" name="to" v-model="to"><br>
-        how much? <input class="question" type="text" name="value" v-model="value"><br>
+        to who? <input class="question" type="text" name="to" v-model.trim="to" placeholder="address"><br>
+        how much? <input class="question" type="text" name="value" v-model.number="value" placeholder="value"><br>
         <button class="button" @click="transferCheck">check</button>
         <div v-show="isFill">
           <p class="okCheckSentence" v-show="ok && active" v-cloak>{{okCheckSentence}}</p>
@@ -78,14 +78,14 @@
             this.active = true;
             return;
           }
-          if (Number(this.value) <= 0) {
+          if (this.value <= 0) {
             this.noCheckSentence = "Please input a value as positive number!";
             this.txData.to = this.to;
             this.txData.value = this.value;
             this.active = true;
             return;
           }
-          if (!Number.isInteger(Number(this.value))) {
+          if (!Number.isInteger(this.value)) {
             this.noCheckSentence = "Please input a value as integer!";
             this.txData.to = this.to;
             this.txData.value = this.value;
@@ -102,13 +102,13 @@
             return;
           }
           this.balanceOfUser = await hako.methods.balanceOf(userAccount).call();
-          if (Number(this.value) > Number(this.balanceOfUser)) {
+          if (this.value > Number(this.balanceOfUser)) {
             this.noCheckSentence = 
             "NO! You have only " + Number(this.balanceOfUser).toLocaleString() + " token! "
-             + Number(this.value).toLocaleString() + " is over!";
+             + this.value.toLocaleString() + " is over!";
           } else {
             this.okCheckSentence = 
-            "OK! You transfer " + Number(this.value).toLocaleString() + " token to <" + this.to + ">!";
+            "OK! You transfer " + this.value.toLocaleString() + " token to <" + this.to + ">!";
             this.ok = true;
           }
           this.txData.to = this.to;
@@ -117,7 +117,7 @@
         },
         transfer: function() {
           this.txStatus = "Transfering token on the blockchain. This may take a while...";
-          return hako.methods.transfer(this.to, Number(this.value))
+          return hako.methods.transfer(this.to, this.value)
             .send({ from: userAccount })
             .on("receipt", function (receipt) {
               transferVM.txStatus = "";
