@@ -475,6 +475,14 @@ button:hover {
   color: white;
   background-color: saddlebrown;
 }
+.connectButton {
+  width: 170px;
+}
+@media(max-width: 640px) {
+  .connectButton {
+    width: 100px;
+  }
+}
 .transaction {
   padding: 30px 50px;
 }

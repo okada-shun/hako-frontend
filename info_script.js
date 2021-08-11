@@ -23,6 +23,12 @@ async function startApp() {
   memberCount = await hako.methods.memberCount().call();
   upperLimit = await hako.methods.upperLimit().call();
   userAccount = await web3.eth.getCoinbase();
+  if (!userAccount) {
+    alert("connect MetaMask!");
+    return;
+  } else {
+    appVM.connected = true;
+  }
   balanceOfUser = await hako.methods.balanceOf(userAccount).call();
   memberOrNot = await hako.methods.memberCheckOf(userAccount).call();
   creditToHakoOfUser = await hako.methods.creditToHakoOf(userAccount).call();
@@ -59,6 +65,7 @@ var appVM = new Vue({
       'Transactions',
       'History'
     ],
+    connected: false,
     hakoData: {
       hakoAddress: '-',
       totalSupply: '-',
@@ -179,9 +186,21 @@ var appVM = new Vue({
       let quotientC = remainderB - remainderC;
       this.userData.valueDuration.durationData.minutes = (quotientC / 60).toString();
       this.userData.valueDuration.durationData.seconds = remainderC.toString();
+    },
+    onClickConnect: async function() {
+      try {
+        // Will open the MetaMask UI
+        // You should disable this button while the request is pending!
+        await ethereum.request({ method: 'eth_requestAccounts' });
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   computed: {
+    isConnected() {
+      return this.connected;
+    },
     isMember() {
       return this.userData.memberOrNot === '1';
     },

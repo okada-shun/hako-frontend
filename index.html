@@ -579,6 +579,13 @@
           </li>
         </ul>
       </div>
+      <div class="docs-item" v-show="!isConnected" v-cloak>
+        <ul>
+          <li class="docs-link">
+            <button class="button connectButton" @click="onClickConnect">Connect</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <footer id="footer">
